@@ -1,6 +1,6 @@
-import { OrderPageResult, OrderQueryParam } from '@/types/api/oms/order';
-import request from '@/utils/request';
-import { AxiosPromise } from 'axios';
+import { OrderPageResult, OrderQueryParam } from '@/types/api/oms/order'
+import request from '@/utils/request'
+import { AxiosPromise } from 'axios'
 
 /**
  * 获取订单分页列表
@@ -13,8 +13,8 @@ export function listOrderPages(
   return request({
     url: '/mall-oms/api/v1/orders',
     method: 'get',
-    params: queryParams,
-  });
+    params: queryParams
+  })
 }
 
 /**
@@ -25,6 +25,6 @@ export function listOrderPages(
 export function getOrderDetail(orderId: number) {
   return request({
     url: '/mall-oms/api/v1/orders/' + orderId,
-    method: 'get',
-  });
+    method: 'get'
+  })
 }

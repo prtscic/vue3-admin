@@ -1,7 +1,7 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
-import useStore from '@/store';
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import useStore from '@/store'
 
-export const Layout = () => import('@/layout/index.vue');
+export const Layout = () => import('@/layout/index.vue')
 
 // 参数说明: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
 // 静态路由
@@ -43,7 +43,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         path: '401',
         component: () => import('@/views/error-page/401.vue'),
         meta: { hidden: true }
-      },
+      }
     ]
   }
 
@@ -98,7 +98,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
              },
          ]
      }*/
-];
+]
 
 // 创建路由
 const router = createRouter({
@@ -106,17 +106,17 @@ const router = createRouter({
   routes: constantRoutes as RouteRecordRaw[],
   // 刷新时，滚动条位置还原
   scrollBehavior: () => ({ left: 0, top: 0 })
-});
+})
 
 // 重置路由
 export function resetRouter() {
-  const { permission } = useStore();
+  const { permission } = useStore()
   permission.routes.forEach(route => {
-    const name = route.name;
+    const name = route.name
     if (name && router.hasRoute(name)) {
-      router.removeRoute(name);
+      router.removeRoute(name)
     }
-  });
+  })
 }
 
-export default router;
+export default router

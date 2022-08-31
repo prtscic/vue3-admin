@@ -1,10 +1,10 @@
 import {
   CouponQueryParam,
   CouponPageResult,
-  CouponFormData,
-} from '@/types/api/sms/coupon';
-import request from '@/utils/request';
-import { AxiosPromise } from 'axios';
+  CouponFormData
+} from '@/types/api/sms/coupon'
+import request from '@/utils/request'
+import { AxiosPromise } from 'axios'
 
 /**
  * 获取优惠券分页列表
@@ -17,8 +17,8 @@ export function lisCouponPages(
   return request({
     url: '/mall-sms/api/v1/coupons/pages',
     method: 'get',
-    params: queryParams,
-  });
+    params: queryParams
+  })
 }
 
 /**
@@ -29,8 +29,8 @@ export function lisCouponPages(
 export function getCouponFormData(id: number): AxiosPromise<CouponFormData> {
   return request({
     url: '/mall-sms/api/v1/coupons/' + id + '/form_data',
-    method: 'get',
-  });
+    method: 'get'
+  })
 }
 
 /**
@@ -42,8 +42,8 @@ export function addCoupon(data: CouponFormData) {
   return request({
     url: '/mall-sms/api/v1/coupons',
     method: 'post',
-    data: data,
-  });
+    data: data
+  })
 }
 
 /**
@@ -56,8 +56,8 @@ export function updateCoupon(id: number, data: CouponFormData) {
   return request({
     url: '/mall-sms/api/v1/coupons/' + id,
     method: 'put',
-    data: data,
-  });
+    data: data
+  })
 }
 
 /**
@@ -68,6 +68,6 @@ export function updateCoupon(id: number, data: CouponFormData) {
 export function deleteCoupons(ids: string) {
   return request({
     url: '/mall-sms/api/v1/coupons/' + ids,
-    method: 'delete',
-  });
+    method: 'delete'
+  })
 }

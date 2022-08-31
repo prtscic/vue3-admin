@@ -1,14 +1,14 @@
 <!-- setup 无法设置组件名称，组件名称keepAlive必须 -->
 <script lang="ts">
 export default {
-  name: 'goods',
-};
+  name: 'Goods'
+}
 </script>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted, toRefs } from 'vue';
-import { ElTable, ElMessage, ElMessageBox } from 'element-plus';
-import { useRouter } from 'vue-router';
+import { reactive, ref, onMounted, toRefs } from 'vue'
+import { ElTable, ElMessage, ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
 
 import {
   Search,
@@ -16,16 +16,16 @@ import {
   Edit,
   Refresh,
   Delete,
-  View,
-} from '@element-plus/icons-vue';
-import { listSpuPages, deleteSpu } from '@/api/pms/goods';
-import { listCategoryOptions } from '@/api/pms/category';
-import { GoodsItem, GoodsQueryParam } from '@/types/api/pms/goods';
-import { moneyFormatter } from '@/utils/filter';
-import { Option } from '@/types/common';
+  View
+} from '@element-plus/icons-vue'
+import { listSpuPages, deleteSpu } from '@/api/pms/goods'
+import { listCategoryOptions } from '@/api/pms/category'
+import { GoodsItem, GoodsQueryParam } from '@/types/api/pms/goods'
+import { moneyFormatter } from '@/utils/filter'
+import { Option } from '@/types/common'
 
-const dataTableRef = ref(ElTable);
-const router = useRouter();
+const dataTableRef = ref(ElTable)
+const router = useRouter()
 
 const state = reactive({
   // 遮罩层
@@ -39,13 +39,13 @@ const state = reactive({
   total: 0,
   queryParams: {
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 10
   } as GoodsQueryParam,
   goodsList: [] as GoodsItem[],
   categoryOptions: [] as Option[],
   goodDetail: undefined,
-  dialogVisible: false,
-});
+  dialogVisible: false
+})
 
 const {
   loading,
@@ -55,16 +55,16 @@ const {
   categoryOptions,
   goodDetail,
   total,
-  dialogVisible,
-} = toRefs(state);
+  dialogVisible
+} = toRefs(state)
 
 function handleQuery() {
-  state.loading = true;
+  state.loading = true
   listSpuPages(state.queryParams).then(({ data }) => {
-    state.goodsList = data.list;
-    state.total = data.total;
-    state.loading = false;
-  });
+    state.goodsList = data.list
+    state.total = data.total
+    state.loading = false
+  })
 }
 
 function resetQuery() {
@@ -72,59 +72,59 @@ function resetQuery() {
     pageNum: 1,
     pageSize: 10,
     name: undefined,
-    categoryId: undefined,
-  };
-  handleQuery();
+    categoryId: undefined
+  }
+  handleQuery()
 }
 
 function handleGoodsView(detail: any) {
-  state.goodDetail = detail;
-  state.dialogVisible = true;
+  state.goodDetail = detail
+  state.dialogVisible = true
 }
 
 function handleAdd() {
-  router.push({ path: 'goods-detail' });
+  router.push({ path: 'goods-detail' })
 }
 
 function handleUpdate(row: any) {
   router.push({
     path: 'goods-detail',
-    query: { goodsId: row.id, categoryId: row.categoryId },
-  });
+    query: { goodsId: row.id, categoryId: row.categoryId }
+  })
 }
 
 function handleDelete(row: any) {
-  const ids = row.id || state.ids.join(',');
+  const ids = row.id || state.ids.join(',')
   ElMessageBox.confirm('是否确认删除选中的数据项?', '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning',
+    type: 'warning'
   })
     .then(function () {
-      return deleteSpu(ids);
+      return deleteSpu(ids)
     })
     .then(() => {
-      ElMessage.success('删除成功');
-      handleQuery();
-    });
+      ElMessage.success('删除成功')
+      handleQuery()
+    })
 }
 
 function handleRowClick(row: any) {
-  dataTableRef.value.toggleRowSelection(row);
+  dataTableRef.value.toggleRowSelection(row)
 }
 
 function handleSelectionChange(selection: any) {
-  state.ids = selection.map((item: { id: any }) => item.id);
-  state.single = selection.length != 1;
-  state.multiple = !selection.length;
+  state.ids = selection.map((item: { id: any }) => item.id)
+  state.single = selection.length != 1
+  state.multiple = !selection.length
 }
 
 onMounted(() => {
   listCategoryOptions().then(({ data }) => {
-    categoryOptions.value = data;
-  });
-  handleQuery();
-});
+    categoryOptions.value = data
+  })
+  handleQuery()
+})
 </script>
 
 <template>
@@ -137,8 +137,8 @@ onMounted(() => {
         <el-button
           type="danger"
           :icon="Delete"
-          @click="handleDelete"
           :disabled="multiple"
+          @click="handleDelete"
           >删除</el-button
         >
       </el-form-item>
@@ -171,9 +171,9 @@ onMounted(() => {
       ref="dataTableRef"
       v-loading="loading"
       :data="goodsList"
+      border
       @selection-change="handleSelectionChange"
       @row-click="handleRowClick"
-      border
     >
       <el-table-column type="selection" min-width="5%" center />
       <el-table-column type="expand" width="120" label="库存信息">
@@ -263,9 +263,9 @@ onMounted(() => {
     <!-- 分页工具条 -->
     <pagination
       v-if="total > 0"
-      :total="total"
       v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize"
+      :total="total"
       @pagination="handleQuery"
     />
     <el-dialog v-model="dialogVisible" title="商品详情">

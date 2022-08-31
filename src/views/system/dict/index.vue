@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import SvgIcon from '@/components/SvgIcon/index.vue';
-import DictType from './components/DictType.vue';
-import DictItem from './components/DictItem.vue';
+import SvgIcon from '@/components/SvgIcon/index.vue'
+import DictType from './components/DictType.vue'
+import DictItem from './components/DictItem.vue'
 
-import { reactive, toRefs } from 'vue';
+import { reactive, toRefs } from 'vue'
 
 const state = reactive({
   typeCode: '',
-  typeName: '',
-});
+  typeName: ''
+})
 
-const { typeCode, typeName } = toRefs(state);
+const { typeCode, typeName } = toRefs(state)
 
 const handleDictTypeClick = (row: any) => {
   if (row) {
-    state.typeName = row.name;
-    state.typeCode = row.code;
+    state.typeName = row.name
+    state.typeCode = row.code
   } else {
-    state.typeName = '';
-    state.typeCode = '';
+    state.typeName = ''
+    state.typeCode = ''
   }
-};
+}
 </script>
 
 <template>
@@ -41,13 +41,13 @@ const handleDictTypeClick = (row: any) => {
           <template #header>
             <svg-icon icon-class="dict_item" />
             <span style="margin: 0 5px">字典数据项</span>
-            <el-tag type="success" v-if="typeCode" size="small">{{
+            <el-tag v-if="typeCode" type="success" size="small">{{
               typeName
             }}</el-tag>
-            <el-tag type="warning" v-else size="small">未选择字典</el-tag>
+            <el-tag v-else type="warning" size="small">未选择字典</el-tag>
           </template>
           <!-- 字典项组件 -->
-          <dict-item :typeName="typeName" :typeCode="typeCode" />
+          <dict-item :type-name="typeName" :type-code="typeCode" />
         </el-card>
       </el-col>
     </el-row>

@@ -19,24 +19,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { ElMessage } from 'element-plus';
+import { ref, computed } from 'vue'
+import { ElMessage } from 'element-plus'
 
-import useStore from '@/store';
-import SvgIcon from '@/components/SvgIcon/index.vue';
+import useStore from '@/store'
+import SvgIcon from '@/components/SvgIcon/index.vue'
 
-const { app } = useStore();
-const size = computed(() => app.size);
+const { app } = useStore()
+const size = computed(() => app.size)
 
 const sizeOptions = ref([
   { label: '默认', value: 'default' },
   { label: '大型', value: 'large' },
   { label: '小型', value: 'small' }
-]);
+])
 
 function handleSetSize(size: string) {
-  app.setSize(size);
-  ElMessage.success('切换布局大小成功');
+  app.setSize(size)
+  ElMessage.success('切换布局大小成功')
 }
 </script>
 

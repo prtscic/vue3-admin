@@ -1,10 +1,10 @@
 interface DefaultSettings {
-  title: string;
-  showSettings: boolean;
-  tagsView: boolean;
-  fixedHeader: boolean;
-  sidebarLogo: boolean;
-  errorLog: string;
+  title: string
+  showSettings: boolean
+  tagsView: boolean
+  fixedHeader: boolean
+  sidebarLogo: boolean
+  errorLog: string
 }
 
 const defaultSettings: DefaultSettings = {
@@ -15,6 +15,6 @@ const defaultSettings: DefaultSettings = {
   // 是否显示Logo
   sidebarLogo: true,
   errorLog: 'production'
-};
+}
 
-export default defaultSettings;
+export default defaultSettings

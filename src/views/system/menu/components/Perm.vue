@@ -5,53 +5,49 @@ import {
   reactive,
   ref,
   getCurrentInstance,
-  toRefs,
-} from 'vue';
+  toRefs
+} from 'vue'
 
 import {
   listPermPages,
   getPermFormDetail,
   addPerm,
   updatePerm,
-  deletePerms,
-} from '@/api/system/perm';
-import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue';
+  deletePerms
+} from '@/api/system/perm'
+import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
 
-import { ElForm, ElMessage, ElMessageBox } from 'element-plus';
-import { Dialog, Option } from '@/types/common';
+import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
+import { Dialog, Option } from '@/types/common'
 
-import {
-  PermFormData,
-  PermItem,
-  PermQueryParam,
-} from '@/types/api/system/perm';
-import { MenuItem } from '@/types/api/system/menu';
+import { PermFormData, PermItem, PermQueryParam } from '@/types/api/system/perm'
+import { MenuItem } from '@/types/api/system/menu'
 
-const { proxy }: any = getCurrentInstance();
+const { proxy }: any = getCurrentInstance()
 
-const queryFormRef = ref(ElForm);
-const dataFormRef = ref(ElForm);
+const queryFormRef = ref(ElForm)
+const dataFormRef = ref(ElForm)
 
 const props = defineProps({
   menu: {
     type: Object,
     default: () => {
-      return {} as MenuItem;
-    },
-  },
-});
+      return {} as MenuItem
+    }
+  }
+})
 
 watch(
   () => props.menu,
-  (value) => {
-    queryParams.value.menuId = value.id;
-    console.log('menu', value);
-    handleQuery();
+  value => {
+    queryParams.value.menuId = value.id
+    console.log('menu', value)
+    handleQuery()
   },
   {
-    deep: true,
+    deep: true
   }
-);
+)
 
 const state = reactive({
   loading: true,
@@ -63,27 +59,27 @@ const state = reactive({
   multiple: true,
   queryParams: {
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 10
   } as PermQueryParam,
   permList: [] as PermItem[],
   total: 0,
   dialog: {
-    visible: false,
+    visible: false
   } as Dialog,
   formData: {} as PermFormData,
   rules: {
     name: [{ required: true, message: '请输入权限名称', trigger: 'blur' }],
     perm: [{ required: true, message: '请输入权限标识', trigger: 'blur' }],
-    method: [{ required: true, message: '请选择请求方式', trigger: 'blur' }],
+    method: [{ required: true, message: '请选择请求方式', trigger: 'blur' }]
   },
   microServiceOptions: [] as Option[],
   requestMethodOptions: [] as Option[],
   urlPerm: {
     requestMethod: '',
     serviceName: '',
-    requestPath: '',
-  },
-});
+    requestPath: ''
+  }
+})
 
 const {
   loading,
@@ -96,34 +92,34 @@ const {
   microServiceOptions,
   requestMethodOptions,
   urlPerm,
-  queryParams,
-} = toRefs(state);
+  queryParams
+} = toRefs(state)
 
 function handleQuery() {
   if (state.queryParams.menuId) {
-    state.loading = true;
+    state.loading = true
     listPermPages(state.queryParams).then(({ data }) => {
-      state.permList = data.list;
-      state.total = data.total;
-      state.loading = false;
-    });
+      state.permList = data.list
+      state.total = data.total
+      state.loading = false
+    })
   } else {
-    state.loading = false;
-    state.permList = [];
-    state.total = 0;
-    state.queryParams.pageNum = 1;
+    state.loading = false
+    state.permList = []
+    state.total = 0
+    state.queryParams.pageNum = 1
   }
 }
 
 function resetQuery() {
-  queryFormRef.value.resetFields();
-  handleQuery();
+  queryFormRef.value.resetFields()
+  handleQuery()
 }
 
 function handleSelectionChange(selection: any) {
-  state.ids = selection.map((item: any) => item.id);
-  state.single = selection.length !== 1;
-  state.multiple = !selection.length;
+  state.ids = selection.map((item: any) => item.id)
+  state.single = selection.length !== 1
+  state.multiple = !selection.length
 }
 
 /**
@@ -131,128 +127,128 @@ function handleSelectionChange(selection: any) {
  */
 function loadDictOptions() {
   proxy.$getDictItemsByTypeCode('micro_service').then((response: any) => {
-    state.microServiceOptions = response.data;
-  });
+    state.microServiceOptions = response.data
+  })
 
   proxy.$getDictItemsByTypeCode('request_method').then((response: any) => {
-    state.requestMethodOptions = response.data;
-  });
+    state.requestMethodOptions = response.data
+  })
 }
 
 function handleAdd() {
-  loadDictOptions();
+  loadDictOptions()
   state.dialog = {
     title: '添加权限',
-    visible: true,
-  };
+    visible: true
+  }
 }
 
 function handleUpdate(row: any) {
-  loadDictOptions();
+  loadDictOptions()
   state.dialog = {
     title: '修改权限',
-    visible: true,
-  };
-  const id = row.id || state.ids;
-  getPermFormDetail(id).then((response) => {
-    const { data } = response;
-    state.formData = data;
+    visible: true
+  }
+  const id = row.id || state.ids
+  getPermFormDetail(id).then(response => {
+    const { data } = response
+    state.formData = data
     if (data && data.urlPerm) {
       // GET:/youlai-admin/api/v1/users
-      const urlPermArr = data.urlPerm.split(':');
-      state.urlPerm.requestMethod = urlPermArr[0];
+      const urlPermArr = data.urlPerm.split(':')
+      state.urlPerm.requestMethod = urlPermArr[0]
       state.urlPerm.serviceName = urlPermArr[1].substring(
         1,
         urlPermArr[1].substring(1).indexOf('/') + 1
-      );
+      )
       state.urlPerm.requestPath = urlPermArr[1].substring(
         urlPermArr[1].substring(1).indexOf('/') + 1
-      );
+      )
     }
-  });
+  })
 }
 
 function submitForm() {
   dataFormRef.value.validate((isValid: any) => {
     if (isValid) {
       // 接口权限和按钮权限必填其一
-      console.log(state.urlPerm.requestPath, state.formData.btnPerm);
+      console.log(state.urlPerm.requestPath, state.formData.btnPerm)
       if (!(state.urlPerm.requestPath || state.formData.btnPerm)) {
-        ElMessage.warning('请至少填写一种权限');
-        return false;
+        ElMessage.warning('请至少填写一种权限')
+        return false
       }
       // 如果填写了URL权限，完整性校验
       if (!state.urlPerm.requestPath) {
         if (!state.urlPerm.requestMethod) {
-          ElMessage.warning('URL权限的请求方式不能为空');
-          return false;
+          ElMessage.warning('URL权限的请求方式不能为空')
+          return false
         }
         if (!state.urlPerm.serviceName) {
-          ElMessage.warning('URL权限的所属服务不能为空');
-          return false;
+          ElMessage.warning('URL权限的所属服务不能为空')
+          return false
         }
         state.formData.urlPerm =
           state.urlPerm.requestMethod +
           ':/' +
           state.urlPerm.serviceName +
-          state.urlPerm.requestPath;
+          state.urlPerm.requestPath
       }
 
-      formData.value.menuId = props.menu.id;
+      formData.value.menuId = props.menu.id
       if (state.formData.id) {
         updatePerm(state.formData.id, state.formData).then(() => {
-          ElMessage.success('修改成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('修改成功')
+          cancel()
+          handleQuery()
+        })
       } else {
         addPerm(state.formData).then(() => {
-          ElMessage.success('新增成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('新增成功')
+          cancel()
+          handleQuery()
+        })
       }
     }
-  });
+  })
 }
 
 /**
  * 重置表单
  */
 function resetForm() {
-  dataFormRef.value.resetFields();
+  dataFormRef.value.resetFields()
 
   state.urlPerm = {
     requestMethod: '',
     serviceName: '',
-    requestPath: '',
-  };
+    requestPath: ''
+  }
 }
 
 function cancel() {
-  resetForm();
-  state.dialog.visible = false;
+  resetForm()
+  state.dialog.visible = false
 }
 
 function handleDelete(row: any) {
-  const ids = [row.id || state.ids].join(',');
+  const ids = [row.id || state.ids].join(',')
   ElMessageBox.confirm('确认删除已选中的数据项?', '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning',
+    type: 'warning'
   })
     .then(() => {
       deletePerms(ids).then(() => {
-        ElMessage.success('删除成功');
-        handleQuery();
-      });
+        ElMessage.success('删除成功')
+        handleQuery()
+      })
     })
-    .catch(() => ElMessage.info('已取消删除'));
+    .catch(() => ElMessage.info('已取消删除'))
 }
 
 onMounted(() => {
-  handleQuery();
-});
+  handleQuery()
+})
 </script>
 
 <template>
@@ -261,18 +257,18 @@ onMounted(() => {
     <el-form ref="queryFormRef" :model="queryParams" :inline="true">
       <el-form-item>
         <el-button
+          v-if="menu.id && menu.type == 'MENU'"
           type="success"
           :icon="Plus"
-          v-if="menu.id && menu.type == 'MENU'"
           @click="handleAdd"
           >新增</el-button
         >
         <el-button
+          v-if="menu.id && menu.type == 'MENU'"
           type="danger"
           :icon="Delete"
           :disabled="multiple"
           @click="handleDelete"
-          v-if="menu.id && menu.type == 'MENU'"
           >删除</el-button
         >
       </el-form-item>
@@ -294,10 +290,10 @@ onMounted(() => {
 
     <!-- 数据表格 -->
     <el-table
-      :data="permList"
       v-loading="loading"
-      @selection-change="handleSelectionChange"
+      :data="permList"
       border
+      @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="40" align="center" />
       <el-table-column label="权限名称" prop="name" width="150" />
@@ -330,14 +326,14 @@ onMounted(() => {
     <!-- 分页工具条 -->
     <pagination
       v-if="total > 0"
-      :total="total"
       v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize"
+      :total="total"
       @pagination="handleQuery"
     />
 
     <!-- 表单弹窗 -->
-    <el-dialog :title="dialog.title" v-model="dialog.visible" width="700px">
+    <el-dialog v-model="dialog.visible" :title="dialog.title" width="700px">
       <el-form
         ref="dataFormRef"
         :model="formData"
@@ -349,7 +345,7 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item label="URL权限标识" prop="urlPerm">
-          <el-input placeholder="/api/v1/users" v-model="urlPerm.requestPath">
+          <el-input v-model="urlPerm.requestPath" placeholder="/api/v1/users">
             <template #prepend>
               <el-select
                 v-model="urlPerm.serviceName"

@@ -1,12 +1,12 @@
 <script lang="ts">
 export default {
-  name: 'dept',
-};
+  name: 'Dept'
+}
 </script>
 
 <script setup lang="ts">
 // Vue依赖
-import { onMounted, reactive, ref, toRefs } from 'vue';
+import { onMounted, reactive, ref, toRefs } from 'vue'
 
 // API依赖
 import {
@@ -15,22 +15,18 @@ import {
   updateDept,
   addDept,
   listSelectDepartments,
-  listDepartments,
-} from '@/api/system/dept';
+  listDepartments
+} from '@/api/system/dept'
 
 // 组件依赖
-import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue';
-import { ElForm, ElMessage, ElMessageBox } from 'element-plus';
-import {
-  DeptFormData,
-  DeptItem,
-  DeptQueryParam,
-} from '@/types/api/system/dept';
-import { Dialog, Option } from '@/types/common';
+import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
+import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
+import { DeptFormData, DeptItem, DeptQueryParam } from '@/types/api/system/dept'
+import { Dialog, Option } from '@/types/common'
 
 // DOM元素的引用声明定义
-const queryFormRef = ref(ElForm);
-const dataFormRef = ref(ElForm);
+const queryFormRef = ref(ElForm)
+const dataFormRef = ref(ElForm)
 
 const state = reactive({
   // 选中ID数组
@@ -49,17 +45,17 @@ const state = reactive({
   // 表单数据
   formData: {
     sort: 1,
-    status: 1,
+    status: 1
   } as DeptFormData,
   // 表单参数校验
   rules: {
     parentId: [
-      { required: true, message: '上级部门不能为空', trigger: 'blur' },
+      { required: true, message: '上级部门不能为空', trigger: 'blur' }
     ],
     name: [{ required: true, message: '部门名称不能为空', trigger: 'blur' }],
-    sort: [{ required: true, message: '显示排序不能为空', trigger: 'blur' }],
-  },
-});
+    sort: [{ required: true, message: '显示排序不能为空', trigger: 'blur' }]
+  }
+})
 
 const {
   single,
@@ -69,75 +65,75 @@ const {
   queryParams,
   formData,
   rules,
-  dialog,
-} = toRefs(state);
+  dialog
+} = toRefs(state)
 
 /**
  * 部门查询
  */
 function handleQuery() {
-  state.loading = true;
+  state.loading = true
   listDepartments(state.queryParams).then(({ data }) => {
-    state.deptList = data;
-    state.loading = false;
-  });
+    state.deptList = data
+    state.loading = false
+  })
 }
 
 /**
  * 重置查询
  */
 function resetQuery() {
-  queryFormRef.value.resetFields();
-  handleQuery();
+  queryFormRef.value.resetFields()
+  handleQuery()
 }
 
 function handleSelectionChange(selection: any) {
-  state.ids = selection.map((item: any) => item.id);
-  state.single = selection.length === 0;
+  state.ids = selection.map((item: any) => item.id)
+  state.single = selection.length === 0
 }
 
 /**
  * 加载部门下拉数据源
  */
 async function loadDeptData() {
-  const deptOptions: any[] = [];
-  listSelectDepartments().then((response) => {
+  const deptOptions: any[] = []
+  listSelectDepartments().then(response => {
     const rootDeptOption = {
       value: '0',
       label: '顶级部门',
-      children: response.data,
-    };
-    deptOptions.push(rootDeptOption);
-    state.deptOptions = deptOptions;
-  });
+      children: response.data
+    }
+    deptOptions.push(rootDeptOption)
+    state.deptOptions = deptOptions
+  })
 }
 
 /**
  * 添加部门
  */
 function handleAdd(row: any) {
-  loadDeptData();
-  state.formData.id = undefined;
-  state.formData.parentId = row.id;
+  loadDeptData()
+  state.formData.id = undefined
+  state.formData.parentId = row.id
   state.dialog = {
     title: '添加部门',
-    visible: true,
-  };
+    visible: true
+  }
 }
 
 /**
  * 修改部门
  */
 async function handleUpdate(row: any) {
-  await loadDeptData();
-  const deptId = row.id || state.ids;
+  await loadDeptData()
+  const deptId = row.id || state.ids
   state.dialog = {
     title: '修改部门',
-    visible: true,
-  };
+    visible: true
+  }
   getDeptForrmData(deptId).then((response: any) => {
-    state.formData = response.data;
-  });
+    state.formData = response.data
+  })
 }
 
 /**
@@ -148,19 +144,19 @@ function submitForm() {
     if (valid) {
       if (state.formData.id) {
         updateDept(state.formData.id, state.formData).then(() => {
-          ElMessage.success('修改成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('修改成功')
+          cancel()
+          handleQuery()
+        })
       } else {
         addDept(state.formData).then(() => {
-          ElMessage.success('新增成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('新增成功')
+          cancel()
+          handleQuery()
+        })
       }
     }
-  });
+  })
 }
 
 /**
@@ -169,38 +165,38 @@ function submitForm() {
  * @param row
  */
 function handleDelete(row: any) {
-  const ids = [row.id || state.ids].join(',');
+  const ids = [row.id || state.ids].join(',')
   ElMessageBox.confirm(`确认删除已选中的数据项?`, '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning',
+    type: 'warning'
   })
     .then(() => {
       deleteDept(ids)
         .then(() => {
-          handleQuery();
-          ElMessage.success('删除成功');
+          handleQuery()
+          ElMessage.success('删除成功')
         })
         .catch(() => {
-          console.log(`删除失败`);
-        });
+          console.log(`删除失败`)
+        })
     })
-    .catch(() => ElMessage.info('已取消删除'));
+    .catch(() => ElMessage.info('已取消删除'))
 }
 
 /**
  * 取消/关闭弹窗
  **/
 function cancel() {
-  dialog.value.visible = false;
-  formData.value.id = undefined;
-  dataFormRef.value.resetFields();
-  dataFormRef.value.clearValidate();
+  dialog.value.visible = false
+  formData.value.id = undefined
+  dataFormRef.value.resetFields()
+  dataFormRef.value.clearValidate()
 }
 
 onMounted(() => {
-  handleQuery();
-});
+  handleQuery()
+})
 </script>
 <template>
   <div class="app-container">
@@ -301,8 +297,8 @@ onMounted(() => {
 
     <!-- 添加或修改部门对话框 -->
     <el-dialog
-      :title="dialog.title"
       v-model="dialog.visible"
+      :title="dialog.title"
       width="600px"
       @closed="cancel"
     >

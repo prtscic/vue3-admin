@@ -28,17 +28,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { Plus, Close } from '@element-plus/icons-vue';
+import { computed } from 'vue'
+import { Plus, Close } from '@element-plus/icons-vue'
 import {
   ElMessage,
   ElUpload,
   UploadRawFile,
   UploadRequestOptions
-} from 'element-plus';
-import { uploadFile, deleteFile } from '@/api/system/file';
+} from 'element-plus'
+import { uploadFile, deleteFile } from '@/api/system/file'
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue'])
 
 const props = defineProps({
   modelValue: {
@@ -52,17 +52,17 @@ const props = defineProps({
     type: Boolean,
     default: false
   }
-});
+})
 
 const imgUrl = computed<string | undefined>({
   get() {
-    return props.modelValue;
+    return props.modelValue
   },
   set(val) {
     // imgUrl改变时触发修改父组件绑定的v-model的值
-    emit('update:modelValue', val);
+    emit('update:modelValue', val)
   }
-});
+})
 
 /**
  * 自定义图片上传
@@ -70,8 +70,8 @@ const imgUrl = computed<string | undefined>({
  * @param params
  */
 async function uploadImage(options: UploadRequestOptions): Promise<any> {
-  const response = await uploadFile(options.file);
-  imgUrl.value = response.data;
+  const response = await uploadFile(options.file)
+  imgUrl.value = response.data
 }
 
 /**
@@ -81,8 +81,8 @@ async function uploadImage(options: UploadRequestOptions): Promise<any> {
  */
 function handleRemove(fileUrl?: string) {
   if (fileUrl) {
-    deleteFile(fileUrl);
-    imgUrl.value = undefined; // 这里会触发imgUrl的computed的set方法
+    deleteFile(fileUrl)
+    imgUrl.value = undefined // 这里会触发imgUrl的computed的set方法
   }
 }
 /**
@@ -90,12 +90,12 @@ function handleRemove(fileUrl?: string) {
  */
 function handleBeforeUpload(file: UploadRawFile) {
   // const isJPG = file.type === "image/jpeg";
-  const isLt2M = file.size / 1024 / 1024 < 2;
+  const isLt2M = file.size / 1024 / 1024 < 2
 
   if (!isLt2M) {
-    ElMessage.warning('上传图片不能大于2M');
+    ElMessage.warning('上传图片不能大于2M')
   }
-  return true;
+  return true
 }
 </script>
 

@@ -1,16 +1,16 @@
 <script lang="ts">
 export default {
-  name: 'member',
-};
+  name: 'Member'
+}
 </script>
 
 <script setup lang="ts">
-import { reactive, onMounted, toRefs } from 'vue';
-import { ElTable } from 'element-plus';
-import { Search, Refresh } from '@element-plus/icons-vue';
+import { reactive, onMounted, toRefs } from 'vue'
+import { ElTable } from 'element-plus'
+import { Search, Refresh } from '@element-plus/icons-vue'
 
-import { listMemebersPage } from '@/api/ums/member';
-import { MemberQueryParam, MemberItem } from '@/types/api/ums/member';
+import { listMemebersPage } from '@/api/ums/member'
+import { MemberQueryParam, MemberItem } from '@/types/api/ums/member'
 
 const state = reactive({
   // 遮罩层
@@ -24,40 +24,40 @@ const state = reactive({
   total: 0,
   queryParams: {
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 10
   } as MemberQueryParam,
-  memberList: [] as MemberItem[],
-});
+  memberList: [] as MemberItem[]
+})
 
-const { loading, queryParams, memberList, total } = toRefs(state);
+const { loading, queryParams, memberList, total } = toRefs(state)
 
 function handleQuery() {
-  state.loading = true;
+  state.loading = true
   listMemebersPage(state.queryParams).then(({ data }) => {
-    state.memberList = data.list;
-    state.total = data.total;
-    state.loading = false;
-  });
+    state.memberList = data.list
+    state.total = data.total
+    state.loading = false
+  })
 }
 
 function resetQuery() {
   state.queryParams = {
     pageNum: 1,
     pageSize: 10,
-    nickName: '',
-  };
-  handleQuery();
+    nickName: ''
+  }
+  handleQuery()
 }
 
 function handleSelectionChange(selection: any) {
-  state.ids = selection.map((item: { id: any }) => item.id);
-  state.single = selection.length != 1;
-  state.multiple = !selection.length;
+  state.ids = selection.map((item: { id: any }) => item.id)
+  state.single = selection.length != 1
+  state.multiple = !selection.length
 }
 
 onMounted(() => {
-  handleQuery();
-});
+  handleQuery()
+})
 </script>
 
 <template>
@@ -162,9 +162,9 @@ onMounted(() => {
     <!-- 分页工具条 -->
     <pagination
       v-if="total > 0"
-      :total="total"
       v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize"
+      :total="total"
       @pagination="handleQuery"
     />
   </div>

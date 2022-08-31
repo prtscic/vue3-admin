@@ -47,13 +47,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import path from 'path-browserify';
-import { isExternal } from '@/utils/validate';
-import AppLink from './Link.vue';
+import { ref } from 'vue'
+import path from 'path-browserify'
+import { isExternal } from '@/utils/validate'
+import AppLink from './Link.vue'
 
-import { generateTitle } from '@/utils/i18n';
-import SvgIcon from '@/components/SvgIcon/index.vue';
+import { generateTitle } from '@/utils/i18n'
+import SvgIcon from '@/components/SvgIcon/index.vue'
 
 const props = defineProps({
   item: {
@@ -68,46 +68,46 @@ const props = defineProps({
     type: String,
     required: true
   }
-});
+})
 
-const onlyOneChild = ref();
+const onlyOneChild = ref()
 
 function hasOneShowingChild(children = [] as any, parent: any) {
   if (!children) {
-    children = [];
+    children = []
   }
   const showingChildren = children.filter((item: any) => {
     if (item.meta && item.meta.hidden) {
-      return false;
+      return false
     } else {
       // Temp set(will be used if only has one showing child)
-      onlyOneChild.value = item;
-      return true;
+      onlyOneChild.value = item
+      return true
     }
-  });
+  })
 
   // When there is only one child router, the child router is displayed by default
   if (showingChildren.length === 1) {
-    return true;
+    return true
   }
 
   // Show parent if there are no child router to display
   if (showingChildren.length === 0) {
-    onlyOneChild.value = { ...parent, path: '', noShowingChildren: true };
-    return true;
+    onlyOneChild.value = { ...parent, path: '', noShowingChildren: true }
+    return true
   }
 
-  return false;
+  return false
 }
 
 function resolvePath(routePath: string) {
   if (isExternal(routePath)) {
-    return routePath;
+    return routePath
   }
   if (isExternal(props.basePath)) {
-    return props.basePath;
+    return props.basePath
   }
-  return path.resolve(props.basePath, routePath);
+  return path.resolve(props.basePath, routePath)
 }
 </script>
 

@@ -1,35 +1,35 @@
 <!--优惠券-->
 <script lang="ts">
 export default {
-  name: 'coupon',
-};
+  name: 'Coupon'
+}
 </script>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs } from 'vue';
-import { ElForm, ElMessage, ElMessageBox, ElCascaderPanel } from 'element-plus';
-import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue';
+import { onMounted, reactive, ref, toRefs } from 'vue'
+import { ElForm, ElMessage, ElMessageBox, ElCascaderPanel } from 'element-plus'
+import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
 import {
   lisCouponPages,
   getCouponFormData,
   updateCoupon,
   addCoupon,
-  deleteCoupons,
-} from '@/api/sms/coupon';
+  deleteCoupons
+} from '@/api/sms/coupon'
 
-import { listCategoryOptions } from '@/api/pms/category';
-import { listSpuPages } from '@/api/pms/goods';
-import { Dialog, Option } from '@/types/common';
+import { listCategoryOptions } from '@/api/pms/category'
+import { listSpuPages } from '@/api/pms/goods'
+import { Dialog, Option } from '@/types/common'
 import {
   CouponItem,
   CouponQueryParam,
-  CouponFormData,
-} from '@/types/api/sms/coupon';
-import { GoodsItem, GoodsQueryParam } from '@/types/api/pms/goods';
+  CouponFormData
+} from '@/types/api/sms/coupon'
+import { GoodsItem, GoodsQueryParam } from '@/types/api/pms/goods'
 
-const queryFormRef = ref(ElForm);
-const dataFormRef = ref(ElForm);
-const spuCategoryRef = ref(ElCascaderPanel);
+const queryFormRef = ref(ElForm)
+const dataFormRef = ref(ElForm)
+const spuCategoryRef = ref(ElCascaderPanel)
 
 const state = reactive({
   loading: true,
@@ -40,39 +40,39 @@ const state = reactive({
   couponList: [] as CouponItem[],
   total: 0,
   dialog: {
-    visible: false,
+    visible: false
   } as Dialog,
   //指定商品分类选择Dialog
   spuCategoryChooseDialog: {
-    visible: false,
+    visible: false
   } as Dialog,
   // 指定商品选择ialog
   spuChooseDialog: {
-    visible: false,
+    visible: false
   } as Dialog,
   formData: {
     type: 1,
     platform: 0,
     validityPeriodType: 1,
     perLimit: 1,
-    applicationScope: 0,
+    applicationScope: 0
   } as CouponFormData,
   rules: {
     type: [{ required: true, message: '请输入优惠券名称', trigger: 'blur' }],
-    name: [{ required: true, message: '请选择优惠券类型', trigger: 'blur' }],
+    name: [{ required: true, message: '请选择优惠券类型', trigger: 'blur' }]
   },
   validityPeriod: '' as any,
   perLimitChecked: false,
   spuCategoryOptions: [] as Option[],
   spuCategoryProps: {
     multiple: true,
-    emitPath: false,
+    emitPath: false
   },
   spuList: [] as GoodsItem[],
   spuTotal: 0,
   spuQueryParams: { pageNum: 1, pageSize: 10 } as GoodsQueryParam,
-  checkedSpuIds: [],
-});
+  checkedSpuIds: []
+})
 
 const {
   loading,
@@ -89,32 +89,32 @@ const {
   spuCategoryProps,
   spuList,
   spuTotal,
-  checkedSpuIds,
-} = toRefs(state);
+  checkedSpuIds
+} = toRefs(state)
 
 /**
  * 查询
  */
 function handleQuery() {
-  state.loading = true;
+  state.loading = true
   lisCouponPages(queryParams.value).then(({ data }) => {
-    couponList.value = data.list;
-    total.value = data.total;
-    loading.value = false;
-  });
+    couponList.value = data.list
+    total.value = data.total
+    loading.value = false
+  })
 }
 /**
  * 查询重置
  */
 function resetQuery() {
-  queryFormRef.value.resetFields();
-  handleQuery();
+  queryFormRef.value.resetFields()
+  handleQuery()
 }
 
 function handleSelectionChange(selection: any) {
-  state.ids = selection.map((item: any) => item.id);
-  state.single = selection.length !== 1;
-  state.multiple = !selection.length;
+  state.ids = selection.map((item: any) => item.id)
+  state.single = selection.length !== 1
+  state.multiple = !selection.length
 }
 
 /**
@@ -122,135 +122,135 @@ function handleSelectionChange(selection: any) {
  */
 async function loadSpuCategoryOptions() {
   listCategoryOptions().then(({ data }) => {
-    spuCategoryOptions.value = data;
-  });
+    spuCategoryOptions.value = data
+  })
 }
 
 async function loadSpuList() {
-  const queryParams = { pageNum: 1, pageSize: 10 } as GoodsQueryParam;
+  const queryParams = { pageNum: 1, pageSize: 10 } as GoodsQueryParam
   listSpuPages(queryParams).then(({ data }) => {
-    spuList.value = data.list;
-  });
+    spuList.value = data.list
+  })
 }
 
 function handleAdd() {
   dialog.value = {
     title: '新增优惠券',
-    visible: true,
-  };
+    visible: true
+  }
 
-  loadSpuCategoryOptions();
-  loadSpuList();
+  loadSpuCategoryOptions()
+  loadSpuList()
 }
 
 async function handleUpdate(row: any) {
   dialog.value = {
     title: '编辑优惠券',
-    visible: true,
-  };
-  const id = row.id;
+    visible: true
+  }
+  const id = row.id
 
-  await loadSpuCategoryOptions();
-  await loadSpuList();
+  await loadSpuCategoryOptions()
+  await loadSpuList()
 
   getCouponFormData(id).then(({ data }) => {
-    formData.value = data;
-    perLimitChecked.value = data.perLimit == -1;
+    formData.value = data
+    perLimitChecked.value = data.perLimit == -1
     // 有效期转换
     if (data.validityPeriodType == 1) {
-      validityPeriod.value = [data.validityBeginTime, data.validityEndTime];
+      validityPeriod.value = [data.validityBeginTime, data.validityEndTime]
     }
 
     // 金额转换分→元
     if (formData.value.faceValue) {
-      formData.value.faceValue /= 100;
+      formData.value.faceValue /= 100
     }
     if (formData.value.minPoint) {
-      formData.value.minPoint /= 100;
+      formData.value.minPoint /= 100
     }
-  });
+  })
 }
 
 function submitForm() {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      const applicationScope = formData.value.applicationScope;
-      console.log('applicationScope', applicationScope);
+      const applicationScope = formData.value.applicationScope
+      console.log('applicationScope', applicationScope)
       if (applicationScope == 1) {
         // 指定商品分类
         formData.value.spuCategoryIds =
-          spuCategoryRef.value.getCheckedNodes()[0].data.value;
+          spuCategoryRef.value.getCheckedNodes()[0].data.value
       }
 
       // 有效期转换
       if (formData.value.validityPeriodType == 1 && validityPeriod.value) {
-        formData.value.validityBeginTime = validityPeriod.value[0];
-        formData.value.validityEndTime = validityPeriod.value[1];
+        formData.value.validityBeginTime = validityPeriod.value[0]
+        formData.value.validityEndTime = validityPeriod.value[1]
       }
       // 金额转换元→分
       if (formData.value.faceValue) {
-        formData.value.faceValue *= 100;
+        formData.value.faceValue *= 100
       }
       if (formData.value.faceValue) {
-        formData.value.minPoint *= 100;
+        formData.value.minPoint *= 100
       }
 
-      const couponId = formData.value.id;
+      const couponId = formData.value.id
       if (couponId) {
         updateCoupon(couponId, formData.value).then(() => {
-          ElMessage.success('编辑优惠券成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('编辑优惠券成功')
+          cancel()
+          handleQuery()
+        })
       } else {
         addCoupon(formData.value).then(() => {
-          ElMessage.success('新增优惠券成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('新增优惠券成功')
+          cancel()
+          handleQuery()
+        })
       }
     }
-  });
+  })
 }
 
 /**
  * 取消
  */
 function cancel() {
-  state.formData.id = undefined;
-  dataFormRef.value.resetFields();
-  state.dialog.visible = false;
+  state.formData.id = undefined
+  dataFormRef.value.resetFields()
+  state.dialog.visible = false
 }
 
 /**
  * 删除优惠券
  */
 function handleDelete(row: any) {
-  const ids = [row.id || state.ids].join(',');
+  const ids = [row.id || state.ids].join(',')
   ElMessageBox.confirm('确认删除已选中的数据项?', '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning',
+    type: 'warning'
   })
     .then(() => {
       deleteCoupons(ids).then(() => {
-        ElMessage.success('删除成功');
-        handleQuery();
-      });
+        ElMessage.success('删除成功')
+        handleQuery()
+      })
     })
-    .catch(() => ElMessage.info('已取消删除'));
+    .catch(() => ElMessage.info('已取消删除'))
 }
 
 function handleSpuQuery() {
   listSpuPages(queryParams.value).then(({ data }) => {
-    spuList.value = data.list;
-    spuTotal.value = data.total;
-  });
+    spuList.value = data.list
+    spuTotal.value = data.total
+  })
 }
 
 onMounted(() => {
-  handleQuery();
-});
+  handleQuery()
+})
 </script>
 
 <template>
@@ -289,8 +289,8 @@ onMounted(() => {
     <el-table
       v-loading="loading"
       :data="couponList"
-      @selection-change="handleSelectionChange"
       border
+      @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" min-width="5" align="center" />
       <el-table-column type="index" label="序号" width="80" align="center" />
@@ -328,16 +328,16 @@ onMounted(() => {
     <!-- 分页 -->
     <pagination
       v-if="total > 0"
-      :total="total"
       v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize"
+      :total="total"
       @pagination="handleQuery"
     />
 
     <!-- 表单Dialog -->
     <el-dialog
-      :title="dialog.title"
       v-model="dialog.visible"
+      :title="dialog.title"
       width="1000px;"
       top="5vh"
     >
@@ -457,7 +457,7 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item label="备注信息" prop="remark">
-          <el-input type="textarea" v-model="formData.remark" />
+          <el-input v-model="formData.remark" type="textarea" />
         </el-form-item>
 
         <el-form-item label="商品范围" prop="useType">
@@ -473,8 +473,8 @@ onMounted(() => {
           <div class="application-container">
             <!-- 指定商品分类 -->
             <el-cascader
-              ref="spuCategoryRef"
               v-if="formData.applicationScope == 1"
+              ref="spuCategoryRef"
               v-model="formData.spuCategoryIds"
               :options="spuCategoryOptions"
               :props="spuCategoryProps"
@@ -483,25 +483,25 @@ onMounted(() => {
             />
 
             <el-transfer
-              class="application-container__transfer"
-              v-model="formData.spuIds"
               v-if="formData.applicationScope == 2"
+              v-model="formData.spuIds"
+              class="application-container__transfer"
               filterable
               filter-placeholder="商品名称/编码"
               :data="spuList"
               :titles="['商品列表', '已选择商品']"
               :props="{
                 key: 'id',
-                label: 'name',
+                label: 'name'
               }"
             >
               <template #left-footer>
                 <pagination
-                  :total="spuTotal"
                   v-model:page="queryParams.pageNum"
                   v-model:limit="queryParams.pageSize"
-                  @pagination="handleSpuQuery"
+                  :total="spuTotal"
                   layout="prev, pager, next,"
+                  @pagination="handleSpuQuery"
                 />
               </template>
             </el-transfer>

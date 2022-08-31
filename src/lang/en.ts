@@ -21,4 +21,4 @@ export default {
     document: 'Document',
     gitee: 'Gitee'
   }
-};
+}

@@ -2,7 +2,7 @@
  * 菜单查询参数类型声明
  */
 export interface MenuQueryParam {
-  name: string;
+  name: string
 }
 
 /**
@@ -10,17 +10,17 @@ export interface MenuQueryParam {
  */
 
 export interface MenuItem {
-  id?: number;
-  parentId: number;
-  type?: string | 'CATEGORY' | 'MENU' | 'EXTLINK';
-  createTime: string;
-  updateTime: string;
-  name: string;
-  icon: string;
-  component: string;
-  sort: number;
-  visible: number;
-  children: MenuItem[];
+  id?: number
+  parentId: number
+  type?: string | 'CATEGORY' | 'MENU' | 'EXTLINK'
+  createTime: string
+  updateTime: string
+  name: string
+  icon: string
+  component: string
+  sort: number
+  visible: number
+  children: MenuItem[]
 }
 
 /**
@@ -30,41 +30,41 @@ export interface MenuFormData {
   /**
    * 菜单ID
    */
-  id?: string;
+  id?: string
   /**
    * 父菜单ID
    */
-  parentId: string;
+  parentId: string
   /**
    * 菜单名称
    */
-  name: string;
+  name: string
   /**
    * 菜单是否可见(1:是;0:否;)
    */
-  visible: number;
-  icon?: string;
+  visible: number
+  icon?: string
   /**
    * 排序
    */
-  sort: number;
+  sort: number
   /**
    * 组件路径
    */
-  component?: string;
+  component?: string
   /**
    * 路由路径
    */
-  path: string;
+  path: string
   /**
    * 跳转路由路径
    */
-  redirect?: string;
+  redirect?: string
 
   /**
    * 菜单类型(1:菜单；2：目录；3：外链)
    */
-  type: string;
+  type: string
 }
 
 /**
@@ -74,19 +74,19 @@ export interface Resource {
   /**
    * 菜单值
    */
-  value: string;
+  value: string
   /**
    * 菜单文本
    */
-  label: string;
+  label: string
   /**
    * 子菜单
    */
-  children: Resource[];
+  children: Resource[]
   /**
    * 权限集合
    */
-  perms: Permission[];
+  perms: Permission[]
 }
 
 /**
@@ -96,9 +96,9 @@ export interface Permission {
   /**
    * 权限值
    */
-  value: string;
+  value: string
   /**
    * 权限文本
    */
-  label: string;
+  label: string
 }

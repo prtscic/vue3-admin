@@ -2,12 +2,12 @@
 <script lang="ts">
 export default {
   name: 'Page404'
-};
+}
 </script>
 
 <script setup lang="ts">
 function message() {
-  return 'The webmaster said that you can not enter this page...';
+  return 'The webmaster said that you can not enter this page...'
 }
 </script>
 

@@ -1,17 +1,17 @@
 <script lang="ts">
-export default { name: 'Dashboard' };
+export default { name: 'Dashboard' }
 </script>
 
 <script setup lang="ts">
 // 组件引用
-import GithubCorner from '@/components/GithubCorner/index.vue';
-import SvgIcon from '@/components/SvgIcon/index.vue';
-import BarChart from './components/Chart/BarChart.vue';
-import PieChart from './components/Chart/PieChart.vue';
-import RadarChart from './components/Chart/RadarChart.vue';
+import GithubCorner from '@/components/GithubCorner/index.vue'
+import SvgIcon from '@/components/SvgIcon/index.vue'
+import BarChart from './components/Chart/BarChart.vue'
+import PieChart from './components/Chart/PieChart.vue'
+import RadarChart from './components/Chart/RadarChart.vue'
 
-import Project from './components/Project/index.vue';
-import Team from './components/Team/index.vue';
+import Project from './components/Project/index.vue'
+import Team from './components/Team/index.vue'
 </script>
 
 <template>

@@ -22,12 +22,12 @@ defineProps({
     type: Boolean,
     default: false
   }
-});
+})
 
-const emit = defineEmits(['toggleClick']);
+const emit = defineEmits(['toggleClick'])
 
 function toggleClick() {
-  emit('toggleClick');
+  emit('toggleClick')
 }
 </script>
 

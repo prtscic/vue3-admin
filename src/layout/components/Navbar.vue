@@ -53,33 +53,33 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { ElMessageBox } from 'element-plus';
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { ElMessageBox } from 'element-plus'
 
-import useStore from '@/store';
+import useStore from '@/store'
 
 // 组件依赖
-import Breadcrumb from '@/components/Breadcrumb/index.vue';
-import Hamburger from '@/components/Hamburger/index.vue';
-import Screenfull from '@/components/Screenfull/index.vue';
-import SizeSelect from '@/components/SizeSelect/index.vue';
-import LangSelect from '@/components/LangSelect/index.vue';
+import Breadcrumb from '@/components/Breadcrumb/index.vue'
+import Hamburger from '@/components/Hamburger/index.vue'
+import Screenfull from '@/components/Screenfull/index.vue'
+import SizeSelect from '@/components/SizeSelect/index.vue'
+import LangSelect from '@/components/LangSelect/index.vue'
 
 // 图标依赖
-import { CaretBottom } from '@element-plus/icons-vue';
+import { CaretBottom } from '@element-plus/icons-vue'
 
-const { app, user, tagsView } = useStore();
+const { app, user, tagsView } = useStore()
 
-const route = useRoute();
-const router = useRouter();
+const route = useRoute()
+const router = useRouter()
 
-const sidebar = computed(() => app.sidebar);
-const device = computed(() => app.device);
-const avatar = computed(() => user.avatar);
+const sidebar = computed(() => app.sidebar)
+const device = computed(() => app.device)
+const avatar = computed(() => user.avatar)
 
 function toggleSideBar() {
-  app.toggleSidebar();
+  app.toggleSidebar()
 }
 
 function logout() {
@@ -91,12 +91,12 @@ function logout() {
     user
       .logout()
       .then(() => {
-        tagsView.delAllViews();
+        tagsView.delAllViews()
       })
       .then(() => {
-        router.push(`/login?redirect=${route.fullPath}`);
-      });
-  });
+        router.push(`/login?redirect=${route.fullPath}`)
+      })
+  })
 }
 </script>
 

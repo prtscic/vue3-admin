@@ -19,21 +19,21 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, toRefs } from 'vue';
+import { reactive, toRefs } from 'vue'
 
 const props = defineProps({
   collapse: {
     type: Boolean,
     required: true
   }
-});
+})
 
 const state = reactive({
   isCollapse: props.collapse,
   logo: new URL(`../../../assets/logo.png`, import.meta.url).href
-});
+})
 
-const { logo } = toRefs(state);
+const { logo } = toRefs(state)
 </script>
 
 <style lang="scss" scoped>

@@ -14,29 +14,29 @@
 
     <GoodsCategory
       v-show="active == 0"
-      v-model="goodsInfo"
       v-if="loaded == true"
+      v-model="goodsInfo"
       @prev="prev"
       @next="next"
     />
     <GoodsInfo
       v-show="active == 1"
-      v-model="goodsInfo"
       v-if="loaded == true"
+      v-model="goodsInfo"
       @prev="prev"
       @next="next"
     />
     <GoodsAttribute
       v-show="active == 2"
-      v-model="goodsInfo"
       v-if="loaded == true"
+      v-model="goodsInfo"
       @prev="prev"
       @next="next"
     />
     <GoodsStock
       v-show="active == 3"
-      v-model="goodsInfo"
       v-if="loaded == true"
+      v-model="goodsInfo"
       @prev="prev"
       @next="next"
     />
@@ -44,18 +44,18 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, toRefs } from 'vue';
+import { onMounted, reactive, toRefs } from 'vue'
 
-import GoodsCategory from './components/GoodsCategory.vue';
-import GoodsInfo from './components/GoodsInfo.vue';
-import GoodsAttribute from './components/GoodsAttribute.vue';
-import GoodsStock from './components/GoodsStock.vue';
+import GoodsCategory from './components/GoodsCategory.vue'
+import GoodsInfo from './components/GoodsInfo.vue'
+import GoodsAttribute from './components/GoodsAttribute.vue'
+import GoodsStock from './components/GoodsStock.vue'
 
-import { getSpuDetail } from '@/api/pms/goods';
-import { useRoute } from 'vue-router';
-import { GoodsDetail } from '@/types/api/pms/goods';
+import { getSpuDetail } from '@/api/pms/goods'
+import { useRoute } from 'vue-router'
+import { GoodsDetail } from '@/types/api/pms/goods'
 
-const route = useRoute();
+const route = useRoute()
 
 const state = reactive({
   loaded: false,
@@ -64,41 +64,41 @@ const state = reactive({
     album: [],
     attrList: [],
     specList: [],
-    skuList: [],
-  } as GoodsDetail,
-});
+    skuList: []
+  } as GoodsDetail
+})
 
-const { loaded, active, goodsInfo } = toRefs(state);
+const { loaded, active, goodsInfo } = toRefs(state)
 
 function loadData() {
-  const goodsId = route.query.goodsId as string;
+  const goodsId = route.query.goodsId as string
 
   if (goodsId) {
-    getSpuDetail(goodsId).then((response) => {
-      state.goodsInfo = response.data;
-      state.goodsInfo.originPrice = (state.goodsInfo.originPrice as any) / 100;
-      state.goodsInfo.price = (state.goodsInfo.price as any) / 100;
-      state.loaded = true;
-    });
+    getSpuDetail(goodsId).then(response => {
+      state.goodsInfo = response.data
+      state.goodsInfo.originPrice = (state.goodsInfo.originPrice as any) / 100
+      state.goodsInfo.price = (state.goodsInfo.price as any) / 100
+      state.loaded = true
+    })
   } else {
-    state.loaded = true;
+    state.loaded = true
   }
 }
 
 function prev() {
   if (state.active-- <= 0) {
-    state.active = 0;
+    state.active = 0
   }
 }
 function next() {
   if (state.active++ >= 3) {
-    state.active = 0;
+    state.active = 0
   }
 }
 
 onMounted(() => {
-  loadData();
-});
+  loadData()
+})
 </script>
 
 <style lang="scss" scoped>

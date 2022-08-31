@@ -1,25 +1,25 @@
 <script lang="ts">
 export default {
-  name: 'order',
-};
+  name: 'Order'
+}
 </script>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs } from 'vue';
-import { ElForm } from 'element-plus';
-import { Order, OrderQueryParam } from '@/types/api/oms/order';
-import { Dialog } from '@/types/common';
+import { onMounted, reactive, ref, toRefs } from 'vue'
+import { ElForm } from 'element-plus'
+import { Order, OrderQueryParam } from '@/types/api/oms/order'
+import { Dialog } from '@/types/common'
 
-import { listOrderPages, getOrderDetail } from '@/api/oms/order';
-import { Search, Refresh } from '@element-plus/icons-vue';
+import { listOrderPages, getOrderDetail } from '@/api/oms/order'
+import { Search, Refresh } from '@element-plus/icons-vue'
 
-const queryFormRef = ref(ElForm);
+const queryFormRef = ref(ElForm)
 
 const orderSourceMap = {
   1: '微信小程序',
   2: 'APP',
-  3: 'PC',
-};
+  3: 'PC'
+}
 
 const orderStatusMap = {
   101: '待付款',
@@ -32,14 +32,14 @@ const orderStatusMap = {
   401: '已发货',
   501: '用户收货',
   502: '系统收货',
-  901: '已完成',
-};
+  901: '已完成'
+}
 
 const payTypeMap = {
   1: '支付宝',
   2: '微信',
-  3: '会员余额',
-};
+  3: '会员余额'
+}
 
 const state = reactive({
   loading: false,
@@ -49,13 +49,13 @@ const state = reactive({
   dateRange: [] as any,
   queryParams: {
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 10
   } as OrderQueryParam,
   orderList: [] as Order[],
   total: 0,
   dialog: {
     title: '订单详情',
-    visible: false,
+    visible: false
   } as Dialog,
   dialogVisible: false,
   orderDetail: {
@@ -74,42 +74,42 @@ const state = reactive({
       skuPrice: undefined,
       couponPrice: undefined,
       freightPrice: undefined,
-      orderPrice: undefined,
+      orderPrice: undefined
     },
     member: {},
-    orderItems: [],
+    orderItems: []
   },
   orderSourceMap,
   orderStatusMap,
-  payTypeMap,
-});
+  payTypeMap
+})
 
-const { loading, queryParams, orderList, total, dateRange } = toRefs(state);
+const { loading, queryParams, orderList, total, dateRange } = toRefs(state)
 
 function handleQuery() {
-  state.loading = true;
+  state.loading = true
   listOrderPages(state.queryParams).then(({ data }) => {
-    state.orderList = data.list;
-    state.total = data.total;
-    state.loading = false;
-  });
+    state.orderList = data.list
+    state.total = data.total
+    state.loading = false
+  })
 }
 
 function resetQuery() {
-  queryFormRef.value.resetFields();
-  handleQuery();
+  queryFormRef.value.resetFields()
+  handleQuery()
 }
 
 function viewDetail(row: any) {
-  state.dialog.visible = true;
+  state.dialog.visible = true
   getOrderDetail(row.id).then((response: any) => {
-    state.orderDetail = response.data;
-  });
+    state.orderDetail = response.data
+  })
 }
 
 onMounted(() => {
-  handleQuery();
-});
+  handleQuery()
+})
 </script>
 
 <template>
@@ -222,9 +222,9 @@ onMounted(() => {
     <!-- 分页工具条 -->
     <pagination
       v-if="total > 0"
-      :total="total"
       v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize"
+      :total="total"
       @pagination="handleQuery"
     />
   </div>

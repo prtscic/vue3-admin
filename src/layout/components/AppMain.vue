@@ -11,12 +11,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import useStore from '@/store';
+import { computed } from 'vue'
+import useStore from '@/store'
 
-const { tagsView } = useStore();
+const { tagsView } = useStore()
 
-const cachedViews = computed(() => tagsView.cachedViews);
+const cachedViews = computed(() => tagsView.cachedViews)
 </script>
 
 <style lang="scss" scoped>

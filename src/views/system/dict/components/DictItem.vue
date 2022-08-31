@@ -1,54 +1,54 @@
 <script lang="ts">
 export default {
-  name: 'dictItem',
-};
+  name: 'DictItem'
+}
 </script>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs, watch } from 'vue';
-import { ElForm, ElMessage, ElMessageBox } from 'element-plus';
+import { onMounted, reactive, ref, toRefs, watch } from 'vue'
+import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import {
   DictItem,
   DictItemFormData,
-  DictItemQueryParam,
-} from '@/types/api/system/dict';
+  DictItemQueryParam
+} from '@/types/api/system/dict'
 
-import { Dialog } from '@/types/common';
+import { Dialog } from '@/types/common'
 import {
   listPageDictItems,
   getDictItemData,
   addDictItem,
   updateDictItem,
-  deleteDictItems,
-} from '@/api/system/dict';
-import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue';
+  deleteDictItems
+} from '@/api/system/dict'
+import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
 
 const props = defineProps({
   typeCode: {
     type: String,
     default: () => {
-      return '';
-    },
+      return ''
+    }
   },
   typeName: {
     type: String,
     default: () => {
-      return '';
-    },
-  },
-});
+      return ''
+    }
+  }
+})
 
 watch(
   () => props.typeCode,
-  (value) => {
-    state.queryParams.typeCode = value;
-    state.formData.typeCode = value;
-    handleQuery();
+  value => {
+    state.queryParams.typeCode = value
+    state.formData.typeCode = value
+    handleQuery()
   }
-);
+)
 
-const queryFormRef = ref(ElForm);
-const dataFormRef = ref(ElForm);
+const queryFormRef = ref(ElForm)
+const dataFormRef = ref(ElForm)
 
 const state = reactive({
   loading: true,
@@ -66,15 +66,15 @@ const state = reactive({
     typeCode: props.typeCode,
     typeName: props.typeName,
     status: 1,
-    sort: 1,
+    sort: 1
   } as DictItemFormData,
   rules: {
     name: [{ required: true, message: '请输入字典项名称', trigger: 'blur' }],
-    value: [{ required: true, message: '请输入字典项值', trigger: 'blur' }],
+    value: [{ required: true, message: '请输入字典项值', trigger: 'blur' }]
   },
   localDictCode: props.typeCode,
-  localDictName: props.typeName,
-});
+  localDictName: props.typeName
+})
 
 const {
   loading,
@@ -84,56 +84,56 @@ const {
   dialog,
   formData,
   rules,
-  total,
-} = toRefs(state);
+  total
+} = toRefs(state)
 
 function handleQuery() {
   if (state.queryParams.typeCode) {
-    state.loading = true;
+    state.loading = true
     listPageDictItems(state.queryParams).then(({ data }) => {
-      state.dictItemList = data.list;
-      state.total = data.total;
-      state.loading = false;
-    });
+      state.dictItemList = data.list
+      state.total = data.total
+      state.loading = false
+    })
   } else {
-    state.dictItemList = [];
-    state.total = 0;
-    state.queryParams.pageNum = 1;
-    state.loading = false;
+    state.dictItemList = []
+    state.total = 0
+    state.queryParams.pageNum = 1
+    state.loading = false
   }
 }
 
 function resetQuery() {
-  queryFormRef.value.resetFields();
-  handleQuery();
+  queryFormRef.value.resetFields()
+  handleQuery()
 }
 
 function handleSelectionChange(selection: any) {
-  state.ids = selection.map((item: any) => item.id);
-  state.single = selection.length !== 1;
-  state.multiple = !selection.length;
+  state.ids = selection.map((item: any) => item.id)
+  state.single = selection.length !== 1
+  state.multiple = !selection.length
 }
 
 function handleAdd() {
   if (!state.formData.typeCode) {
-    ElMessage.warning('请选择字典类型后添加数据项');
-    return;
+    ElMessage.warning('请选择字典类型后添加数据项')
+    return
   }
   state.dialog = {
     title: '添加字典数据项',
-    visible: true,
-  };
+    visible: true
+  }
 }
 
 function handleUpdate(row: any) {
   state.dialog = {
     title: '修改字典数据项',
-    visible: true,
-  };
-  const id = row.id || state.ids;
+    visible: true
+  }
+  const id = row.id || state.ids
   getDictItemData(id).then(({ data }) => {
-    state.formData = data;
-  });
+    state.formData = data
+  })
 }
 
 function submitForm() {
@@ -141,46 +141,46 @@ function submitForm() {
     if (isValid) {
       if (state.formData.id) {
         updateDictItem(state.formData.id, state.formData).then(() => {
-          ElMessage.success('修改成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('修改成功')
+          cancel()
+          handleQuery()
+        })
       } else {
         addDictItem(state.formData).then(() => {
-          ElMessage.success('新增成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('新增成功')
+          cancel()
+          handleQuery()
+        })
       }
     }
-  });
+  })
 }
 
 function cancel() {
-  state.dialog.visible = false;
-  state.formData.id = undefined;
-  dataFormRef.value.resetFields();
+  state.dialog.visible = false
+  state.formData.id = undefined
+  dataFormRef.value.resetFields()
 }
 
 function handleDelete(row: any) {
-  const ids = [row.id || state.ids].join(',');
+  const ids = [row.id || state.ids].join(',')
   ElMessageBox.confirm('确认删除已选中的数据项?', '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning',
+    type: 'warning'
   })
     .then(() => {
       deleteDictItems(ids).then(() => {
-        ElMessage.success('删除成功');
-        handleQuery();
-      });
+        ElMessage.success('删除成功')
+        handleQuery()
+      })
     })
-    .catch(() => ElMessage.info('已取消删除'));
+    .catch(() => ElMessage.info('已取消删除'))
 }
 
 onMounted(() => {
-  handleQuery();
-});
+  handleQuery()
+})
 </script>
 
 <template>
@@ -216,8 +216,8 @@ onMounted(() => {
 
     <!-- 数据表格 -->
     <el-table
-      :data="dictItemList"
       v-loading="loading"
+      :data="dictItemList"
       border
       @selection-change="handleSelectionChange"
     >
@@ -252,16 +252,16 @@ onMounted(() => {
 
     <pagination
       v-if="total > 0"
-      :total="total"
       v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize"
+      :total="total"
       @pagination="handleQuery"
     />
 
     <!-- 表单弹窗 -->
     <el-dialog
-      :title="dialog.title"
       v-model="dialog.visible"
+      :title="dialog.title"
       width="500px"
       @close="cancel"
     >

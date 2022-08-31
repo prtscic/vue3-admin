@@ -1,7 +1,7 @@
 <script lang="ts">
 export default {
-  name: 'dictType',
-};
+  name: 'DictType'
+}
 </script>
 
 <template>
@@ -39,12 +39,12 @@ export default {
 
     <!-- 数据表格 -->
     <el-table
+      v-loading="loading"
       highlight-current-row
       :data="dictList"
-      v-loading="loading"
+      border
       @row-click="handleRowClick"
       @selection-change="handleSelectionChange"
-      border
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="字典名称" prop="name" width="120" />
@@ -78,16 +78,16 @@ export default {
 
     <pagination
       v-if="total > 0"
-      :total="total"
       v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize"
+      :total="total"
       @pagination="handleQuery"
     />
 
     <!-- 弹窗表单 -->
     <el-dialog
-      :title="dialog.title"
       v-model="dialog.visible"
+      :title="dialog.title"
       width="500px"
       @close="cancel"
     >
@@ -129,28 +129,24 @@ export default {
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs } from 'vue';
+import { onMounted, reactive, ref, toRefs } from 'vue'
 import {
   listPageDictTypes,
   getDictFormData,
   addDictType,
   updateDictType,
-  deleteDictTypes,
-} from '@/api/system/dict';
-import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue';
-import { ElForm, ElMessage, ElMessageBox } from 'element-plus';
+  deleteDictTypes
+} from '@/api/system/dict'
+import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
+import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 
-import { Dialog } from '@/types/common';
-import {
-  Dict,
-  DictFormTypeData,
-  DictQueryParam,
-} from '@/types/api/system/dict';
+import { Dialog } from '@/types/common'
+import { Dict, DictFormTypeData, DictQueryParam } from '@/types/api/system/dict'
 
-const queryFormRef = ref(ElForm);
-const dataFormRef = ref(ElForm);
+const queryFormRef = ref(ElForm)
+const dataFormRef = ref(ElForm)
 
-const emit = defineEmits(['dictClick']);
+const emit = defineEmits(['dictClick'])
 
 const state = reactive({
   loading: true,
@@ -162,60 +158,60 @@ const state = reactive({
   multiple: true,
   queryParams: {
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 10
   } as DictQueryParam,
   dictList: [] as Dict[],
   total: 0,
   dialog: { visible: false } as Dialog,
   formData: {
-    status: 1,
+    status: 1
   } as DictFormTypeData,
   rules: {
     name: [{ required: true, message: '请输入字典名称', trigger: 'blur' }],
-    code: [{ required: true, message: '请输入字典编码', trigger: 'blur' }],
-  },
-});
+    code: [{ required: true, message: '请输入字典编码', trigger: 'blur' }]
+  }
+})
 
 const { total, dialog, loading, dictList, formData, rules, queryParams } =
-  toRefs(state);
+  toRefs(state)
 
 function handleQuery() {
-  emit('dictClick', null);
-  state.loading = true;
+  emit('dictClick', null)
+  state.loading = true
   listPageDictTypes(state.queryParams).then(({ data }) => {
-    state.dictList = data.list;
-    state.total = data.total;
-    state.loading = false;
-  });
+    state.dictList = data.list
+    state.total = data.total
+    state.loading = false
+  })
 }
 
 function resetQuery() {
-  queryFormRef.value.resetFields();
-  handleQuery();
+  queryFormRef.value.resetFields()
+  handleQuery()
 }
 
 function handleSelectionChange(selection: any) {
-  state.ids = selection.map((item: any) => item.id);
-  state.single = selection.length !== 1;
-  state.multiple = !selection.length;
+  state.ids = selection.map((item: any) => item.id)
+  state.single = selection.length !== 1
+  state.multiple = !selection.length
 }
 
 function handleAdd() {
   state.dialog = {
     title: '添加字典',
-    visible: true,
-  };
+    visible: true
+  }
 }
 
 function handleUpdate(row: any) {
   state.dialog = {
     title: '修改字典',
-    visible: true,
-  };
-  const id = row.id || state.ids;
+    visible: true
+  }
+  const id = row.id || state.ids
   getDictFormData(id).then(({ data }) => {
-    state.formData = data;
-  });
+    state.formData = data
+  })
 }
 
 function submitForm() {
@@ -223,48 +219,48 @@ function submitForm() {
     if (isValid) {
       if (state.formData.id) {
         updateDictType(state.formData.id, state.formData).then(() => {
-          ElMessage.success('修改成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('修改成功')
+          cancel()
+          handleQuery()
+        })
       } else {
         addDictType(state.formData).then(() => {
-          ElMessage.success('新增成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('新增成功')
+          cancel()
+          handleQuery()
+        })
       }
     }
-  });
+  })
 }
 
 function cancel() {
-  state.formData.id = undefined;
-  dataFormRef.value.resetFields();
-  state.dialog.visible = false;
+  state.formData.id = undefined
+  dataFormRef.value.resetFields()
+  state.dialog.visible = false
 }
 
 function handleDelete(row: any) {
-  const ids = [row.id || state.ids].join(',');
+  const ids = [row.id || state.ids].join(',')
   ElMessageBox.confirm('确认删除已选中的数据项?', '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning',
+    type: 'warning'
   })
     .then(() => {
       deleteDictTypes(ids).then(() => {
-        ElMessage.success('删除成功');
-        handleQuery();
-      });
+        ElMessage.success('删除成功')
+        handleQuery()
+      })
     })
-    .catch(() => ElMessage.info('已取消删除'));
+    .catch(() => ElMessage.info('已取消删除'))
 }
 
 function handleRowClick(row: any) {
-  emit('dictClick', row);
+  emit('dictClick', row)
 }
 
 onMounted(() => {
-  handleQuery();
-});
+  handleQuery()
+})
 </script>

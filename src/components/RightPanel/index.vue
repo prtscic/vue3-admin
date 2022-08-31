@@ -7,8 +7,8 @@
         :style="{ top: buttonTop + 'px', 'background-color': theme }"
         @click="show = !show"
       >
-        <Close class="icon" v-show="show" />
-        <Setting class="icon" v-show="!show" />
+        <Close v-show="show" class="icon" />
+        <Setting v-show="!show" class="icon" />
       </div>
       <div class="right-panel__items">
         <slot />
@@ -18,73 +18,73 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
-import { addClass, removeClass } from '@/utils/index';
+import { addClass, removeClass } from '@/utils/index'
 
-import useStore from '@/store';
+import useStore from '@/store'
 
 // 图标依赖
-import { Close, Setting } from '@element-plus/icons-vue';
-import { ElColorPicker } from 'element-plus';
+import { Close, Setting } from '@element-plus/icons-vue'
+import { ElColorPicker } from 'element-plus'
 
-const { setting } = useStore();
+const { setting } = useStore()
 
-const theme = computed(() => setting.theme);
-const show = ref(false);
+const theme = computed(() => setting.theme)
+const show = ref(false)
 
 defineProps({
   buttonTop: {
     default: 250,
     type: Number
   }
-});
+})
 
 watch(show, value => {
   if (value) {
-    addEventClick();
+    addEventClick()
   }
   if (value) {
-    addClass(document.body, 'showRightPanel');
+    addClass(document.body, 'showRightPanel')
   } else {
-    removeClass(document.body, 'showRightPanel');
+    removeClass(document.body, 'showRightPanel')
   }
-});
+})
 
 function addEventClick() {
-  window.addEventListener('click', closeSidebar, { passive: true });
+  window.addEventListener('click', closeSidebar, { passive: true })
 }
 
 function closeSidebar(evt: any) {
   // 主题选择点击不关闭
-  let parent = evt.target.closest('.theme-picker-dropdown');
+  let parent = evt.target.closest('.theme-picker-dropdown')
   if (parent) {
-    return;
+    return
   }
 
-  parent = evt.target.closest('.right-panel');
+  parent = evt.target.closest('.right-panel')
   if (!parent) {
-    show.value = false;
-    window.removeEventListener('click', closeSidebar);
+    show.value = false
+    window.removeEventListener('click', closeSidebar)
   }
 }
 
-const rightPanel = ref(ElColorPicker);
+const rightPanel = ref(ElColorPicker)
 
 function insertToBody() {
-  const elx = rightPanel.value as any;
-  const body = document.querySelector('body') as any;
-  body.insertBefore(elx, body.firstChild);
+  const elx = rightPanel.value as any
+  const body = document.querySelector('body') as any
+  body.insertBefore(elx, body.firstChild)
 }
 
 onMounted(() => {
-  insertToBody();
-});
+  insertToBody()
+})
 
 onBeforeUnmount(() => {
-  const elx = rightPanel.value as any;
-  elx.remove();
-});
+  const elx = rightPanel.value as any
+  elx.remove()
+})
 </script>
 
 <style>

@@ -3,7 +3,7 @@
     <el-card class="box-card" shadow="always">
       <el-row>
         <el-col :span="12">
-          <el-tag type="success" v-if="category && category.name"
+          <el-tag v-if="category && category.name" type="success"
             >{{ category.name }} {{ attributeTypeName }}
           </el-tag>
           <el-tag v-else type="info"
@@ -39,8 +39,8 @@
               :icon="Plus"
               circle
               plain
-              @click.prevent="handleAdd()"
               style="margin-left: 15px"
+              @click.prevent="handleAdd()"
             />
 
             <el-button
@@ -48,8 +48,8 @@
               :icon="Delete"
               plain
               circle
-              @click.prevent="handleDelete(index)"
               style="margin-left: 15px"
+              @click.prevent="handleDelete(index)"
             />
           </el-form-item>
         </el-form>
@@ -59,15 +59,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, toRefs, watch } from 'vue';
-import { listAttributes, saveAttributeBatch } from '@/api/pms/attribute';
-import { Plus, Check, Delete } from '@element-plus/icons-vue';
-import { ElMessage } from 'element-plus';
+import { computed, reactive, toRefs, watch } from 'vue'
+import { listAttributes, saveAttributeBatch } from '@/api/pms/attribute'
+import { Plus, Check, Delete } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 
 const props = defineProps({
   attributeType: {
     type: Number,
-    default: 1,
+    default: 1
   },
   category: {
     type: Object,
@@ -75,23 +75,23 @@ const props = defineProps({
       return {
         id: undefined,
         name: '',
-        childrenLen: 0,
-      };
-    },
-  },
-});
+        childrenLen: 0
+      }
+    }
+  }
+})
 
 const attributeTypeName = computed(() =>
   props.attributeType === 1 ? '规格' : '属性'
-);
+)
 
 const attributeNameValidator = (rule: any, value: any, callback: any) => {
   if (!value) {
-    return callback(new Error('请输入' + attributeTypeName.value + '名称'));
+    return callback(new Error('请输入' + attributeTypeName.value + '名称'))
   } else {
-    callback();
+    callback()
   }
-};
+}
 
 const state = reactive({
   formData: {
@@ -100,58 +100,58 @@ const state = reactive({
     attributes: [
       {
         id: undefined,
-        name: '',
-      },
-    ],
+        name: ''
+      }
+    ]
   },
   rules: {
     attribute: {
       name: [
-        { required: true, validator: attributeNameValidator, trigger: 'blur' },
-      ],
-    },
-  },
-});
+        { required: true, validator: attributeNameValidator, trigger: 'blur' }
+      ]
+    }
+  }
+})
 
-const { formData, rules } = toRefs(state);
+const { formData, rules } = toRefs(state)
 
 watch(
   () => props.category.id as any,
   () => {
-    const categoryId = props.category.id;
+    const categoryId = props.category.id
     if (categoryId) {
       listAttributes({
         categoryId: categoryId,
-        type: props.attributeType,
-      }).then((response) => {
-        const { data } = response;
+        type: props.attributeType
+      }).then(response => {
+        const { data } = response
         if (data && data.length > 0) {
-          state.formData.attributes = response.data;
+          state.formData.attributes = response.data
         } else {
           state.formData.attributes = [
             {
               id: undefined,
-              name: '',
-            },
-          ];
+              name: ''
+            }
+          ]
         }
-      });
+      })
     } else {
       state.formData.attributes = [
         {
           id: undefined,
-          name: '',
-        },
-      ];
+          name: ''
+        }
+      ]
     }
   }
-);
+)
 
 function handleAdd() {
   state.formData.attributes.push({
     id: undefined,
-    name: '',
-  });
+    name: ''
+  })
 }
 
 function handleDelete(index: number) {
@@ -159,20 +159,20 @@ function handleDelete(index: number) {
     state.formData.attributes = [
       {
         id: undefined,
-        name: '',
-      },
-    ];
-    return;
+        name: ''
+      }
+    ]
+    return
   }
-  state.formData.attributes.splice(index, 1);
+  state.formData.attributes.splice(index, 1)
 }
 
 function submitForm() {
-  state.formData.categoryId = props.category.id;
-  state.formData.type = props.attributeType;
+  state.formData.categoryId = props.category.id
+  state.formData.type = props.attributeType
   saveAttributeBatch(state.formData).then(() => {
-    ElMessage.success('提交成功');
-  });
+    ElMessage.success('提交成功')
+  })
 }
 </script>
 

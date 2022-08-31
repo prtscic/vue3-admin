@@ -7,12 +7,12 @@
       </template>
       <el-tabs v-model="teamActiveName">
         <el-tab-pane label="开发者" name="1">
-          <div class="developer" ref="dev_wrapper">
+          <div ref="dev_wrapper" class="developer">
             <ul class="developer__container">
               <li
-                class="developer__item"
                 v-for="(item, index) in developers"
                 :key="index"
+                class="developer__item"
               >
                 <div class="developer__inner">
                   <el-image
@@ -25,10 +25,10 @@
                     <div class="developer__position">
                       <el-tag
                         v-for="(position, i) in item.positions"
+                        :key="i"
                         :type="(colors[i % colors.length] as any)"
                         :class="i !== 0 ? 'f-ml' : ''"
                         size="small"
-                        :key="i"
                         >{{ position }}</el-tag
                       >
                     </div>
@@ -73,8 +73,8 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, reactive, ref, toRefs, watchEffect } from 'vue';
-import BScroll from 'better-scroll';
+import { nextTick, onMounted, reactive, ref, toRefs, watchEffect } from 'vue'
+import BScroll from 'better-scroll'
 
 const state = reactive({
   teamActiveName: '1',
@@ -103,27 +103,27 @@ const state = reactive({
     `../../../../assets/index/indicator.png`,
     import.meta.url
   ).href
-});
+})
 
-const { teamActiveName, developers, colors, indicatorImgUrl } = toRefs(state);
+const { teamActiveName, developers, colors, indicatorImgUrl } = toRefs(state)
 
-let bScroll = reactive({});
+let bScroll = reactive({})
 
-const dev_wrapper = ref<HTMLElement | any>(null);
+const dev_wrapper = ref<HTMLElement | any>(null)
 
 onMounted(() => {
   bScroll = new BScroll(dev_wrapper.value, {
     mouseWheel: true, //开启鼠标滚轮
     disableMouse: false, //启用鼠标拖动
     scrollX: true //X轴滚动启用
-  });
-});
+  })
+})
 
 watchEffect(() => {
   nextTick(() => {
-    bScroll && (bScroll as any).refresh();
-  });
-});
+    bScroll && (bScroll as any).refresh()
+  })
+})
 </script>
 
 <style lang="scss" scoped>

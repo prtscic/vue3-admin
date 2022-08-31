@@ -2,12 +2,12 @@
 <script lang="ts">
 export default {
   name: 'Page401'
-};
+}
 </script>
 
 <script setup lang="ts">
-import { reactive, toRefs } from 'vue';
-import { useRouter } from 'vue-router';
+import { reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
 
 const state = reactive({
   errGif: new URL(`../../assets/401_images/401.gif`, import.meta.url).href,
@@ -15,14 +15,14 @@ const state = reactive({
   ewizardClap:
     'https://wpimg.wallstcn.com/007ef517-bafd-4066-aae4-6883632d9646',
   dialogVisible: false
-});
+})
 
-const { errGif, ewizardClap, dialogVisible } = toRefs(state);
+const { errGif, ewizardClap, dialogVisible } = toRefs(state)
 
-const router = useRouter();
+const router = useRouter()
 
 function back() {
-  router.back();
+  router.back()
 }
 </script>
 

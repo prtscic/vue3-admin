@@ -1,30 +1,30 @@
 <script lang="ts">
 export default {
-  name: 'brand',
-};
+  name: 'Brand'
+}
 </script>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs } from 'vue';
-import { ElForm, ElTable, ElMessage, ElMessageBox } from 'element-plus';
-import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue';
+import { onMounted, reactive, ref, toRefs } from 'vue'
+import { ElForm, ElTable, ElMessage, ElMessageBox } from 'element-plus'
+import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
 import {
   BrandFormData,
   BrandItem,
-  BrandQueryParam,
-} from '@/types/api/pms/brand';
-import { Dialog } from '@/types/common';
+  BrandQueryParam
+} from '@/types/api/pms/brand'
+import { Dialog } from '@/types/common'
 import {
   listBrandPages,
   getBrandFormDetail,
   updateBrand,
   addBrand,
-  deleteBrands,
-} from '@/api/pms/brand';
-import SingleUpload from '@/components/Upload/SingleUpload.vue';
+  deleteBrands
+} from '@/api/pms/brand'
+import SingleUpload from '@/components/Upload/SingleUpload.vue'
 
-const queryFormRef = ref(ElForm); // 属性名必须和元素的ref属性值一致
-const dataFormRef = ref(ElForm); // 属性名必须和元素的ref属性值一致
+const queryFormRef = ref(ElForm) // 属性名必须和元素的ref属性值一致
+const dataFormRef = ref(ElForm) // 属性名必须和元素的ref属性值一致
 
 const state = reactive({
   loading: true,
@@ -36,7 +36,7 @@ const state = reactive({
   multiple: true,
   queryParams: {
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 10
   } as BrandQueryParam,
   brandList: [] as BrandItem[],
   total: 0,
@@ -47,11 +47,11 @@ const state = reactive({
       {
         required: true,
         message: '请输入品牌名称',
-        trigger: 'blur',
-      },
-    ],
-  },
-});
+        trigger: 'blur'
+      }
+    ]
+  }
+})
 
 const {
   loading,
@@ -61,45 +61,45 @@ const {
   total,
   dialog,
   formData,
-  rules,
-} = toRefs(state);
+  rules
+} = toRefs(state)
 
 function handleQuery() {
-  state.loading = true;
+  state.loading = true
   listBrandPages(state.queryParams).then(({ data }) => {
-    state.brandList = data.list;
-    state.total = data.total;
-    state.loading = false;
-  });
+    state.brandList = data.list
+    state.total = data.total
+    state.loading = false
+  })
 }
 
 function resetQuery() {
-  queryFormRef.value.resetFields();
-  handleQuery();
+  queryFormRef.value.resetFields()
+  handleQuery()
 }
 
 function handleSelectionChange(selection: any) {
-  state.ids = selection.map((item: any) => item.id);
-  state.single = selection.length !== 1;
-  state.multiple = !selection.length;
+  state.ids = selection.map((item: any) => item.id)
+  state.single = selection.length !== 1
+  state.multiple = !selection.length
 }
 
 function handleAdd() {
   state.dialog = {
     title: '添加品牌',
-    visible: true,
-  };
+    visible: true
+  }
 }
 
 function handleUpdate(row: any) {
   state.dialog = {
     title: '修改品牌',
-    visible: true,
-  };
-  const brandId = row.id || state.ids;
+    visible: true
+  }
+  const brandId = row.id || state.ids
   getBrandFormDetail(brandId).then(({ data }) => {
-    state.formData = data;
-  });
+    state.formData = data
+  })
 }
 
 /**
@@ -110,51 +110,51 @@ function submitForm() {
     if (isValid) {
       if (state.formData.id) {
         updateBrand(state.formData.id, state.formData).then(() => {
-          ElMessage.success('修改成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('修改成功')
+          cancel()
+          handleQuery()
+        })
       } else {
         addBrand(state.formData).then(() => {
-          ElMessage.success('新增成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('新增成功')
+          cancel()
+          handleQuery()
+        })
       }
     }
-  });
+  })
 }
 
 /**
  * 取消
  */
 function cancel() {
-  state.dialog.visible = false;
-  dataFormRef.value.resetFields();
+  state.dialog.visible = false
+  dataFormRef.value.resetFields()
 }
 
 /**
  * 删除
  */
 function handleDelete(row: any) {
-  const ids = [row.id || state.ids].join(',');
+  const ids = [row.id || state.ids].join(',')
   ElMessageBox.confirm('确认删除已选中的数据项?', '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning',
+    type: 'warning'
   })
     .then(() => {
       deleteBrands(ids).then(() => {
-        ElMessage.success('删除成功');
-        handleQuery();
-      });
+        ElMessage.success('删除成功')
+        handleQuery()
+      })
     })
-    .catch(() => ElMessage.info('已取消删除'));
+    .catch(() => ElMessage.info('已取消删除'))
 }
 
 onMounted(() => {
-  handleQuery();
-});
+  handleQuery()
+})
 </script>
 
 <template>
@@ -190,8 +190,8 @@ onMounted(() => {
     <el-table
       v-loading="loading"
       :data="brandList"
-      @selection-change="handleSelectionChange"
       border
+      @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" min-width="5%" />
       <el-table-column prop="name" label="品牌名称" min-width="10" />
@@ -214,11 +214,11 @@ onMounted(() => {
       <el-table-column label="操作" width="150">
         <template #default="scope">
           <el-button
-            @click="handleUpdate(scope.row)"
             type="primary"
             :icon="Edit"
             circle
             plain
+            @click="handleUpdate(scope.row)"
           />
           <el-button
             type="danger"
@@ -234,16 +234,16 @@ onMounted(() => {
     <!-- 分页工具条 -->
     <pagination
       v-if="total > 0"
-      :total="total"
       v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize"
+      :total="total"
       @pagination="handleQuery"
     />
 
     <!-- 表单弹窗 -->
     <el-dialog
-      :title="dialog.title"
       v-model="dialog.visible"
+      :title="dialog.title"
       top="5vh"
       width="600px"
     >

@@ -78,84 +78,84 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, toRefs, watch } from 'vue';
-import { listAttributes } from '@/api/pms/attribute';
-import { ElForm } from 'element-plus';
-import { Plus, Minus } from '@element-plus/icons-vue';
+import { computed, reactive, ref, toRefs, watch } from 'vue'
+import { listAttributes } from '@/api/pms/attribute'
+import { ElForm } from 'element-plus'
+import { Plus, Minus } from '@element-plus/icons-vue'
 
-const emit = defineEmits(['prev', 'next', 'update:modelValue']);
-const dataFormRef = ref(ElForm);
+const emit = defineEmits(['prev', 'next', 'update:modelValue'])
+const dataFormRef = ref(ElForm)
 
 const props = defineProps({
   modelValue: {
     type: Object,
-    default: () => {},
-  },
-});
+    default: () => {}
+  }
+})
 
 const goodsInfo: any = computed({
   get: () => props.modelValue,
-  set: (value) => {
-    emit('update:modelValue', value);
-  },
-});
+  set: value => {
+    emit('update:modelValue', value)
+  }
+})
 
 watch(
   () => goodsInfo.value.categoryId,
-  (newVal) => {
+  newVal => {
     // 商品编辑不加载分类下的属性
-    const goodsId = goodsInfo.value.id;
+    const goodsId = goodsInfo.value.id
     if (goodsId) {
-      return false;
+      return false
     }
     // 商品新增加载默认分类下的属性
     if (newVal) {
       // type=2 商品分类下的属性
-      listAttributes({ categoryId: newVal, type: 2 }).then((response) => {
-        const attrList = response.data;
+      listAttributes({ categoryId: newVal, type: 2 }).then(response => {
+        const attrList = response.data
         if (attrList && attrList.length > 0) {
-          goodsInfo.value.attrList = attrList;
+          goodsInfo.value.attrList = attrList
         } else {
-          goodsInfo.value.attrList = [{}];
+          goodsInfo.value.attrList = [{}]
         }
-      });
+      })
     } else {
-      goodsInfo.value.attrList = [{}];
+      goodsInfo.value.attrList = [{}]
     }
   },
   {
     immediate: true,
-    deep: true,
+    deep: true
   }
-);
+)
 
 const state = reactive({
   rules: {
     name: [{ required: true, message: '请填写属性名称', trigger: 'blur' }],
-    value: [{ required: true, message: '请填写属性值', trigger: 'blur' }],
-  },
-});
+    value: [{ required: true, message: '请填写属性值', trigger: 'blur' }]
+  }
+})
 
-const { rules } = toRefs(state);
+const { rules } = toRefs(state)
 
 function handleAdd() {
-  goodsInfo.value.attrList.push({});
+  goodsInfo.value.attrList.push({})
 }
 
 function handleRemove(index: number) {
-  goodsInfo.value.attrList.splice(index, 1);
+  goodsInfo.value.attrList.splice(index, 1)
 }
 
 function handlePrev() {
-  emit('prev');
+  emit('prev')
 }
 
 function handleNext() {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      emit('next');
+      emit('next')
     }
-  });
+  })
 }
 </script>
 

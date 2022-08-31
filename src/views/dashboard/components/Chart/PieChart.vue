@@ -10,9 +10,9 @@ import {
   onBeforeUnmount,
   onDeactivated,
   onMounted
-} from 'vue';
-import { init, EChartsOption } from 'echarts';
-import resize from '@/utils/resize';
+} from 'vue'
+import { init, EChartsOption } from 'echarts'
+import resize from '@/utils/resize'
 
 const props = defineProps({
   id: {
@@ -33,12 +33,12 @@ const props = defineProps({
     default: '200px',
     required: true
   }
-});
+})
 
-const { mounted, chart, beforeDestroy, activated, deactivated } = resize();
+const { mounted, chart, beforeDestroy, activated, deactivated } = resize()
 
 function initChart() {
-  const pieChart = init(document.getElementById(props.id) as HTMLDivElement);
+  const pieChart = init(document.getElementById(props.id) as HTMLDivElement)
 
   pieChart.setOption({
     title: {
@@ -73,8 +73,8 @@ function initChart() {
           borderRadius: 1,
           color: function (params: any) {
             //自定义颜色
-            const colorList = ['#409EFF', '#67C23A', '#E6A23C', '#F56C6C'];
-            return colorList[params.dataIndex];
+            const colorList = ['#409EFF', '#67C23A', '#E6A23C', '#F56C6C']
+            return colorList[params.dataIndex]
           }
         },
         data: [
@@ -85,29 +85,29 @@ function initChart() {
         ]
       }
     ]
-  } as EChartsOption);
+  } as EChartsOption)
 
-  chart.value = pieChart;
+  chart.value = pieChart
 }
 
 onBeforeUnmount(() => {
-  beforeDestroy();
-});
+  beforeDestroy()
+})
 
 onActivated(() => {
-  activated();
-});
+  activated()
+})
 
 onDeactivated(() => {
-  deactivated();
-});
+  deactivated()
+})
 
 onMounted(() => {
-  mounted();
+  mounted()
   nextTick(() => {
-    initChart();
-  });
-});
+    initChart()
+  })
+})
 </script>
 
 <style lang="scss" scoped></style>

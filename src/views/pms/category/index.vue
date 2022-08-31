@@ -1,40 +1,40 @@
 <!-- setup 无法设置组件名称，组件名称keepAlive必须 -->
 <script lang="ts">
 export default {
-  name: 'category',
-};
+  name: 'Category'
+}
 </script>
 
 <script setup lang="ts">
-import Category from './components/Category.vue';
-import Attribute from './components/Attribute.vue';
-import SvgIcon from '@/components/SvgIcon/index.vue';
+import Category from './components/Category.vue'
+import Attribute from './components/Attribute.vue'
+import SvgIcon from '@/components/SvgIcon/index.vue'
 
-import { reactive, toRefs } from 'vue';
+import { reactive, toRefs } from 'vue'
 
 const state = reactive({
   category: {
     id: undefined,
     name: '',
-    childrenLen: 0,
-  },
-});
+    childrenLen: 0
+  }
+})
 
-const { category } = toRefs(state);
+const { category } = toRefs(state)
 
 function handleCategoryClick(categoryRow: any) {
   if (categoryRow) {
     state.category = {
       id: categoryRow.id,
       name: categoryRow.name,
-      childrenLen: categoryRow.children.length,
-    };
+      childrenLen: categoryRow.children.length
+    }
   } else {
     state.category = {
       id: undefined,
       name: '',
-      childrenLen: 0,
-    };
+      childrenLen: 0
+    }
   }
 }
 </script>

@@ -10,9 +10,9 @@ import {
   onBeforeUnmount,
   onDeactivated,
   onMounted
-} from 'vue';
-import { init, EChartsOption } from 'echarts';
-import resize from '@/utils/resize';
+} from 'vue'
+import { init, EChartsOption } from 'echarts'
+import resize from '@/utils/resize'
 
 const props = defineProps({
   id: {
@@ -33,12 +33,12 @@ const props = defineProps({
     default: '200px',
     required: true
   }
-});
+})
 
-const { mounted, chart, beforeDestroy, activated, deactivated } = resize();
+const { mounted, chart, beforeDestroy, activated, deactivated } = resize()
 
 function initChart() {
-  const funnelChart = init(document.getElementById(props.id) as HTMLDivElement);
+  const funnelChart = init(document.getElementById(props.id) as HTMLDivElement)
 
   funnelChart.setOption({
     title: {
@@ -104,28 +104,28 @@ function initChart() {
         ]
       }
     ]
-  } as EChartsOption);
-  chart.value = funnelChart;
+  } as EChartsOption)
+  chart.value = funnelChart
 }
 
 onBeforeUnmount(() => {
-  beforeDestroy();
-});
+  beforeDestroy()
+})
 
 onActivated(() => {
-  activated();
-});
+  activated()
+})
 
 onDeactivated(() => {
-  deactivated();
-});
+  deactivated()
+})
 
 onMounted(() => {
-  mounted();
+  mounted()
   nextTick(() => {
-    initChart();
-  });
-});
+    initChart()
+  })
+})
 </script>
 
 <style lang="scss" scoped></style>

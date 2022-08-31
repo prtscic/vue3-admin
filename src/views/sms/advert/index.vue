@@ -1,30 +1,30 @@
 <script lang="ts">
 export default {
-  name: 'advert',
-};
+  name: 'Advert'
+}
 </script>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs } from 'vue';
-import { ElForm, ElMessage, ElMessageBox } from 'element-plus';
-import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue';
-import SingleUpload from '@/components/Upload/SingleUpload.vue';
+import { onMounted, reactive, ref, toRefs } from 'vue'
+import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
+import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
+import SingleUpload from '@/components/Upload/SingleUpload.vue'
 import {
   listAdvertPages,
   getAdvertFormDetail,
   updateAdvert,
   addAdvert,
-  deleteAdverts,
-} from '@/api/sms/advert';
-import { Dialog } from '@/types/common';
+  deleteAdverts
+} from '@/api/sms/advert'
+import { Dialog } from '@/types/common'
 import {
   AdvertFormData,
   AdvertItem,
-  AdvertQueryParam,
-} from '@/types/api/sms/advert';
+  AdvertQueryParam
+} from '@/types/api/sms/advert'
 
-const queryFormRef = ref(ElForm); // 属性名必须和元素的ref属性值一致
-const dataFormRef = ref(ElForm); // 属性名必须和元素的ref属性值一致
+const queryFormRef = ref(ElForm) // 属性名必须和元素的ref属性值一致
+const dataFormRef = ref(ElForm) // 属性名必须和元素的ref属性值一致
 
 const state = reactive({
   loading: true,
@@ -40,14 +40,14 @@ const state = reactive({
   dialog: { title: '', visible: false } as Dialog,
   formData: {
     status: 1,
-    sort: 100,
+    sort: 100
   } as AdvertFormData,
   rules: {
     title: [{ required: true, message: '请输入广告名称', trigger: 'blur' }],
-    picUrl: [{ required: true, message: '请上传广告图片', trigger: 'blur' }],
+    picUrl: [{ required: true, message: '请上传广告图片', trigger: 'blur' }]
   },
-  validityPeriod: '' as any,
-});
+  validityPeriod: '' as any
+})
 
 const {
   loading,
@@ -58,100 +58,100 @@ const {
   dialog,
   formData,
   rules,
-  validityPeriod,
-} = toRefs(state);
+  validityPeriod
+} = toRefs(state)
 
 function handleQuery() {
-  state.loading = true;
+  state.loading = true
   listAdvertPages(state.queryParams).then(({ data }) => {
-    state.advertList = data.list;
-    state.total = data.total;
-    state.loading = false;
-  });
+    state.advertList = data.list
+    state.total = data.total
+    state.loading = false
+  })
 }
 
 function resetQuery() {
-  queryFormRef.value.resetFields();
-  handleQuery();
+  queryFormRef.value.resetFields()
+  handleQuery()
 }
 
 function handleSelectionChange(selection: any) {
-  state.ids = selection.map((item: any) => item.id);
-  state.single = selection.length !== 1;
-  state.multiple = !selection.length;
+  state.ids = selection.map((item: any) => item.id)
+  state.single = selection.length !== 1
+  state.multiple = !selection.length
 }
 
 function handleAdd() {
   state.dialog = {
     title: '添加广告',
-    visible: true,
-  };
+    visible: true
+  }
 }
 
 function handleUpdate(row: any) {
   state.dialog = {
     title: '修改广告',
-    visible: true,
-  };
-  const advertId = row.id || state.ids;
+    visible: true
+  }
+  const advertId = row.id || state.ids
   getAdvertFormDetail(advertId).then(({ data }) => {
-    state.formData = data;
-    validityPeriod.value = [data.beginTime, data.endTime];
-  });
+    state.formData = data
+    validityPeriod.value = [data.beginTime, data.endTime]
+  })
 }
 
 function submitForm() {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      const avertId = state.formData.id;
+      const avertId = state.formData.id
       if (avertId) {
         // 有效期转换
         if (validityPeriod.value) {
-          formData.value.beginTime = validityPeriod.value[0];
-          formData.value.endTime = validityPeriod.value[1];
+          formData.value.beginTime = validityPeriod.value[0]
+          formData.value.endTime = validityPeriod.value[1]
         }
 
         updateAdvert(avertId, state.formData).then(() => {
-          ElMessage.success('修改成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('修改成功')
+          cancel()
+          handleQuery()
+        })
       } else {
         addAdvert(state.formData).then(() => {
-          ElMessage.success('新增成功');
-          cancel();
-          handleQuery();
-        });
+          ElMessage.success('新增成功')
+          cancel()
+          handleQuery()
+        })
       }
     }
-  });
+  })
 }
 
 function cancel() {
-  state.formData.id = undefined;
-  dataFormRef.value.resetFields();
-  state.dialog.visible = false;
+  state.formData.id = undefined
+  dataFormRef.value.resetFields()
+  state.dialog.visible = false
 }
 
 function handleDelete(row: any) {
-  const ids = [row.id || state.ids].join(',');
+  const ids = [row.id || state.ids].join(',')
   ElMessageBox.confirm('确认删除已选中的数据项?', '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning',
+    type: 'warning'
   })
     .then(() => {
       deleteAdverts(ids).then(() => {
-        ElMessage.success('删除成功');
-        handleQuery();
-      });
+        ElMessage.success('删除成功')
+        handleQuery()
+      })
     })
-    .catch(() => ElMessage.info('已取消删除'));
+    .catch(() => ElMessage.info('已取消删除'))
 }
 
 onMounted(() => {
-  handleQuery();
-});
+  handleQuery()
+})
 </script>
 
 <template>
@@ -190,8 +190,8 @@ onMounted(() => {
     <el-table
       v-loading="loading"
       :data="advertList"
-      @selection-change="handleSelectionChange"
       border
+      @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" min-width="5" align="center" />
       <el-table-column type="index" label="序号" width="80" align="center" />
@@ -241,14 +241,14 @@ onMounted(() => {
     <!-- 分页工具条 -->
     <pagination
       v-if="total > 0"
-      :total="total"
       v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize"
+      :total="total"
       @pagination="handleQuery"
     />
 
     <!-- 表单弹窗 -->
-    <el-dialog :title="dialog.title" v-model="dialog.visible" width="700px">
+    <el-dialog v-model="dialog.visible" :title="dialog.title" width="700px">
       <el-form
         ref="dataFormRef"
         :model="formData"
@@ -291,7 +291,7 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item label="备注" prop="remark">
-          <el-input type="textarea" v-model="formData.remark" />
+          <el-input v-model="formData.remark" type="textarea" />
         </el-form-item>
       </el-form>
 

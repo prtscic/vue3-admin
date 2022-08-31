@@ -3,20 +3,20 @@
     <div class="component-container__main">
       <el-cascader-panel
         ref="categoryRef"
-        :options="categoryOptions"
         v-model="goodsInfo.categoryId"
+        :options="categoryOptions"
         :props="{ emitPath: false }"
         @change="handleCategoryChange"
       />
       <div style="margin-top: 20px">
-        <el-link type="info" :underline="false" v-show="pathLabels.length > 0"
+        <el-link v-show="pathLabels.length > 0" type="info" :underline="false"
           >您选择的商品分类:</el-link
         >
         <el-link
-          type="danger"
-          :underline="false"
           v-for="(item, index) in pathLabels"
           :key="index"
+          type="danger"
+          :underline="false"
           style="margin-left: 5px"
         >
           {{ item }}
@@ -36,66 +36,66 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, nextTick, reactive, ref, toRefs } from 'vue';
-import { ElCascaderPanel, ElMessage } from 'element-plus';
-import { CaretRight } from '@element-plus/icons-vue';
+import { onMounted, nextTick, reactive, ref, toRefs } from 'vue'
+import { ElCascaderPanel, ElMessage } from 'element-plus'
+import { CaretRight } from '@element-plus/icons-vue'
 
 // API 引用
-import { listCategoryOptions } from '@/api/pms/category';
-import { computed } from 'vue';
-import { Option } from '@/types/common';
+import { listCategoryOptions } from '@/api/pms/category'
+import { computed } from 'vue'
+import { Option } from '@/types/common'
 
-const emit = defineEmits(['next', 'update:modelValue']);
+const emit = defineEmits(['next', 'update:modelValue'])
 const props = defineProps({
   modelValue: {
     type: Object,
-    default: () => {},
-  },
-});
+    default: () => {}
+  }
+})
 
 const goodsInfo: any = computed({
   get: () => props.modelValue,
-  set: (value) => {
-    emit('update:modelValue', value);
-  },
-});
+  set: value => {
+    emit('update:modelValue', value)
+  }
+})
 
 const state = reactive({
   categoryOptions: [] as Option[],
-  pathLabels: [],
-});
+  pathLabels: []
+})
 
-const { categoryOptions, pathLabels } = toRefs(state);
+const { categoryOptions, pathLabels } = toRefs(state)
 
 function loadData() {
   listCategoryOptions().then(({ data }) => {
-    state.categoryOptions = data;
+    state.categoryOptions = data
     if (goodsInfo.value.id) {
       nextTick(() => {
-        handleCategoryChange();
-      });
+        handleCategoryChange()
+      })
     }
-  });
+  })
 }
-const categoryRef = ref(ElCascaderPanel);
+const categoryRef = ref(ElCascaderPanel)
 
 function handleCategoryChange() {
-  const checkNode = categoryRef.value.getCheckedNodes()[0];
-  state.pathLabels = checkNode.pathLabels; // 商品分类选择层级提示
-  goodsInfo.value.categoryId = checkNode.value;
+  const checkNode = categoryRef.value.getCheckedNodes()[0]
+  state.pathLabels = checkNode.pathLabels // 商品分类选择层级提示
+  goodsInfo.value.categoryId = checkNode.value
 }
 
 function handleNext() {
   if (!goodsInfo.value.categoryId) {
-    ElMessage.warning('请选择商品分类');
-    return false;
+    ElMessage.warning('请选择商品分类')
+    return false
   }
-  emit('next');
+  emit('next')
 }
 
 onMounted(() => {
-  loadData();
-});
+  loadData()
+})
 </script>
 
 <style lang="scss" scoped>

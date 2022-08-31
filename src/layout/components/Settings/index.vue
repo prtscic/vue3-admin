@@ -49,46 +49,46 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, toRefs, watch } from 'vue';
+import { reactive, toRefs, watch } from 'vue'
 
-import ThemePicker from '@/components/ThemePicker/index.vue';
+import ThemePicker from '@/components/ThemePicker/index.vue'
 
-import useStore from '@/store';
+import useStore from '@/store'
 
-const { setting } = useStore();
+const { setting } = useStore()
 
 const state = reactive({
   fixedHeader: setting.fixedHeader,
   tagsView: setting.tagsView,
   sidebarLogo: setting.sidebarLogo
-});
+})
 
-const { fixedHeader, tagsView, sidebarLogo } = toRefs(state);
+const { fixedHeader, tagsView, sidebarLogo } = toRefs(state)
 
 function themeChange(val: any) {
-  setting.changeSetting({ key: 'theme', value: val });
+  setting.changeSetting({ key: 'theme', value: val })
 }
 
 watch(
   () => state.fixedHeader,
   value => {
-    setting.changeSetting({ key: 'fixedHeader', value: value });
+    setting.changeSetting({ key: 'fixedHeader', value: value })
   }
-);
+)
 
 watch(
   () => state.tagsView,
   value => {
-    setting.changeSetting({ key: 'tagsView', value: value });
+    setting.changeSetting({ key: 'tagsView', value: value })
   }
-);
+)
 
 watch(
   () => state.sidebarLogo,
   value => {
-    setting.changeSetting({ key: 'sidebarLogo', value: value });
+    setting.changeSetting({ key: 'sidebarLogo', value: value })
   }
-);
+)
 </script>
 
 <style lang="scss" scoped>

@@ -1,11 +1,11 @@
 <script lang="ts">
 export default {
-  name: 'role'
-};
+  name: 'Role'
+}
 </script>
 
 <script setup lang="ts">
-import { nextTick, onMounted, reactive, ref, toRefs } from 'vue';
+import { nextTick, onMounted, reactive, ref, toRefs } from 'vue'
 import {
   listRolePages,
   updateRole,
@@ -14,23 +14,19 @@ import {
   deleteRoles,
   getRoleResources,
   updateRoleResource
-} from '@/api/system/role';
-import { listResources } from '@/api/system/menu';
+} from '@/api/system/role'
+import { listResources } from '@/api/system/menu'
 
-import { ElForm, ElMessage, ElMessageBox, ElTree } from 'element-plus';
-import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue';
-import {
-  RoleFormData,
-  RoleItem,
-  RoleQueryParam
-} from '@/types/api/system/role';
-import { Resource } from '@/types/api/system/menu';
-import SvgIcon from '@/components/SvgIcon/index.vue';
+import { ElForm, ElMessage, ElMessageBox, ElTree } from 'element-plus'
+import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
+import { RoleFormData, RoleItem, RoleQueryParam } from '@/types/api/system/role'
+import { Resource } from '@/types/api/system/menu'
+import SvgIcon from '@/components/SvgIcon/index.vue'
 
-const emit = defineEmits(['roleClick']);
-const queryFormRef = ref(ElForm);
-const dataFormRef = ref(ElForm);
-const resourceRef = ref(ElTree);
+const emit = defineEmits(['roleClick'])
+const queryFormRef = ref(ElForm)
+const dataFormRef = ref(ElForm)
+const resourceRef = ref(ElTree)
 
 const state = reactive({
   loading: true,
@@ -66,7 +62,7 @@ const state = reactive({
     id: '',
     name: ''
   }
-});
+})
 
 const {
   loading,
@@ -81,91 +77,91 @@ const {
   checkedRole,
   resourceOptions,
   btnPerms
-} = toRefs(state);
+} = toRefs(state)
 
 function handleQuery() {
-  emit('roleClick', {});
-  state.loading = true;
+  emit('roleClick', {})
+  state.loading = true
   listRolePages(state.queryParams).then(({ data }) => {
-    state.roleList = data.list;
-    state.total = data.total;
-    state.loading = false;
-  });
+    state.roleList = data.list
+    state.total = data.total
+    state.loading = false
+  })
 }
 /**
  * 查询重置
  */
 function resetQuery() {
-  queryFormRef.value.resetFields();
-  handleQuery();
+  queryFormRef.value.resetFields()
+  handleQuery()
 }
 
 function handleSelectionChange(selection: any) {
-  state.ids = selection.map((item: any) => item.id);
-  state.single = selection.length !== 1;
-  state.multiple = !selection.length;
+  state.ids = selection.map((item: any) => item.id)
+  state.single = selection.length !== 1
+  state.multiple = !selection.length
 }
 
 function handleRowClick(row: any) {
-  emit('roleClick', row);
+  emit('roleClick', row)
 }
 
 function handleAdd() {
   state.dialog = {
     title: '添加角色',
     visible: true
-  };
+  }
 }
 
 function handleUpdate(row: any) {
   state.dialog = {
     title: '修改角色',
     visible: true
-  };
-  const roleId = row.id || state.ids;
+  }
+  const roleId = row.id || state.ids
   getRoleFormDetail(roleId).then(({ data }) => {
-    state.formData = data;
-  });
+    state.formData = data
+  })
 }
 
 function submitFormData() {
-  loading.value = true;
+  loading.value = true
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
       if (state.formData.id) {
         updateRole(state.formData.id as any, state.formData).then(() => {
-          ElMessage.success('修改角色成功');
-          cancel();
-          handleQuery();
-          loading.value = false;
-        });
+          ElMessage.success('修改角色成功')
+          cancel()
+          handleQuery()
+          loading.value = false
+        })
       } else {
         addRole(state.formData).then(() => {
-          cancel();
-          ElMessage.success('新增角色成功');
-          handleQuery();
-          loading.value = false;
-        });
+          cancel()
+          ElMessage.success('新增角色成功')
+          handleQuery()
+          loading.value = false
+        })
       }
     }
-  });
+  })
 }
 
 /**
  * 取消
  */
 function cancel() {
-  dialog.value.visible = false;
-  formData.value.id = undefined;
-  dataFormRef.value.resetFields();
-  dataFormRef.value.clearValidate();
+  dialog.value.visible = false
+  formData.value.id = undefined
+  dataFormRef.value.resetFields()
+  dataFormRef.value.clearValidate()
 }
 
 /**
  *  删除
  */
 function handleDelete(row: any) {
-  const ids = [row.id || state.ids].join(',');
+  const ids = [row.id || state.ids].join(',')
   ElMessageBox.confirm('确认删除已选中的数据项?', '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
@@ -173,11 +169,11 @@ function handleDelete(row: any) {
   })
     .then(() => {
       deleteRoles(ids).then(() => {
-        ElMessage.success('删除成功');
-        handleQuery();
-      });
+        ElMessage.success('删除成功')
+        handleQuery()
+      })
     })
-    .catch(() => ElMessage.info('已取消删除'));
+    .catch(() => ElMessage.info('已取消删除'))
 }
 
 const handleResourceCheckChange = (
@@ -185,110 +181,110 @@ const handleResourceCheckChange = (
   isCheck: boolean,
   sonHasCheck: boolean
 ) => {
-  console.log('data', data);
-  console.log('isCheck', isCheck);
+  console.log('data', data)
+  console.log('isCheck', isCheck)
   if (data.perms) {
     data.perms.forEach(item => {
-      btnPerms.value[item.value] = isCheck;
-    });
+      btnPerms.value[item.value] = isCheck
+    })
   }
-};
+}
 
 /**
  * 分配资源(菜单+权限)弹窗
  */
 function openRoleResourceDialog(row: RoleItem) {
-  resourceDialogVisible.value = true;
-  loading.value = true;
+  resourceDialogVisible.value = true
+  loading.value = true
 
-  const roleId: any = row.id;
+  const roleId: any = row.id
   checkedRole.value = {
     id: roleId,
     name: row.name
-  };
+  }
 
   // 获取所有的资源
   listResources().then(response => {
-    resourceOptions.value = response.data;
+    resourceOptions.value = response.data
 
     // 获取角色拥有的资源
     getRoleResources(roleId).then(({ data }) => {
       // 勾选的菜单回显
-      const checkedMenuIds = data.menuIds;
-      resourceRef.value.setCheckedKeys(checkedMenuIds);
+      const checkedMenuIds = data.menuIds
+      resourceRef.value.setCheckedKeys(checkedMenuIds)
 
       nextTick(() => {
         // 勾选的权限回显
-        const rolePermIds = data.permIds;
+        const rolePermIds = data.permIds
 
-        state.allPermIds = filterResourcePermIds(response.data, []);
+        state.allPermIds = filterResourcePermIds(response.data, [])
         if (state.allPermIds) {
           state.allPermIds.forEach(permId => {
             if (rolePermIds.indexOf(permId) > -1) {
-              btnPerms.value[permId] = true;
+              btnPerms.value[permId] = true
             } else {
-              btnPerms.value[permId] = false;
+              btnPerms.value[permId] = false
             }
-          });
+          })
         }
-        loading.value = false;
-      });
-    });
-  });
+        loading.value = false
+      })
+    })
+  })
 }
 
 const filterResourcePermIds = (resources: Resource[], permIds: string[]) => {
   resources.forEach(resource => {
     if (resource.perms) {
       resource.perms.forEach(perm => {
-        permIds.push(perm.value);
-      });
+        permIds.push(perm.value)
+      })
     }
     if (resource.children) {
-      filterResourcePermIds(resource.children, permIds);
+      filterResourcePermIds(resource.children, permIds)
     }
-  });
-  return permIds;
-};
+  })
+  return permIds
+}
 /**
  * 分配资源提交
  */
 function handleRoleResourceSubmit() {
   const checkedMenuIds: any[] = resourceRef.value
     .getCheckedNodes(false, true)
-    .map((node: any) => node.value);
+    .map((node: any) => node.value)
 
-  const checkedPermIds = [] as string[];
+  const checkedPermIds = [] as string[]
   if (state.allPermIds) {
     state.allPermIds.forEach(permId => {
       if (btnPerms.value[permId]) {
-        checkedPermIds.push(permId);
+        checkedPermIds.push(permId)
       }
-    });
+    })
   }
 
   const RoleResource = {
     menuIds: checkedMenuIds,
     permIds: checkedPermIds
-  };
+  }
 
   updateRoleResource(checkedRole.value.id, RoleResource).then(res => {
-    ElMessage.success('分配权限成功');
-    state.resourceDialogVisible = false;
-    handleQuery();
-  });
+    ElMessage.success('分配权限成功')
+    state.resourceDialogVisible = false
+    handleQuery()
+  })
 }
 
 /**
  * 取消资源分配
  */
 function cancelResourceAssign() {
-  state.resourceDialogVisible = false;
+  state.resourceDialogVisible = false
 }
 
 onMounted(() => {
-  handleQuery();
-});
+  handleQuery()
+})
 </script>
 
 <template>
@@ -330,10 +326,10 @@ onMounted(() => {
       ref="dataTableRef"
       v-loading="loading"
       :data="roleList"
-      @selection-change="handleSelectionChange"
-      @row-click="handleRowClick"
       highlight-current-row
       border
+      @selection-change="handleSelectionChange"
+      @row-click="handleRowClick"
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="角色名称" prop="name" />
@@ -372,16 +368,16 @@ onMounted(() => {
     <!-- 分页工具条 -->
     <pagination
       v-if="total > 0"
-      :total="total"
       v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize"
+      :total="total"
       @pagination="handleQuery"
     />
 
     <!-- 表单弹窗 -->
     <el-dialog
-      :title="dialog.title"
       v-model="dialog.visible"
+      :title="dialog.title"
       width="500px"
       destroy-on-close
     >
@@ -426,11 +422,11 @@ onMounted(() => {
 
     <!--分配资源弹窗-->
     <el-dialog
-      :title="'角色【' + checkedRole.name + '】资源分配'"
       v-model="resourceDialogVisible"
+      :title="'角色【' + checkedRole.name + '】资源分配'"
       width="800px"
     >
-      <el-scrollbar max-height="600px" v-loading="loading">
+      <el-scrollbar v-loading="loading" max-height="600px">
         <el-tree
           ref="resourceRef"
           node-key="value"
@@ -448,10 +444,10 @@ onMounted(() => {
                 <el-checkbox
                   v-for="perm in data.perms"
                   :key="perm.value"
+                  v-model="btnPerms[perm.value]"
                   :label="perm.value"
                   border
                   size="small"
-                  v-model="btnPerms[perm.value]"
                   >{{ perm.label }}</el-checkbox
                 >
               </div>
