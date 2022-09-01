@@ -4,21 +4,20 @@
       <el-card class="box-card">
         <template #header>
           <span>商品规格</span>
-          <el-button :icon="Plus" type="success" size="small" style="float: right" @click="handleSpecAdd"> 添加规格项
-          </el-button>
+          <el-button :icon="Plus" type="success" size="small" style="float: right" @click="handleSpecAdd"> 添加规格项 </el-button>
         </template>
 
         <el-form ref="specFormRef" :model="specForm" :inline="true" size="small">
           <el-table ref="specTableRef" :data="specForm.specList" row-key="id" size="small">
             <el-table-column align="center" width="50">
               <template>
-                <svg-icon class="drag-handler" icon-class="drag"/>
+                <svg-icon class="drag-handler" icon-class="drag" />
               </template>
             </el-table-column>
             <el-table-column label="规格名" width="200">
               <template #default="scope">
                 <el-form-item :prop="'specList[' + scope.$index + '].name'" :rules="rules.spec.name">
-                  <el-input v-model="scope.row.name" type="text" size="small" @input="handleSpecChange()"/>
+                  <el-input v-model="scope.row.name" type="text" size="small" @input="handleSpecChange()" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -30,11 +29,10 @@
 
               <template #default="scope">
                 <div v-for="item in scope.row.values" :key="item.id" style="margin-right: 15px; display: inline-block">
-                  <el-tag size="small" closable :type="(colors[scope.$index % colors.length] as any)"
-                          @close="handleSpecValueRemove(scope.$index, item.id)">
+                  <el-tag size="small" closable :type="(colors[scope.$index % colors.length] as any)" @close="handleSpecValueRemove(scope.$index, item.id)">
                     {{ item.value }}
                   </el-tag>
-                  <single-upload v-if="scope.$index == 0" v-model="item.picUrl" style="margin-top: 5px"/>
+                  <single-upload v-if="scope.$index == 0" v-model="item.picUrl" style="margin-top: 5px" />
                 </div>
 
                 <el-input
@@ -45,16 +43,13 @@
                   @keyup.enter="handleSpecValueInput(scope.$index)"
                   @blur="handleSpecValueInput(scope.$index)"
                 />
-                <el-button v-else :icon="Plus" style="vertical-align: top" size="small"
-                           @click="handleSpecValueAdd(scope.$index)"> 添加规格值
-                </el-button>
+                <el-button v-else :icon="Plus" style="vertical-align: top" size="small" @click="handleSpecValueAdd(scope.$index)"> 添加规格值 </el-button>
               </template>
             </el-table-column>
 
             <el-table-column width="60" label="操作">
               <template #default="scope">
-                <el-button type="danger" :icon="Minus" size="small" circle plain
-                           @click.stop="handleSpecRemove(scope.$index)"/>
+                <el-button type="danger" :icon="Minus" size="small" circle plain @click.stop="handleSpecRemove(scope.$index)" />
               </template>
             </el-table-column>
           </el-table>
@@ -66,15 +61,13 @@
           <span>商品库存</span>
         </template>
         <el-form ref="skuFormRef" :model="skuForm" size="small" :inline="true">
-          <el-table :data="skuForm.skuList" :span-method="(objectSpanMethod as any)" highlight-current-row size="small"
-                    border>
-            <el-table-column v-for="(title, index) in specTitles" :key="index" align="center"
-                             :prop="'specValue' + (index + 1)" :label="title"></el-table-column>
+          <el-table :data="skuForm.skuList" :span-method="(objectSpanMethod as any)" highlight-current-row size="small" border>
+            <el-table-column v-for="(title, index) in specTitles" :key="index" align="center" :prop="'specValue' + (index + 1)" :label="title"></el-table-column>
 
             <el-table-column label="商品编码" align="center">
               <template #default="scope">
                 <el-form-item :prop="'skuList[' + scope.$index + '].skuSn'" :rules="rules.sku.skuSn">
-                  <el-input v-model="scope.row.skuSn"/>
+                  <el-input v-model="scope.row.skuSn" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -82,7 +75,7 @@
             <el-table-column label="价格" align="center">
               <template #default="scope">
                 <el-form-item :prop="'skuList[' + scope.$index + '].price'" :rules="rules.sku.price">
-                  <el-input v-model="scope.row.price"/>
+                  <el-input v-model="scope.row.price" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -90,7 +83,7 @@
             <el-table-column label="库存" align="center">
               <template #default="scope">
                 <el-form-item :prop="'skuList[' + scope.$index + '].stockNum'" :rules="rules.sku.stockNum">
-                  <el-input v-model="scope.row.stockNum"/>
+                  <el-input v-model="scope.row.stockNum" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -153,20 +146,20 @@ const state = reactive({
   specTitles: [] as any[],
   rules: {
     spec: {
-      name: [{required: true, message: '请输入规格名称', trigger: 'blur'}],
-      value: [{required: true, message: '请输入规格值', trigger: 'blur'}],
+      name: [{ required: true, message: '请输入规格名称', trigger: 'blur' }],
+      value: [{ required: true, message: '请输入规格值', trigger: 'blur' }],
     },
     sku: {
-      skuSn: [{required: true, message: '请输入商品编号', trigger: 'blur'}],
-      price: [{required: true, message: '请输入商品价格', trigger: 'blur'}],
-      stockNum: [{required: true, message: '请输入商品库存', trigger: 'blur'}],
+      skuSn: [{ required: true, message: '请输入商品编号', trigger: 'blur' }],
+      price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
+      stockNum: [{ required: true, message: '请输入商品库存', trigger: 'blur' }],
     },
   },
   colors: ['', 'success', 'warning', 'danger'],
-  tagInputs: [{value: undefined, visible: false}], // 规格值标签临时值和显隐控制
+  tagInputs: [{ value: undefined, visible: false }], // 规格值标签临时值和显隐控制
 })
 
-const {specForm, skuForm, specTitles, rules, colors, tagInputs} = toRefs(state)
+const { specForm, skuForm, specTitles, rules, colors, tagInputs } = toRefs(state)
 
 watch(
   () => goodsInfo.value.categoryId,
@@ -178,7 +171,7 @@ watch(
     }
     if (newVal) {
       // type=1 商品分类下的规格
-      listAttributes({categoryId: newVal, type: 1}).then((response) => {
+      listAttributes({ categoryId: newVal, type: 1 }).then((response) => {
         const specList = response.data
         if (specList && specList.length > 0) {
           specList.forEach((item: any) => {
@@ -214,7 +207,7 @@ function loadData() {
     } else {
       state.specForm.specList.push({
         name: specItem.name,
-        values: [{id: specItem.id, value: specItem.value, picUrl: specItem.picUrl}],
+        values: [{ id: specItem.id, value: specItem.value, picUrl: specItem.picUrl }],
       })
     }
   })
@@ -286,7 +279,7 @@ function generateSkuList() {
       })
       return result
     },
-    [{specValues: '', specIds: ''}],
+    [{ specValues: '', specIds: '' }],
   )
 
   skuList.forEach((item: any) => {
@@ -394,7 +387,7 @@ function handleSpecValueInput(rowIndex: any) {
         id: 'tid_' + (rowIndex + 1) + '_' + ++maxSpecValueIndex,
       }
     } else {
-      state.specForm.specList[rowIndex].values = [{value: currSpecValue, id: 'tid_' + (rowIndex + 1) + '_1'}]
+      state.specForm.specList[rowIndex].values = [{ value: currSpecValue, id: 'tid_' + (rowIndex + 1) + '_1' }]
     }
   }
   state.tagInputs[rowIndex].value = undefined

@@ -5,22 +5,14 @@ export default {
 </script>
 
 <script setup lang="ts">
-import {nextTick, onMounted, reactive, ref, toRefs} from 'vue'
-import {
-  listRolePages,
-  updateRole,
-  getRoleFormDetail,
-  addRole,
-  deleteRoles,
-  getRoleResources,
-  updateRoleResource
-} from '@/api/system/role'
-import {listResources} from '@/api/system/menu'
+import { nextTick, onMounted, reactive, ref, toRefs } from 'vue'
+import { listRolePages, updateRole, getRoleFormDetail, addRole, deleteRoles, getRoleResources, updateRoleResource } from '@/api/system/role'
+import { listResources } from '@/api/system/menu'
 
-import {ElForm, ElMessage, ElMessageBox, ElTree} from 'element-plus'
-import {Search, Plus, Edit, Refresh, Delete} from '@element-plus/icons-vue'
-import {RoleFormData, RoleItem, RoleQueryParam} from '@/types/api/system/role'
-import {Resource} from '@/types/api/system/menu'
+import { ElForm, ElMessage, ElMessageBox, ElTree } from 'element-plus'
+import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
+import { RoleFormData, RoleItem, RoleQueryParam } from '@/types/api/system/role'
+import { Resource } from '@/types/api/system/menu'
 import SvgIcon from '@/components/SvgIcon/index.vue'
 
 const emit = defineEmits(['roleClick'])
@@ -48,8 +40,8 @@ const state = reactive({
   },
   formData: {} as RoleFormData,
   rules: {
-    name: [{required: true, message: '请输入角色名称', trigger: 'blur'}],
-    code: [{required: true, message: '请输入角色编码', trigger: 'blur'}],
+    name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
+    code: [{ required: true, message: '请输入角色编码', trigger: 'blur' }],
   },
   resourceDialogVisible: false,
   resourceOptions: [] as Resource[],
@@ -64,20 +56,7 @@ const state = reactive({
   },
 })
 
-const {
-  loading,
-  multiple,
-  queryParams,
-  roleList,
-  total,
-  dialog,
-  formData,
-  rules,
-  resourceDialogVisible,
-  checkedRole,
-  resourceOptions,
-  btnPerms
-} = toRefs(state)
+const { loading, multiple, queryParams, roleList, total, dialog, formData, rules, resourceDialogVisible, checkedRole, resourceOptions, btnPerms } = toRefs(state)
 
 function handleQuery() {
   emit('roleClick', {})
@@ -204,7 +183,7 @@ function openRoleResourceDialog(row: RoleItem) {
     resourceOptions.value = response.data
 
     // 获取角色拥有的资源
-    getRoleResources(roleId).then(({data}) => {
+    getRoleResources(roleId).then(({ data }) => {
       // 勾选的菜单回显
       const checkedMenuIds = data.menuIds
       resourceRef.value.setCheckedKeys(checkedMenuIds)
@@ -291,7 +270,7 @@ onMounted(() => {
       </el-form-item>
 
       <el-form-item prop="name">
-        <el-input v-model="queryParams.name" placeholder="角色名称" clearable @keyup.enter="handleQuery"/>
+        <el-input v-model="queryParams.name" placeholder="角色名称" clearable @keyup.enter="handleQuery" />
       </el-form-item>
 
       <el-form-item>
@@ -301,42 +280,40 @@ onMounted(() => {
     </el-form>
 
     <!-- 数据表格 -->
-    <el-table ref="dataTableRef" v-loading="loading" :data="roleList" highlight-current-row border
-              @selection-change="handleSelectionChange" @row-click="handleRowClick">
-      <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="角色名称" prop="name"/>
-      <el-table-column label="角色编码" prop="code"/>
+    <el-table ref="dataTableRef" v-loading="loading" :data="roleList" highlight-current-row border @selection-change="handleSelectionChange" @row-click="handleRowClick">
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="角色名称" prop="name" />
+      <el-table-column label="角色编码" prop="code" />
       <el-table-column label="操作" align="center" width="200">
         <template #default="scope">
           <el-tooltip content="分配资源" effect="light">
             <el-button type="success" circle plain @click.stop="openRoleResourceDialog(scope.row)">
-              <svg-icon icon-class="perm"/>
+              <svg-icon icon-class="perm" />
             </el-button>
           </el-tooltip>
 
-          <el-button type="primary" :icon="Edit" circle plain @click.stop="handleUpdate(scope.row)"/>
-          <el-button type="danger" :icon="Delete" circle plain @click.stop="handleDelete(scope.row)"/>
+          <el-button type="primary" :icon="Edit" circle plain @click.stop="handleUpdate(scope.row)" />
+          <el-button type="danger" :icon="Delete" circle plain @click.stop="handleDelete(scope.row)" />
         </template>
       </el-table-column>
     </el-table>
 
     <!-- 分页工具条 -->
-    <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total"
-                @pagination="handleQuery"/>
+    <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="handleQuery" />
 
     <!-- 表单弹窗 -->
     <el-dialog v-model="dialog.visible" :title="dialog.title" width="500px" destroy-on-close>
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
         <el-form-item label="角色名称" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入角色名称"/>
+          <el-input v-model="formData.name" placeholder="请输入角色名称" />
         </el-form-item>
 
         <el-form-item label="角色编码" prop="code">
-          <el-input v-model="formData.code" placeholder="请输入角色编码"/>
+          <el-input v-model="formData.code" placeholder="请输入角色编码" />
         </el-form-item>
 
         <el-form-item label="排序" prop="sort">
-          <el-input-number v-model="formData.sort" controls-position="right" :min="0" style="width: 100px"/>
+          <el-input-number v-model="formData.sort" controls-position="right" :min="0" style="width: 100px" />
         </el-form-item>
 
         <el-form-item label="状态">
@@ -358,17 +335,14 @@ onMounted(() => {
     <!--分配资源弹窗-->
     <el-dialog v-model="resourceDialogVisible" :title="'角色【' + checkedRole.name + '】资源分配'" width="800px">
       <el-scrollbar v-loading="loading" max-height="600px">
-        <el-tree ref="resourceRef" node-key="value" show-checkbox :data="resourceOptions" :default-expand-all="true"
-                 @check-change="handleResourceCheckChange">
+        <el-tree ref="resourceRef" node-key="value" show-checkbox :data="resourceOptions" :default-expand-all="true" @check-change="handleResourceCheckChange">
           <template #default="{ data }">
             {{ data.label }}
 
             <div v-if="data.perms" class="resource-tree-node">
-              <el-divider direction="vertical"/>
+              <el-divider direction="vertical" />
               <div class="node-content">
-                <el-checkbox v-for="perm in data.perms" :key="perm.value" v-model="btnPerms[perm.value]"
-                             :label="perm.value" border size="small">{{ perm.label }}
-                </el-checkbox>
+                <el-checkbox v-for="perm in data.perms" :key="perm.value" v-model="btnPerms[perm.value]" :label="perm.value" border size="small">{{ perm.label }} </el-checkbox>
               </div>
             </div>
           </template>

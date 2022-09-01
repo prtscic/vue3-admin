@@ -5,13 +5,13 @@ export default {
 </script>
 
 <script setup lang="ts">
-import {onMounted, reactive, ref, toRefs, watch} from 'vue'
-import {ElForm, ElMessage, ElMessageBox} from 'element-plus'
-import {DictItem, DictItemFormData, DictItemQueryParam} from '@/types/api/system/dict'
+import { onMounted, reactive, ref, toRefs, watch } from 'vue'
+import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
+import { DictItem, DictItemFormData, DictItemQueryParam } from '@/types/api/system/dict'
 
-import {Dialog} from '@/types/common'
-import {listPageDictItems, getDictItemData, addDictItem, updateDictItem, deleteDictItems} from '@/api/system/dict'
-import {Search, Plus, Edit, Refresh, Delete} from '@element-plus/icons-vue'
+import { Dialog } from '@/types/common'
+import { listPageDictItems, getDictItemData, addDictItem, updateDictItem, deleteDictItems } from '@/api/system/dict'
+import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
 
 const props = defineProps({
   typeCode: {
@@ -59,14 +59,14 @@ const state = reactive({
     sort: 1,
   } as DictItemFormData,
   rules: {
-    name: [{required: true, message: '请输入字典项名称', trigger: 'blur'}],
-    value: [{required: true, message: '请输入字典项值', trigger: 'blur'}],
+    name: [{ required: true, message: '请输入字典项名称', trigger: 'blur' }],
+    value: [{ required: true, message: '请输入字典项值', trigger: 'blur' }],
   },
   localDictCode: props.typeCode,
   localDictName: props.typeName,
 })
 
-const {loading, multiple, queryParams, dictItemList, dialog, formData, rules, total} = toRefs(state)
+const { loading, multiple, queryParams, dictItemList, dialog, formData, rules, total } = toRefs(state)
 
 function handleQuery() {
   if (state.queryParams.typeCode) {
@@ -173,7 +173,7 @@ onMounted(() => {
         <el-button type="danger" :icon="Delete" :disabled="multiple" @click="handleDelete">删除</el-button>
       </el-form-item>
       <el-form-item prop="name">
-        <el-input v-model="queryParams.name" placeholder="数据项名称" clearable/>
+        <el-input v-model="queryParams.name" placeholder="数据项名称" clearable />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" :icon="Search" @click="handleQuery">搜索</el-button>
@@ -183,9 +183,9 @@ onMounted(() => {
 
     <!-- 数据表格 -->
     <el-table v-loading="loading" :data="dictItemList" border @selection-change="handleSelectionChange">
-      <el-table-column type="selection" min-width="5%"/>
-      <el-table-column label="数据项名称" prop="name"/>
-      <el-table-column label="数据项值" prop="value"/>
+      <el-table-column type="selection" min-width="5%" />
+      <el-table-column label="数据项名称" prop="name" />
+      <el-table-column label="数据项值" prop="value" />
       <el-table-column label="状态" align="center">
         <template #default="scope">
           <el-tag v-if="scope.row.status === 1" type="success">启用</el-tag>
@@ -194,27 +194,26 @@ onMounted(() => {
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template #default="scope">
-          <el-button type="primary" :icon="Edit" circle plain @click.stop="handleUpdate(scope.row)"/>
-          <el-button type="danger" :icon="Delete" circle plain @click.stop="handleDelete(scope.row)"/>
+          <el-button type="primary" :icon="Edit" circle plain @click.stop="handleUpdate(scope.row)" />
+          <el-button type="danger" :icon="Delete" circle plain @click.stop="handleDelete(scope.row)" />
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total"
-                @pagination="handleQuery"/>
+    <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="handleQuery" />
 
     <!-- 表单弹窗 -->
     <el-dialog v-model="dialog.visible" :title="dialog.title" width="500px" @close="cancel">
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
         <el-form-item label="字典类型名称">{{ typeName }}</el-form-item>
         <el-form-item label="数据项名称" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入字典数据项名称"/>
+          <el-input v-model="formData.name" placeholder="请输入字典数据项名称" />
         </el-form-item>
         <el-form-item label="数据项值" prop="value">
-          <el-input v-model="formData.value" placeholder="请输入字典数据项值"/>
+          <el-input v-model="formData.value" placeholder="请输入字典数据项值" />
         </el-form-item>
         <el-form-item label="排序" prop="sort">
-          <el-input-number v-model="formData.sort" style="width: 80px" controls-position="right" :min="0"/>
+          <el-input-number v-model="formData.sort" style="width: 80px" controls-position="right" :min="0" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="formData.status">

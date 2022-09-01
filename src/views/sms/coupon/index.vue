@@ -6,16 +6,16 @@ export default {
 </script>
 
 <script setup lang="ts">
-import {onMounted, reactive, ref, toRefs} from 'vue'
-import {ElForm, ElMessage, ElMessageBox, ElCascaderPanel} from 'element-plus'
-import {Search, Plus, Edit, Refresh, Delete} from '@element-plus/icons-vue'
-import {lisCouponPages, getCouponFormData, updateCoupon, addCoupon, deleteCoupons} from '@/api/sms/coupon'
+import { onMounted, reactive, ref, toRefs } from 'vue'
+import { ElForm, ElMessage, ElMessageBox, ElCascaderPanel } from 'element-plus'
+import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
+import { lisCouponPages, getCouponFormData, updateCoupon, addCoupon, deleteCoupons } from '@/api/sms/coupon'
 
-import {listCategoryOptions} from '@/api/pms/category'
-import {listSpuPages} from '@/api/pms/goods'
-import {Dialog, Option} from '@/types/common'
-import {CouponItem, CouponQueryParam, CouponFormData} from '@/types/api/sms/coupon'
-import {GoodsItem, GoodsQueryParam} from '@/types/api/pms/goods'
+import { listCategoryOptions } from '@/api/pms/category'
+import { listSpuPages } from '@/api/pms/goods'
+import { Dialog, Option } from '@/types/common'
+import { CouponItem, CouponQueryParam, CouponFormData } from '@/types/api/sms/coupon'
+import { GoodsItem, GoodsQueryParam } from '@/types/api/pms/goods'
 
 const queryFormRef = ref(ElForm)
 const dataFormRef = ref(ElForm)
@@ -48,8 +48,8 @@ const state = reactive({
     applicationScope: 0,
   } as CouponFormData,
   rules: {
-    type: [{required: true, message: '请输入优惠券名称', trigger: 'blur'}],
-    name: [{required: true, message: '请选择优惠券类型', trigger: 'blur'}],
+    type: [{ required: true, message: '请输入优惠券名称', trigger: 'blur' }],
+    name: [{ required: true, message: '请选择优惠券类型', trigger: 'blur' }],
   },
   validityPeriod: '' as any,
   perLimitChecked: false,
@@ -60,27 +60,11 @@ const state = reactive({
   },
   spuList: [] as GoodsItem[],
   spuTotal: 0,
-  spuQueryParams: {pageNum: 1, pageSize: 10} as GoodsQueryParam,
+  spuQueryParams: { pageNum: 1, pageSize: 10 } as GoodsQueryParam,
   checkedSpuIds: [],
 })
 
-const {
-  loading,
-  multiple,
-  queryParams,
-  couponList,
-  total,
-  dialog,
-  formData,
-  rules,
-  validityPeriod,
-  perLimitChecked,
-  spuCategoryOptions,
-  spuCategoryProps,
-  spuList,
-  spuTotal,
-  checkedSpuIds
-} =
+const { loading, multiple, queryParams, couponList, total, dialog, formData, rules, validityPeriod, perLimitChecked, spuCategoryOptions, spuCategoryProps, spuList, spuTotal, checkedSpuIds } =
   toRefs(state)
 
 /**
@@ -253,7 +237,7 @@ onMounted(() => {
       </el-form-item>
 
       <el-form-item prop="keywords">
-        <el-input v-model="queryParams.keywords" placeholder="优惠券名称" clearable @keyup.enter="handleQuery"/>
+        <el-input v-model="queryParams.keywords" placeholder="优惠券名称" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" :icon="Search" @click="handleQuery">搜索</el-button>
@@ -262,26 +246,25 @@ onMounted(() => {
     </el-form>
 
     <el-table v-loading="loading" :data="couponList" border @selection-change="handleSelectionChange">
-      <el-table-column type="selection" min-width="5" align="center"/>
-      <el-table-column type="index" label="序号" width="80" align="center"/>
-      <el-table-column prop="name" min-width="100" label="优惠券名称"/>
-      <el-table-column prop="code" min-width="100" label="优惠券码"/>
-      <el-table-column prop="typeLabel" min-width="100" label="优惠券类型"/>
-      <el-table-column prop="faceValueLabel" min-width="100" label="面值"/>
-      <el-table-column prop="minPointLabel" min-width="100" label="使用门槛"/>
-      <el-table-column prop="validityPeriodLabel" min-width="200" label="有效期"/>
+      <el-table-column type="selection" min-width="5" align="center" />
+      <el-table-column type="index" label="序号" width="80" align="center" />
+      <el-table-column prop="name" min-width="100" label="优惠券名称" />
+      <el-table-column prop="code" min-width="100" label="优惠券码" />
+      <el-table-column prop="typeLabel" min-width="100" label="优惠券类型" />
+      <el-table-column prop="faceValueLabel" min-width="100" label="面值" />
+      <el-table-column prop="minPointLabel" min-width="100" label="使用门槛" />
+      <el-table-column prop="validityPeriodLabel" min-width="200" label="有效期" />
 
       <el-table-column label="操作" align="center" width="150">
         <template #default="scope">
-          <el-button type="primary" :icon="Edit" circle plain @click.stop="handleUpdate(scope.row)"/>
-          <el-button type="danger" :icon="Delete" circle plain @click.stop="handleDelete(scope.row)"/>
+          <el-button type="primary" :icon="Edit" circle plain @click.stop="handleUpdate(scope.row)" />
+          <el-button type="danger" :icon="Delete" circle plain @click.stop="handleDelete(scope.row)" />
         </template>
       </el-table-column>
     </el-table>
 
     <!-- 分页 -->
-    <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total"
-                @pagination="handleQuery"/>
+    <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="handleQuery" />
 
     <!-- 表单Dialog -->
     <el-dialog v-model="dialog.visible" :title="dialog.title" width="1000px;" top="5vh">
@@ -295,23 +278,20 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item label="优惠券名称" prop="name">
-          <el-input v-model="formData.name"/>
+          <el-input v-model="formData.name" />
         </el-form-item>
 
         <el-form-item label="优惠券面值" prop="faceValueType">
-          <el-radio-group v-model="formData.faceValueType"
-                          style="display: flex; flex-direction: column; justify-content: space-between">
+          <el-radio-group v-model="formData.faceValueType" style="display: flex; flex-direction: column; justify-content: space-between">
             <div>
               <el-radio :label="1">现金</el-radio>
-              <el-input v-model="formData.faceValue" :disabled="formData.faceValueType !== 1"
-                        placeholder="0.5-1000的数字" style="width: 180px">
+              <el-input v-model="formData.faceValue" :disabled="formData.faceValueType !== 1" placeholder="0.5-1000的数字" style="width: 180px">
                 <template #append>元</template>
               </el-input>
             </div>
             <div>
               <el-radio :label="2">折扣</el-radio>
-              <el-input v-model="formData.discount" :disabled="formData.faceValueType !== 2" placeholder="1-9.9的数字"
-                        style="width: 180px">
+              <el-input v-model="formData.discount" :disabled="formData.faceValueType !== 2" placeholder="1-9.9的数字" style="width: 180px">
                 <template #append>折</template>
               </el-input>
             </div>
@@ -342,8 +322,7 @@ onMounted(() => {
             </div>
             <div style="width: 100%">
               <el-radio :label="2">固定天数</el-radio>
-              <el-input v-model="formData.validityDays" style="width: 150px"
-                        :disabled="formData.validityPeriodType !== 2">
+              <el-input v-model="formData.validityDays" style="width: 150px" :disabled="formData.validityPeriodType !== 2">
                 <template #append>天</template>
               </el-input>
             </div>
@@ -400,8 +379,7 @@ onMounted(() => {
               }"
             >
               <template #left-footer>
-                <pagination v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="spuTotal"
-                            layout="prev, pager, next," @pagination="handleSpuQuery"/>
+                <pagination v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="spuTotal" layout="prev, pager, next," @pagination="handleSpuQuery" />
               </template>
             </el-transfer>
           </div>

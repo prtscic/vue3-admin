@@ -13,21 +13,21 @@
       >
         {{ generateTitle(tag.meta.title) }}
         <span v-if="!isAffix(tag)" class="icon-close" @click.prevent.stop="closeSelectedTag(tag)">
-          <svg-icon icon-class="close"/>
+          <svg-icon icon-class="close" />
         </span>
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="tags-view__menu">
       <li @click="refreshSelectedTag(selectedTag)">
-        <svg-icon icon-class="refresh"/>
+        <svg-icon icon-class="refresh" />
         刷新
       </li>
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
-        <svg-icon icon-class="close"/>
+        <svg-icon icon-class="close" />
         关闭
       </li>
       <li @click="closeOtherTags">
-        <svg-icon icon-class="close_other"/>
+        <svg-icon icon-class="close_other" />
         关闭其它
       </li>
       <li v-if="!isFirstView()" @click="closeLeftTags">
@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, getCurrentInstance, nextTick, ref, watch, onMounted, ComponentInternalInstance} from 'vue'
+import { computed, getCurrentInstance, nextTick, ref, watch, onMounted, ComponentInternalInstance } from 'vue'
 
 import path from 'path-browserify'
 
@@ -105,7 +105,7 @@ function filterAffixTags(routes: any[], basePath = '/') {
         fullPath: tagPath,
         path: tagPath,
         name: route.name,
-        meta: {...route.meta},
+        meta: { ...route.meta },
       })
     }
 
@@ -178,7 +178,7 @@ function refreshSelectedTag(view: TagView) {
   tagsView.delCachedView(view)
   const { fullPath } = view
   nextTick(() => {
-    router.replace({path: '/redirect' + fullPath}).catch((err) => {
+    router.replace({ path: '/redirect' + fullPath }).catch((err) => {
       console.warn(err)
     })
   })

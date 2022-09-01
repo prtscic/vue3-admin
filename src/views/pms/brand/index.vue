@@ -5,12 +5,12 @@ export default {
 </script>
 
 <script setup lang="ts">
-import {onMounted, reactive, ref, toRefs} from 'vue'
-import {ElForm, ElTable, ElMessage, ElMessageBox} from 'element-plus'
-import {Search, Plus, Edit, Refresh, Delete} from '@element-plus/icons-vue'
-import {BrandFormData, BrandItem, BrandQueryParam} from '@/types/api/pms/brand'
-import {Dialog} from '@/types/common'
-import {listBrandPages, getBrandFormDetail, updateBrand, addBrand, deleteBrands} from '@/api/pms/brand'
+import { onMounted, reactive, ref, toRefs } from 'vue'
+import { ElForm, ElTable, ElMessage, ElMessageBox } from 'element-plus'
+import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
+import { BrandFormData, BrandItem, BrandQueryParam } from '@/types/api/pms/brand'
+import { Dialog } from '@/types/common'
+import { listBrandPages, getBrandFormDetail, updateBrand, addBrand, deleteBrands } from '@/api/pms/brand'
 import SingleUpload from '@/components/Upload/SingleUpload.vue'
 
 const queryFormRef = ref(ElForm) // 属性名必须和元素的ref属性值一致
@@ -31,7 +31,7 @@ const state = reactive({
   brandList: [] as BrandItem[],
   total: 0,
   dialog: {} as Dialog,
-  formData: {sort: 1} as BrandFormData,
+  formData: { sort: 1 } as BrandFormData,
   rules: {
     name: [
       {
@@ -43,7 +43,7 @@ const state = reactive({
   },
 })
 
-const {loading, multiple, queryParams, brandList, total, dialog, formData, rules} = toRefs(state)
+const { loading, multiple, queryParams, brandList, total, dialog, formData, rules } = toRefs(state)
 
 function handleQuery() {
   state.loading = true
@@ -159,14 +159,14 @@ onMounted(() => {
 
     <!-- 数据表格 -->
     <el-table v-loading="loading" :data="brandList" border @selection-change="handleSelectionChange">
-      <el-table-column type="selection" min-width="5%"/>
-      <el-table-column prop="name" label="品牌名称" min-width="10"/>
+      <el-table-column type="selection" min-width="5%" />
+      <el-table-column prop="name" label="品牌名称" min-width="10" />
       <el-table-column prop="logoUrl" label="LOGO" min-width="10">
         <template #default="scope">
           <el-popover placement="right" :width="400" trigger="hover">
-            <img :src="scope.row.logoUrl" width="400" height="400"/>
+            <img :src="scope.row.logoUrl" width="400" height="400" />
             <template #reference>
-              <img :src="scope.row.logoUrl" style="max-height: 60px; max-width: 60px"/>
+              <img :src="scope.row.logoUrl" style="max-height: 60px; max-width: 60px" />
             </template>
           </el-popover>
         </template>
@@ -176,29 +176,28 @@ onMounted(() => {
 
       <el-table-column label="操作" width="150">
         <template #default="scope">
-          <el-button type="primary" :icon="Edit" circle plain @click="handleUpdate(scope.row)"/>
-          <el-button type="danger" :icon="Delete" circle plain @click="handleDelete(scope.row)"/>
+          <el-button type="primary" :icon="Edit" circle plain @click="handleUpdate(scope.row)" />
+          <el-button type="danger" :icon="Delete" circle plain @click="handleDelete(scope.row)" />
         </template>
       </el-table-column>
     </el-table>
 
     <!-- 分页工具条 -->
-    <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total"
-                @pagination="handleQuery"/>
+    <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="handleQuery" />
 
     <!-- 表单弹窗 -->
     <el-dialog v-model="dialog.visible" :title="dialog.title" top="5vh" width="600px">
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
         <el-form-item label="品牌名称" prop="name">
-          <el-input v-model="formData.name" auto-complete="off"/>
+          <el-input v-model="formData.name" auto-complete="off" />
         </el-form-item>
 
         <el-form-item label="LOGO" prop="logoUrl">
-          <single-upload v-model="formData.logoUrl"/>
+          <single-upload v-model="formData.logoUrl" />
         </el-form-item>
 
         <el-form-item label="排序" prop="sort">
-          <el-input v-model="formData.sort"/>
+          <el-input v-model="formData.sort" />
         </el-form-item>
       </el-form>
 

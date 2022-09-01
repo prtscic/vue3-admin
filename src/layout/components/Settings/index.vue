@@ -72,21 +72,21 @@ function themeChange(val: any) {
 watch(
   () => state.fixedHeader,
   (value) => {
-    setting.changeSetting({key: 'fixedHeader', value: value})
+    setting.changeSetting({ key: 'fixedHeader', value: value })
   },
 )
 
 watch(
   () => state.tagsView,
   (value) => {
-    setting.changeSetting({key: 'tagsView', value: value})
+    setting.changeSetting({ key: 'tagsView', value: value })
   },
 )
 
 watch(
   () => state.sidebarLogo,
   (value) => {
-    setting.changeSetting({key: 'sidebarLogo', value: value})
+    setting.changeSetting({ key: 'sidebarLogo', value: value })
   },
 )
 </script>

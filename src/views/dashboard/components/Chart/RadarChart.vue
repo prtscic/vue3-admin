@@ -4,8 +4,8 @@
 </template>
 
 <script setup lang="ts">
-import {nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted} from 'vue'
-import {init, EChartsOption} from 'echarts'
+import { nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted } from 'vue'
+import { init, EChartsOption } from 'echarts'
 import resize from '@/utils/resize'
 
 const props = defineProps({
@@ -61,7 +61,7 @@ function initChart() {
     radar: {
       // shape: 'circle',
       radius: '60%',
-      indicator: [{name: '家用电器'}, {name: '服装箱包'}, {name: '运动户外'}, {name: '手机数码'}, {name: '汽车用品'}, {name: '家具厨具'}],
+      indicator: [{ name: '家用电器' }, { name: '服装箱包' }, { name: '运动户外' }, { name: '手机数码' }, { name: '汽车用品' }, { name: '家具厨具' }],
     },
     series: [
       {

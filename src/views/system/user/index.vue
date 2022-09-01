@@ -6,30 +6,19 @@ export default {
 
 <script setup lang="ts">
 // Vue依赖
-import {reactive, ref, watchEffect, onMounted, getCurrentInstance, toRefs} from 'vue'
+import { reactive, ref, watchEffect, onMounted, getCurrentInstance, toRefs } from 'vue'
 
 // 导入API
-import {
-  listUserPages,
-  getUserDetail,
-  deleteUsers,
-  addUser,
-  updateUser,
-  updateUserStatus,
-  updateUserPassword,
-  downloadTemplate,
-  exportUser,
-  importUser
-} from '@/api/system/user'
-import {listSelectDepartments} from '@/api/system/dept'
-import {listRoleOptions} from '@/api/system/role'
+import { listUserPages, getUserDetail, deleteUsers, addUser, updateUser, updateUserStatus, updateUserPassword, downloadTemplate, exportUser, importUser } from '@/api/system/user'
+import { listSelectDepartments } from '@/api/system/dept'
+import { listRoleOptions } from '@/api/system/role'
 
 // 组件依赖
-import {ElMessage, ElMessageBox, ElTree, ElForm, UploadFile} from 'element-plus'
-import {Search, Plus, Edit, Refresh, Delete, Lock, Download, Top, UploadFilled} from '@element-plus/icons-vue'
-import {UserItem, UserQueryParam, UserFormData, UserImportFormData} from '@/types/api/system/user'
+import { ElMessage, ElMessageBox, ElTree, ElForm, UploadFile } from 'element-plus'
+import { Search, Plus, Edit, Refresh, Delete, Lock, Download, Top, UploadFilled } from '@element-plus/icons-vue'
+import { UserItem, UserQueryParam, UserFormData, UserImportFormData } from '@/types/api/system/user'
 
-import {Option, Dialog} from '@/types/common'
+import { Option, Dialog } from '@/types/common'
 
 // DOM元素的引用声明定义 ，变量名和DOM的ref属性值一致
 const deptTreeRef = ref(ElTree) // 部门树
@@ -37,7 +26,7 @@ const queryFormRef = ref(ElForm) // 查询表单
 const dataFormRef = ref(ElForm) // 用户表单
 const importFormRef = ref(ElForm) // 导入表单
 
-const {proxy}: any = getCurrentInstance()
+const { proxy }: any = getCurrentInstance()
 
 const state = reactive({
   // 遮罩层
@@ -75,10 +64,10 @@ const state = reactive({
   } as UserQueryParam,
   // 表单校验
   rules: {
-    username: [{required: true, message: '用户名不能为空', trigger: 'blur'}],
-    nickname: [{required: true, message: '用户昵称不能为空', trigger: 'blur'}],
-    deptId: [{required: true, message: '所属部门不能为空', trigger: 'blur'}],
-    roleIds: [{required: true, message: '用户角色不能为空', trigger: 'blur'}],
+    username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+    nickname: [{ required: true, message: '用户昵称不能为空', trigger: 'blur' }],
+    deptId: [{ required: true, message: '所属部门不能为空', trigger: 'blur' }],
+    roleIds: [{ required: true, message: '用户角色不能为空', trigger: 'blur' }],
     email: [
       {
         pattern: /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/,
@@ -104,22 +93,7 @@ const state = reactive({
   excelFilelist: [] as File[],
 })
 
-const {
-  loading,
-  multiple,
-  queryParams,
-  userList,
-  total,
-  dialog,
-  formData,
-  rules,
-  deptName,
-  deptOptions,
-  roleOptions,
-  importDialog,
-  importFormData,
-  excelFilelist
-} = toRefs(state)
+const { loading, multiple, queryParams, userList, total, dialog, formData, rules, deptName, deptOptions, roleOptions, importDialog, importFormData, excelFilelist } = toRefs(state)
 
 /**
  * 部门筛选
@@ -218,7 +192,7 @@ function resetPassword(row: { [key: string]: any }) {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
   })
-    .then(({value}) => {
+    .then(({ value }) => {
       if (!value) {
         ElMessage.warning('请输入新密码')
         return false
@@ -227,8 +201,7 @@ function resetPassword(row: { [key: string]: any }) {
         ElMessage.success('密码重置成功，新密码是：' + value)
       })
     })
-    .catch(() => {
-    })
+    .catch(() => {})
 }
 
 /**
@@ -448,8 +421,7 @@ onMounted(() => {
       <!-- 部门树 -->
       <el-col :span="4" :xs="24">
         <el-card class="box-card">
-          <el-input v-model="deptName" placeholder="部门名称" clearable :prefix-icon="Search"
-                    style="margin-bottom: 20px"/>
+          <el-input v-model="deptName" placeholder="部门名称" clearable :prefix-icon="Search" style="margin-bottom: 20px" />
           <el-tree
             ref="deptTreeRef"
             :data="deptOptions"
@@ -469,22 +441,18 @@ onMounted(() => {
             <el-row>
               <el-col :span="18" :xs="24">
                 <el-form-item>
-                  <el-button v-hasPerm="['sys:user:add']" type="success" :icon="Plus" @click="handleAdd">新增
-                  </el-button>
-                  <el-button v-hasPerm="['sys:user:delete']" type="danger" :icon="Delete" :disabled="multiple"
-                             @click="handleDelete">删除
-                  </el-button>
+                  <el-button v-hasPerm="['sys:user:add']" type="success" :icon="Plus" @click="handleAdd">新增 </el-button>
+                  <el-button v-hasPerm="['sys:user:delete']" type="danger" :icon="Delete" :disabled="multiple" @click="handleDelete">删除 </el-button>
                 </el-form-item>
 
                 <el-form-item prop="keywords">
-                  <el-input v-model="queryParams.keywords" placeholder="用户名/昵称/手机号" clearable
-                            style="width: 200px" @keyup.enter="handleQuery"/>
+                  <el-input v-model="queryParams.keywords" placeholder="用户名/昵称/手机号" clearable style="width: 200px" @keyup.enter="handleQuery" />
                 </el-form-item>
 
                 <el-form-item prop="status">
                   <el-select v-model="queryParams.status" placeholder="用户状态" clearable style="width: 200px">
-                    <el-option label="正常" value="1"/>
-                    <el-option label="禁用" value="0"/>
+                    <el-option label="正常" value="1" />
+                    <el-option label="禁用" value="0" />
                   </el-select>
                 </el-form-item>
 
@@ -512,36 +480,32 @@ onMounted(() => {
           </el-form>
 
           <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" width="50" align="center"/>
-            <el-table-column key="id" label="用户编号" align="center" prop="id"/>
-            <el-table-column key="username" label="用户名" align="center" prop="username"/>
-            <el-table-column label="用户昵称" align="center" prop="nickname"/>
+            <el-table-column type="selection" width="50" align="center" />
+            <el-table-column key="id" label="用户编号" align="center" prop="id" />
+            <el-table-column key="username" label="用户名" align="center" prop="username" />
+            <el-table-column label="用户昵称" align="center" prop="nickname" />
 
-            <el-table-column label="性别" align="center" prop="genderLabel"/>
+            <el-table-column label="性别" align="center" prop="genderLabel" />
 
-            <el-table-column label="部门" align="center" prop="deptName"/>
-            <el-table-column label="手机号码" align="center" prop="mobile" width="120"/>
+            <el-table-column label="部门" align="center" prop="deptName" />
+            <el-table-column label="手机号码" align="center" prop="mobile" width="120" />
 
             <el-table-column label="状态" align="center" prop="status">
               <template #default="scope">
-                <el-switch v-model="scope.row.status" :inactive-value="0" :active-value="1"
-                           @change="handleStatusChange(scope.row)"/>
+                <el-switch v-model="scope.row.status" :inactive-value="0" :active-value="1" @change="handleStatusChange(scope.row)" />
               </template>
             </el-table-column>
             <el-table-column label="创建时间" align="center" prop="createTime" width="180"></el-table-column>
             <el-table-column label="操作" align="center" width="150">
               <template #default="scope">
-                <el-button v-hasPerm="['sys:user:edit']" type="primary" :icon="Edit" circle plain
-                           @click="handleUpdate(scope.row)"></el-button>
-                <el-button v-hasPerm="['sys:user:delete']" type="danger" :icon="Delete" circle plain
-                           @click="handleDelete(scope.row)"></el-button>
+                <el-button v-hasPerm="['sys:user:edit']" type="primary" :icon="Edit" circle plain @click="handleUpdate(scope.row)"></el-button>
+                <el-button v-hasPerm="['sys:user:delete']" type="danger" :icon="Delete" circle plain @click="handleDelete(scope.row)"></el-button>
                 <el-button type="warning" :icon="Lock" circle plain @click="resetPassword(scope.row)"></el-button>
               </template>
             </el-table-column>
           </el-table>
 
-          <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize"
-                      :total="total" @pagination="handleQuery"/>
+          <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="handleQuery" />
         </el-card>
       </el-col>
     </el-row>
@@ -550,24 +514,23 @@ onMounted(() => {
     <el-dialog v-model="dialog.visible" :title="dialog.title" width="600px" append-to-body @close="cancel">
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="80px">
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="formData.username" :readonly="!!formData.id" placeholder="请输入用户名"/>
+          <el-input v-model="formData.username" :readonly="!!formData.id" placeholder="请输入用户名" />
         </el-form-item>
 
         <el-form-item label="用户昵称" prop="nickname">
-          <el-input v-model="formData.nickname" placeholder="请输入用户昵称"/>
+          <el-input v-model="formData.nickname" placeholder="请输入用户昵称" />
         </el-form-item>
 
         <el-form-item label="所属部门" prop="deptId">
-          <el-tree-select v-model="formData.deptId" placeholder="请选择所属部门" :data="deptOptions" filterable
-                          check-strictly :render-after-expand="false"/>
+          <el-tree-select v-model="formData.deptId" placeholder="请选择所属部门" :data="deptOptions" filterable check-strictly :render-after-expand="false" />
         </el-form-item>
 
         <el-form-item label="手机号码" prop="mobile">
-          <el-input v-model="formData.mobile" placeholder="请输入手机号码" maxlength="11"/>
+          <el-input v-model="formData.mobile" placeholder="请输入手机号码" maxlength="11" />
         </el-form-item>
 
         <el-form-item label="邮箱" prop="email">
-          <el-input v-model="formData.email" placeholder="请输入邮箱" maxlength="50"/>
+          <el-input v-model="formData.email" placeholder="请输入邮箱" maxlength="50" />
         </el-form-item>
 
         <el-form-item label="状态" prop="status">
@@ -587,7 +550,7 @@ onMounted(() => {
 
         <el-form-item label="角色" prop="roleIds">
           <el-select v-model="formData.roleIds" multiple placeholder="请选择">
-            <el-option v-for="item in roleOptions" :key="item.value" :label="item.label" :value="item.value"/>
+            <el-option v-for="item in roleOptions" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -600,17 +563,15 @@ onMounted(() => {
     </el-dialog>
 
     <!--用户导入弹窗-->
-    <el-dialog v-model="importDialog.visible" :title="importDialog.title" width="600px" append-to-body
-               @close="closeImportDialog">
+    <el-dialog v-model="importDialog.visible" :title="importDialog.title" width="600px" append-to-body @close="closeImportDialog">
       <el-form ref="importFormRef" :model="importFormData" :rules="rules" label-width="80px">
         <el-form-item label="部门" prop="deptId">
-          <el-tree-select v-model="importFormData.deptId" placeholder="请选择部门" :data="deptOptions" filterable
-                          check-strictly/>
+          <el-tree-select v-model="importFormData.deptId" placeholder="请选择部门" :data="deptOptions" filterable check-strictly />
         </el-form-item>
 
         <el-form-item label="角色" prop="roleIds">
           <el-select v-model="importFormData.roleIds" multiple placeholder="请选择">
-            <el-option v-for="item in roleOptions" :key="item.value" :label="item.label" :value="item.value"/>
+            <el-option v-for="item in roleOptions" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
 

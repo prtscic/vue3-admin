@@ -121,13 +121,12 @@ onMounted(() => {
       </el-form-item>
 
       <el-form-item>
-        <el-date-picker v-model="dateRange" style="width: 240px" value-format="yyyy-MM-dd" type="daterange"
-                        range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"/>
+        <el-date-picker v-model="dateRange" style="width: 240px" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" />
       </el-form-item>
 
       <el-form-item>
         <el-select v-model="queryParams.status" class="filter-item" placeholder="订单状态">
-          <el-option v-for="(key, value) in orderStatusMap" :key="key" :label="key" :value="value"/>
+          <el-option v-for="(key, value) in orderStatusMap" :key="key" :label="key" :value="value" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -202,8 +201,7 @@ onMounted(() => {
     </el-table>
 
     <!-- 分页工具条 -->
-    <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total"
-                @pagination="handleQuery"/>
+    <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="handleQuery" />
   </div>
 </template>
 

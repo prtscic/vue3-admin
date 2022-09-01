@@ -4,8 +4,8 @@
 </template>
 
 <script setup lang="ts">
-import {nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted} from 'vue'
-import {init, EChartsOption} from 'echarts'
+import { nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted } from 'vue'
+import { init, EChartsOption } from 'echarts'
 import resize from '@/utils/resize'
 
 const props = defineProps({
@@ -72,10 +72,10 @@ function initChart() {
           },
         },
         data: [
-          {value: 26, name: '家用电器'},
-          {value: 27, name: '户外运动'},
-          {value: 24, name: '汽车用品'},
-          {value: 23, name: '手机数码'},
+          { value: 26, name: '家用电器' },
+          { value: 27, name: '户外运动' },
+          { value: 24, name: '汽车用品' },
+          { value: 23, name: '手机数码' },
         ],
       },
     ],

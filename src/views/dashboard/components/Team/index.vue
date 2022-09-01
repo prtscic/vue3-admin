@@ -15,8 +15,7 @@
                   <div class="developer__info">
                     <span class="developer__nickname">{{ item.nickname }}</span>
                     <div class="developer__position">
-                      <el-tag v-for="(position, i) in item.positions" :key="i"
-                              :type="(colors[i % colors.length] as any)" :class="i !== 0 ? 'f-ml' : ''" size="small">
+                      <el-tag v-for="(position, i) in item.positions" :key="i" :type="(colors[i % colors.length] as any)" :class="i !== 0 ? 'f-ml' : ''" size="small">
                         {{ position }}
                       </el-tag>
                     </div>
@@ -33,8 +32,7 @@
 
         <el-tab-pane label="交流群" name="2">
           <div class="group">
-            <el-image class="group-img" src="https://www.youlai.tech/files/blog/youlaiqun.png"
-                      :preview-src-list="['https://www.youlai.tech/files/blog/youlaiqun.png']"/>
+            <el-image class="group-img" src="https://www.youlai.tech/files/blog/youlaiqun.png" :preview-src-list="['https://www.youlai.tech/files/blog/youlaiqun.png']" />
             <div class="group-tip">群二维码过期可添加开发者微信由其拉入群，备注「有来」即可。</div>
           </div>
         </el-tab-pane>

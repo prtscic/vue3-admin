@@ -4,8 +4,8 @@
 </template>
 
 <script setup lang="ts">
-import {nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted} from 'vue'
-import {init, EChartsOption} from 'echarts'
+import { nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted } from 'vue'
+import { init, EChartsOption } from 'echarts'
 import * as echarts from 'echarts'
 import resize from '@/utils/resize'
 
@@ -105,9 +105,9 @@ function initChart() {
         barWidth: 20,
         itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#83bff6'},
-            {offset: 0.5, color: '#188df0'},
-            {offset: 1, color: '#188df0'},
+            { offset: 0, color: '#83bff6' },
+            { offset: 0.5, color: '#188df0' },
+            { offset: 1, color: '#188df0' },
           ]),
         },
       },
@@ -118,9 +118,9 @@ function initChart() {
         barWidth: 20,
         itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#25d73c'},
-            {offset: 0.5, color: '#1bc23d'},
-            {offset: 1, color: '#179e61'},
+            { offset: 0, color: '#25d73c' },
+            { offset: 0.5, color: '#1bc23d' },
+            { offset: 1, color: '#179e61' },
           ]),
         },
       },

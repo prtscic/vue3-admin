@@ -1,16 +1,16 @@
 <template>
   <el-scrollbar ref="scrollContainer" :vertical="false" class="scroll-container" @wheel.prevent="handleScroll">
-    <slot/>
+    <slot />
   </el-scrollbar>
 </template>
 
 <script setup lang="ts">
-import {ref, computed, onMounted, onBeforeUnmount, getCurrentInstance} from 'vue'
-import {TagView} from '@/types/store/tagsview'
+import { ref, computed, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue'
+import { TagView } from '@/types/store/tagsview'
 import useStore from '@/store'
 
 const tagAndTagSpacing = ref(4)
-const {proxy} = getCurrentInstance() as any
+const { proxy } = getCurrentInstance() as any
 
 const emits = defineEmits(['scroll'])
 const emitScroll = () => {

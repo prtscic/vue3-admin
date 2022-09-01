@@ -5,8 +5,7 @@
     </div>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item v-for="item of sizeOptions" :key="item.value" :disabled="(size || 'default') == item.value"
-                          :command="item.value">
+        <el-dropdown-item v-for="item of sizeOptions" :key="item.value" :disabled="(size || 'default') == item.value" :command="item.value">
           {{ item.label }}
         </el-dropdown-item>
       </el-dropdown-menu>
@@ -25,9 +24,9 @@ const { app } = useStore()
 const size = computed(() => app.size)
 
 const sizeOptions = ref([
-  {label: '默认', value: 'default'},
-  {label: '大型', value: 'large'},
-  {label: '小型', value: 'small'},
+  { label: '默认', value: 'default' },
+  { label: '大型', value: 'large' },
+  { label: '小型', value: 'small' },
 ])
 
 function handleSetSize(size: string) {

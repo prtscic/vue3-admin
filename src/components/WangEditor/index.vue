@@ -1,10 +1,9 @@
 <template>
   <div style="border: 1px solid #ccc">
     <!-- 工具栏 -->
-    <Toolbar :editor="editorRef" :default-config="toolbarConfig" style="border-bottom: 1px solid #ccc" :mode="mode"/>
+    <Toolbar :editor="editorRef" :default-config="toolbarConfig" style="border-bottom: 1px solid #ccc" :mode="mode" />
     <!-- 编辑器 -->
-    <Editor v-model="defaultHtml" :default-config="editorConfig" style="height: 500px; overflow-y: hidden" :mode="mode"
-            @onChange="handleChange" @onCreated="handleCreated"/>
+    <Editor v-model="defaultHtml" :default-config="editorConfig" style="height: 500px; overflow-y: hidden" :mode="mode" @onChange="handleChange" @onCreated="handleCreated" />
   </div>
 </template>
 

@@ -7,7 +7,7 @@
       </el-form-item>
 
       <el-form-item prop="name">
-        <el-input v-model="queryParams.name" placeholder="菜单名称" clearable @keyup.enter="handleQuery"/>
+        <el-input v-model="queryParams.name" placeholder="菜单名称" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" :icon="Search" @click="handleQuery">搜索</el-button>
@@ -16,12 +16,10 @@
     </el-form>
 
     <!-- 数据表格 -->
-    <el-table v-loading="loading" :data="menuList" highlight-current-row
-              :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" row-key="id" border
-              @row-click="handleRowClick">
+    <el-table v-loading="loading" :data="menuList" highlight-current-row :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" row-key="id" border @row-click="handleRowClick">
       <el-table-column label="菜单名称">
         <template #default="scope">
-          <svg-icon color="#333" :icon-class="scope.row.icon ? scope.row.icon : 'build'"/>
+          <svg-icon color="#333" :icon-class="scope.row.icon ? scope.row.icon : 'build'" />
           {{ scope.row.name }}
         </template>
       </el-table-column>
@@ -45,9 +43,9 @@
 
       <el-table-column label="操作" align="center" width="200">
         <template #default="scope">
-          <el-button type="success" :icon="Plus" circle plain @click.stop="handleAdd(scope.row)"/>
-          <el-button type="primary" :icon="Edit" circle plain @click.stop="handleUpdate(scope.row)"/>
-          <el-button type="danger" :icon="Delete" circle plain @click.stop="handleDelete(scope.row)"/>
+          <el-button type="success" :icon="Plus" circle plain @click.stop="handleAdd(scope.row)" />
+          <el-button type="primary" :icon="Edit" circle plain @click.stop="handleUpdate(scope.row)" />
+          <el-button type="danger" :icon="Delete" circle plain @click.stop="handleDelete(scope.row)" />
         </template>
       </el-table-column>
     </el-table>
@@ -56,12 +54,11 @@
     <el-dialog v-model="dialog.visible" :title="dialog.title" width="750px" @close="cancel">
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
         <el-form-item label="父级菜单" prop="parentId">
-          <el-tree-select v-model="formData.parentId" placeholder="选择上级菜单" :data="menuOptions" filterable
-                          check-strictly/>
+          <el-tree-select v-model="formData.parentId" placeholder="选择上级菜单" :data="menuOptions" filterable check-strictly />
         </el-form-item>
 
         <el-form-item label="菜单名称" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入菜单名称"/>
+          <el-input v-model="formData.name" placeholder="请输入菜单名称" />
         </el-form-item>
 
         <el-form-item label="菜单类型">
@@ -74,13 +71,12 @@
 
         <!-- 路由路径(浏览器地址栏显示) -->
         <el-form-item v-if="formData.type == 'EXTLINK'" label="外链地址" prop="path">
-          <el-input v-model="formData.path" placeholder="请输入外链完整路径"/>
+          <el-input v-model="formData.path" placeholder="请输入外链完整路径" />
         </el-form-item>
 
         <el-form-item v-else label="路由路径" prop="path">
-          <el-input v-if="formData.type == 'CATALOG'" v-model="formData.path"
-                    placeholder="/system  (注意:目录以/开头)"/>
-          <el-input v-else v-model="formData.path" placeholder="user"/>
+          <el-input v-if="formData.type == 'CATALOG'" v-model="formData.path" placeholder="/system  (注意:目录以/开头)" />
+          <el-input v-else v-model="formData.path" placeholder="user" />
         </el-form-item>
 
         <!-- 组件页面完整路径 -->
@@ -96,17 +92,17 @@
             <template #reference>
               <el-input v-model="formData.icon" placeholder="点击选择图标" readonly @click="iconSelectVisible = true">
                 <template #prefix>
-                  <svg-icon :icon-class="formData.icon"/>
+                  <svg-icon :icon-class="formData.icon" />
                 </template>
               </el-input>
             </template>
 
-            <icon-select @selected="selected"/>
+            <icon-select @selected="selected" />
           </el-popover>
         </el-form-item>
 
         <el-form-item label="跳转路由">
-          <el-input v-model="formData.redirect" placeholder="跳转路由路径" maxlength="50"/>
+          <el-input v-model="formData.redirect" placeholder="跳转路由路径" maxlength="50" />
         </el-form-item>
 
         <el-form-item label="状态">
@@ -117,7 +113,7 @@
         </el-form-item>
 
         <el-form-item label="排序" prop="sort">
-          <el-input-number v-model="formData.sort" style="width: 100px" controls-position="right" :min="0"/>
+          <el-input-number v-model="formData.sort" style="width: 100px" controls-position="right" :min="0" />
         </el-form-item>
       </el-form>
 
@@ -141,7 +137,7 @@ import { Dialog, Option } from '@/types/common'
 
 import { MenuFormData, MenuItem, MenuQueryParam } from '@/types/api/system/menu'
 // API 依赖
-import {listMenus, getMenuDetail, listMenuOptions, addMenu, deleteMenus, updateMenu} from '@/api/system/menu'
+import { listMenus, getMenuDetail, listMenuOptions, addMenu, deleteMenus, updateMenu } from '@/api/system/menu'
 
 import SvgIcon from '@/components/SvgIcon/index.vue'
 import IconSelect from '@/components/IconSelect/index.vue'
@@ -171,11 +167,11 @@ const state = reactive({
     type: 'MENU',
   } as MenuFormData,
   rules: {
-    parentId: [{required: true, message: '请选择顶级菜单', trigger: 'blur'}],
-    name: [{required: true, message: '请输入菜单名称', trigger: 'blur'}],
-    type: [{required: true, message: '请选择菜单类型', trigger: 'blur'}],
-    path: [{required: true, message: '请输入路由路径', trigger: 'blur'}],
-    component: [{required: true, message: '请输入组件完整路径', trigger: 'blur'}],
+    parentId: [{ required: true, message: '请选择顶级菜单', trigger: 'blur' }],
+    name: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
+    type: [{ required: true, message: '请选择菜单类型', trigger: 'blur' }],
+    path: [{ required: true, message: '请输入路由路径', trigger: 'blur' }],
+    component: [{ required: true, message: '请输入组件完整路径', trigger: 'blur' }],
   },
   menuOptions: [] as Option[],
   currentRow: undefined,
@@ -187,17 +183,7 @@ const state = reactive({
   },
 })
 
-const {
-  loading,
-  queryParams,
-  menuList,
-  dialog,
-  formData,
-  rules,
-  menuOptions,
-  iconSelectVisible,
-  cacheData
-} = toRefs(state)
+const { loading, queryParams, menuList, dialog, formData, rules, menuOptions, iconSelectVisible, cacheData } = toRefs(state)
 
 /**
  * 查询

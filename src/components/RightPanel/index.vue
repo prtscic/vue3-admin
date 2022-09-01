@@ -2,13 +2,12 @@
   <div ref="rightPanel" :class="{ show: show }">
     <div class="right-panel-background" />
     <div class="right-panel">
-      <div class="right-panel__button" :style="{ top: buttonTop + 'px', 'background-color': theme }"
-           @click="show = !show">
-        <Close v-show="show" class="icon"/>
-        <Setting v-show="!show" class="icon"/>
+      <div class="right-panel__button" :style="{ top: buttonTop + 'px', 'background-color': theme }" @click="show = !show">
+        <Close v-show="show" class="icon" />
+        <Setting v-show="!show" class="icon" />
       </div>
       <div class="right-panel__items">
-        <slot/>
+        <slot />
       </div>
     </div>
   </div>

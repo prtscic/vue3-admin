@@ -1,27 +1,26 @@
 <template>
   <div>
     <!-- 上传组件 -->
-    <el-upload ref="singleUploadRef" action="" class="single-uploader" :show-file-list="false"
-               :before-upload="handleBeforeUpload" :http-request="uploadImage">
-      <img v-if="imgUrl" :src="imgUrl" class="single-uploader__image"/>
+    <el-upload ref="singleUploadRef" action="" class="single-uploader" :show-file-list="false" :before-upload="handleBeforeUpload" :http-request="uploadImage">
+      <img v-if="imgUrl" :src="imgUrl" class="single-uploader__image" />
 
       <el-icon v-else class="single-uploader__plus">
-        <Plus/>
+        <Plus />
       </el-icon>
 
       <!-- 删除图标 -->
       <el-icon v-if="props.showClose && imgUrl" class="single-uploader__remove" @click.stop="handleRemove(imgUrl)">
-        <Close/>
+        <Close />
       </el-icon>
     </el-upload>
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue'
-import {Plus, Close} from '@element-plus/icons-vue'
-import {ElMessage, ElUpload, UploadRawFile, UploadRequestOptions} from 'element-plus'
-import {uploadFile, deleteFile} from '@/api/system/file'
+import { computed } from 'vue'
+import { Plus, Close } from '@element-plus/icons-vue'
+import { ElMessage, ElUpload, UploadRawFile, UploadRequestOptions } from 'element-plus'
+import { uploadFile, deleteFile } from '@/api/system/file'
 
 const emit = defineEmits(['update:modelValue'])
 

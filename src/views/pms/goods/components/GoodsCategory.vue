@@ -1,14 +1,12 @@
 <template>
   <div class="component-container">
     <div class="component-container__main">
-      <el-cascader-panel ref="categoryRef" v-model="goodsInfo.categoryId" :options="categoryOptions"
-                         :props="{ emitPath: false }" @change="handleCategoryChange"/>
+      <el-cascader-panel ref="categoryRef" v-model="goodsInfo.categoryId" :options="categoryOptions" :props="{ emitPath: false }" @change="handleCategoryChange" />
       <div style="margin-top: 20px">
         <el-link v-show="pathLabels.length > 0" type="info" :underline="false">您选择的商品分类:</el-link>
-        <el-link v-for="(item, index) in pathLabels" :key="index" type="danger" :underline="false"
-                 style="margin-left: 5px">
+        <el-link v-for="(item, index) in pathLabels" :key="index" type="danger" :underline="false" style="margin-left: 5px">
           {{ item }}
-          <CaretRight v-show="index < pathLabels.length - 1" style="width: 1em; height: 1em; margin-left: 5px"/>
+          <CaretRight v-show="index < pathLabels.length - 1" style="width: 1em; height: 1em; margin-left: 5px" />
         </el-link>
       </div>
     </div>
@@ -32,8 +30,7 @@ const emit = defineEmits(['next', 'update:modelValue'])
 const props = defineProps({
   modelValue: {
     type: Object,
-    default: () => {
-    },
+    default: () => {},
   },
 })
 

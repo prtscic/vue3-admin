@@ -13,16 +13,12 @@
 
       <el-row style="margin-top: 10px">
         <el-form ref="form" :model="formData" :disabled="category?.childrenLen > 0" label-width="100">
-          <el-form-item v-for="(item, index) in formData.attributes" :key="index"
-                        :label="attributeTypeName + (index + 1)" :prop="'attributes.' + index + '.name'"
-                        :rules="rules.attribute.name">
-            <el-input v-model="item.name" style="width: 300px"/>
+          <el-form-item v-for="(item, index) in formData.attributes" :key="index" :label="attributeTypeName + (index + 1)" :prop="'attributes.' + index + '.name'" :rules="rules.attribute.name">
+            <el-input v-model="item.name" style="width: 300px" />
 
-            <el-button v-if="index === 0" type="success" :icon="Plus" circle plain style="margin-left: 15px"
-                       @click.prevent="handleAdd()"/>
+            <el-button v-if="index === 0" type="success" :icon="Plus" circle plain style="margin-left: 15px" @click.prevent="handleAdd()" />
 
-            <el-button type="danger" :icon="Delete" plain circle style="margin-left: 15px"
-                       @click.prevent="handleDelete(index)"/>
+            <el-button type="danger" :icon="Delete" plain circle style="margin-left: 15px" @click.prevent="handleDelete(index)" />
           </el-form-item>
         </el-form>
       </el-row>
@@ -75,7 +71,7 @@ const state = reactive({
   },
   rules: {
     attribute: {
-      name: [{required: true, validator: attributeNameValidator, trigger: 'blur'}],
+      name: [{ required: true, validator: attributeNameValidator, trigger: 'blur' }],
     },
   },
 })
@@ -91,7 +87,7 @@ watch(
         categoryId: categoryId,
         type: props.attributeType,
       }).then((response) => {
-        const {data} = response
+        const { data } = response
         if (data && data.length > 0) {
           state.formData.attributes = response.data
         } else {
