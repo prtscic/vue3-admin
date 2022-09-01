@@ -8,7 +8,7 @@
         <Setting v-show="!show" class="icon"/>
       </div>
       <div class="right-panel__items">
-        <slot />
+        <slot/>
       </div>
     </div>
   </div>

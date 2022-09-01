@@ -5,9 +5,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs } from 'vue'
-import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
-import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
+import {onMounted, reactive, ref, toRefs} from 'vue'
+import {ElForm, ElMessage, ElMessageBox} from 'element-plus'
+import {Search, Plus, Edit, Refresh, Delete} from '@element-plus/icons-vue'
 import SingleUpload from '@/components/Upload/SingleUpload.vue'
 import {listAdvertPages, getAdvertFormDetail, updateAdvert, addAdvert, deleteAdverts} from '@/api/sms/advert'
 import {Dialog} from '@/types/common'
@@ -24,7 +24,7 @@ const state = reactive({
   single: true,
   // 非多个禁用
   multiple: true,
-  queryParams: { pageNum: 1, pageSize: 10 } as AdvertQueryParam,
+  queryParams: {pageNum: 1, pageSize: 10} as AdvertQueryParam,
   advertList: [] as AdvertItem[],
   total: 0,
   dialog: {title: '', visible: false} as Dialog,

@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs, watch } from 'vue'
+import {onMounted, reactive, ref, toRefs, watch} from 'vue'
 import {ElForm, ElMessage, ElMessageBox} from 'element-plus'
 import {DictItem, DictItemFormData, DictItemQueryParam} from '@/types/api/system/dict'
 

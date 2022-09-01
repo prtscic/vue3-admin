@@ -89,7 +89,7 @@ export function getDictItemsByTypeCode(typeCode: string): AxiosPromise<Option[]>
   return request({
     url: '/youlai-admin/api/v1/dict-items/select_list',
     method: 'get',
-    params: {typeCode: typeCode},
+    params: { typeCode: typeCode },
   })
 }
 

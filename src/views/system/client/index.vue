@@ -8,12 +8,12 @@ export default {
 <script setup lang="ts">
 import {listClientPages, getClientFormDetial, addClient, updateClient, deleteClients} from '@/api/system/client'
 import {Search, Plus, Edit, Refresh, Delete} from '@element-plus/icons-vue'
-import { onMounted, reactive, getCurrentInstance, ref, toRefs } from 'vue'
+import {onMounted, reactive, getCurrentInstance, ref, toRefs} from 'vue'
 import {ElForm, ElMessage, ElMessageBox} from 'element-plus'
 import {ClientFormData, ClientItem, ClientQueryParam} from '@/types/api/system/client'
 import {Option} from '@/types/common'
 
-const { proxy }: any = getCurrentInstance()
+const {proxy}: any = getCurrentInstance()
 
 const queryFormRef = ref(ElForm)
 const dataFormRef = ref(ElForm)

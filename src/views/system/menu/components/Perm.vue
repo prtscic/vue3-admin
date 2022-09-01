@@ -4,13 +4,13 @@ import {onMounted, watch, reactive, ref, getCurrentInstance, toRefs} from 'vue'
 import {listPermPages, getPermFormDetail, addPerm, updatePerm, deletePerms} from '@/api/system/perm'
 import {Search, Plus, Edit, Refresh, Delete} from '@element-plus/icons-vue'
 
-import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
-import { Dialog, Option } from '@/types/common'
+import {ElForm, ElMessage, ElMessageBox} from 'element-plus'
+import {Dialog, Option} from '@/types/common'
 
-import { PermFormData, PermItem, PermQueryParam } from '@/types/api/system/perm'
-import { MenuItem } from '@/types/api/system/menu'
+import {PermFormData, PermItem, PermQueryParam} from '@/types/api/system/perm'
+import {MenuItem} from '@/types/api/system/menu'
 
-const { proxy }: any = getCurrentInstance()
+const {proxy}: any = getCurrentInstance()
 
 const queryFormRef = ref(ElForm)
 const dataFormRef = ref(ElForm)

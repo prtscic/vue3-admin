@@ -5,8 +5,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs } from 'vue'
-import { ElForm, ElTable, ElMessage, ElMessageBox } from 'element-plus'
+import {onMounted, reactive, ref, toRefs} from 'vue'
+import {ElForm, ElTable, ElMessage, ElMessageBox} from 'element-plus'
 import {Search, Plus, Edit, Refresh, Delete} from '@element-plus/icons-vue'
 import {BrandFormData, BrandItem, BrandQueryParam} from '@/types/api/pms/brand'
 import {Dialog} from '@/types/common'

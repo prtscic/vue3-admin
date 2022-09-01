@@ -84,7 +84,7 @@ onMounted(() => {
                 {{ scope.row.province + scope.row.city + scope.row.area + scope.row.address }}
               </template>
             </el-table-column>
-            <el-table-column align="center" label="邮编" prop="zipCode" />
+            <el-table-column align="center" label="邮编" prop="zipCode"/>
             <el-table-column align="center" label="是否默认">
               <template #default="scope">
                 <el-tag v-if="scope.row.defaulted == 1" type="success">是</el-tag>

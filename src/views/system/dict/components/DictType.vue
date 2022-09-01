@@ -80,10 +80,10 @@ export default {
 import {onMounted, reactive, ref, toRefs} from 'vue'
 import {listPageDictTypes, getDictFormData, addDictType, updateDictType, deleteDictTypes} from '@/api/system/dict'
 import {Search, Plus, Edit, Refresh, Delete} from '@element-plus/icons-vue'
-import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
+import {ElForm, ElMessage, ElMessageBox} from 'element-plus'
 
-import { Dialog } from '@/types/common'
-import { Dict, DictFormTypeData, DictQueryParam } from '@/types/api/system/dict'
+import {Dialog} from '@/types/common'
+import {Dict, DictFormTypeData, DictQueryParam} from '@/types/api/system/dict'
 
 const queryFormRef = ref(ElForm)
 const dataFormRef = ref(ElForm)

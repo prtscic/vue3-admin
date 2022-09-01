@@ -6,13 +6,13 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs } from 'vue'
-import { ElForm, ElMessage, ElMessageBox, ElCascaderPanel } from 'element-plus'
+import {onMounted, reactive, ref, toRefs} from 'vue'
+import {ElForm, ElMessage, ElMessageBox, ElCascaderPanel} from 'element-plus'
 import {Search, Plus, Edit, Refresh, Delete} from '@element-plus/icons-vue'
 import {lisCouponPages, getCouponFormData, updateCoupon, addCoupon, deleteCoupons} from '@/api/sms/coupon'
 
-import { listCategoryOptions } from '@/api/pms/category'
-import { listSpuPages } from '@/api/pms/goods'
+import {listCategoryOptions} from '@/api/pms/category'
+import {listSpuPages} from '@/api/pms/goods'
 import {Dialog, Option} from '@/types/common'
 import {CouponItem, CouponQueryParam, CouponFormData} from '@/types/api/sms/coupon'
 import {GoodsItem, GoodsQueryParam} from '@/types/api/pms/goods'

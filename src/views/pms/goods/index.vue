@@ -6,16 +6,16 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted, toRefs } from 'vue'
-import { ElTable, ElMessage, ElMessageBox } from 'element-plus'
-import { useRouter } from 'vue-router'
+import {reactive, ref, onMounted, toRefs} from 'vue'
+import {ElTable, ElMessage, ElMessageBox} from 'element-plus'
+import {useRouter} from 'vue-router'
 
 import {Search, Position, Edit, Refresh, Delete, View} from '@element-plus/icons-vue'
 import {listSpuPages, deleteSpu} from '@/api/pms/goods'
-import { listCategoryOptions } from '@/api/pms/category'
-import { GoodsItem, GoodsQueryParam } from '@/types/api/pms/goods'
-import { moneyFormatter } from '@/utils/filter'
-import { Option } from '@/types/common'
+import {listCategoryOptions} from '@/api/pms/category'
+import {GoodsItem, GoodsQueryParam} from '@/types/api/pms/goods'
+import {moneyFormatter} from '@/utils/filter'
+import {Option} from '@/types/common'
 
 const dataTableRef = ref(ElTable)
 const router = useRouter()
@@ -147,7 +147,7 @@ onMounted(() => {
             <el-table-column align="center" label="现价" prop="price">
               <template #default="scope">{{ moneyFormatter(scope.row.price) }}</template>
             </el-table-column>
-            <el-table-column align="center" label="库存" prop="stockNum" />
+            <el-table-column align="center" label="库存" prop="stockNum"/>
           </el-table>
         </template>
       </el-table-column>

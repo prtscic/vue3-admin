@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import {computed} from 'vue'
 import {Plus, Close} from '@element-plus/icons-vue'
 import {ElMessage, ElUpload, UploadRawFile, UploadRequestOptions} from 'element-plus'
 import {uploadFile, deleteFile} from '@/api/system/file'

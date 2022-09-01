@@ -10,7 +10,7 @@ import {TagView} from '@/types/store/tagsview'
 import useStore from '@/store'
 
 const tagAndTagSpacing = ref(4)
-const { proxy } = getCurrentInstance() as any
+const {proxy} = getCurrentInstance() as any
 
 const emits = defineEmits(['scroll'])
 const emitScroll = () => {
