@@ -7,16 +7,14 @@ import useStore from '@/store'
 const service = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
   timeout: 50000,
-  headers: { 'Content-Type': 'application/json;charset=utf-8' }
+  headers: { 'Content-Type': 'application/json;charset=utf-8' },
 })
 
 // 请求拦截器
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     if (!config.headers) {
-      throw new Error(
-        `Expected 'config' and 'config.headers' not to be undefined`
-      )
+      throw new Error(`Expected 'config' and 'config.headers' not to be undefined`)
     }
     const { user } = useStore()
     if (user.token) {
@@ -24,9 +22,9 @@ service.interceptors.request.use(
     }
     return config
   },
-  error => {
+  (error) => {
     return Promise.reject(error)
-  }
+  },
 )
 
 // 响应拦截器
@@ -35,20 +33,19 @@ service.interceptors.response.use(
     const { code, msg } = response.data
     if (code === '00000') {
       return response.data
-    } else {
-      // 响应数据为二进制流处理(Excel导出)
-      if (response.data instanceof ArrayBuffer) {
-        return response
-      }
-
-      ElMessage({
-        message: msg || '系统出错',
-        type: 'error'
-      })
-      return Promise.reject(new Error(msg || 'Error'))
     }
+    // 响应数据为二进制流处理(Excel导出)
+    if (response.data instanceof ArrayBuffer) {
+      return response
+    }
+
+    ElMessage({
+      message: msg || '系统出错',
+      type: 'error',
+    })
+    return Promise.reject(new Error(msg || 'Error'))
   },
-  error => {
+  (error) => {
     const { code, msg } = error.response.data
     if (code === 'A0230') {
       // token 过期
@@ -58,11 +55,11 @@ service.interceptors.response.use(
     } else {
       ElMessage({
         message: msg || '系统出错',
-        type: 'error'
+        type: 'error',
       })
     }
     return Promise.reject(new Error(msg || 'Error'))
-  }
+  },
 )
 
 // 导出 axios 实例

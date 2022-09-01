@@ -23,12 +23,12 @@ const locale = ref()
 
 watch(
   language,
-  value => {
-    locale.value = value == 'en' ? en : zhCn
+  (value) => {
+    locale.value = value === 'en' ? en : zhCn
   },
   {
     // 初始化立即执行
-    immediate: true
-  }
+    immediate: true,
+  },
 )
 </script>
