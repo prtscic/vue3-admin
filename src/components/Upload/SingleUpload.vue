@@ -1,27 +1,17 @@
 <template>
   <div>
     <!-- 上传组件 -->
-    <el-upload
-      ref="singleUploadRef"
-      action=""
-      class="single-uploader"
-      :show-file-list="false"
-      :before-upload="handleBeforeUpload"
-      :http-request="uploadImage"
-    >
-      <img v-if="imgUrl" :src="imgUrl" class="single-uploader__image" />
+    <el-upload ref="singleUploadRef" action="" class="single-uploader" :show-file-list="false"
+               :before-upload="handleBeforeUpload" :http-request="uploadImage">
+      <img v-if="imgUrl" :src="imgUrl" class="single-uploader__image"/>
 
       <el-icon v-else class="single-uploader__plus">
-        <Plus />
+        <Plus/>
       </el-icon>
 
       <!-- 删除图标 -->
-      <el-icon
-        v-if="props.showClose && imgUrl"
-        class="single-uploader__remove"
-        @click.stop="handleRemove(imgUrl)"
-      >
-        <Close />
+      <el-icon v-if="props.showClose && imgUrl" class="single-uploader__remove" @click.stop="handleRemove(imgUrl)">
+        <Close/>
       </el-icon>
     </el-upload>
   </div>
@@ -29,29 +19,24 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Plus, Close } from '@element-plus/icons-vue'
-import {
-  ElMessage,
-  ElUpload,
-  UploadRawFile,
-  UploadRequestOptions
-} from 'element-plus'
-import { uploadFile, deleteFile } from '@/api/system/file'
+import {Plus, Close} from '@element-plus/icons-vue'
+import {ElMessage, ElUpload, UploadRawFile, UploadRequestOptions} from 'element-plus'
+import {uploadFile, deleteFile} from '@/api/system/file'
 
 const emit = defineEmits(['update:modelValue'])
 
 const props = defineProps({
   modelValue: {
     type: String,
-    default: ''
+    default: '',
   },
   /**
    * 是否显示右上角的删除图片按钮
    */
   showClose: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const imgUrl = computed<string | undefined>({
@@ -61,7 +46,7 @@ const imgUrl = computed<string | undefined>({
   set(val) {
     // imgUrl改变时触发修改父组件绑定的v-model的值
     emit('update:modelValue', val)
-  }
+  },
 })
 
 /**

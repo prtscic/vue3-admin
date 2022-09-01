@@ -4,35 +4,29 @@
 </template>
 
 <script setup lang="ts">
-import {
-  nextTick,
-  onActivated,
-  onBeforeUnmount,
-  onDeactivated,
-  onMounted
-} from 'vue'
-import { init, EChartsOption } from 'echarts'
+import {nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted} from 'vue'
+import {init, EChartsOption} from 'echarts'
 import resize from '@/utils/resize'
 
 const props = defineProps({
   id: {
     type: String,
-    default: 'pieChart'
+    default: 'pieChart',
   },
   className: {
     type: String,
-    default: ''
+    default: '',
   },
   width: {
     type: String,
     default: '200px',
-    required: true
+    required: true,
   },
   height: {
     type: String,
     default: '200px',
-    required: true
-  }
+    required: true,
+  },
 })
 
 const { mounted, chart, beforeDestroy, activated, deactivated } = resize()
@@ -50,17 +44,17 @@ function initChart() {
         fontSize: 18,
         fontStyle: 'normal',
         fontWeight: 'bold',
-        color: '#337ecc'
-      }
+        color: '#337ecc',
+      },
     },
     grid: {
       left: '2%',
       right: '2%',
       bottom: '10%',
-      containLabel: true
+      containLabel: true,
     },
     legend: {
-      top: 'bottom'
+      top: 'bottom',
     },
     series: [
       {
@@ -75,16 +69,16 @@ function initChart() {
             //自定义颜色
             const colorList = ['#409EFF', '#67C23A', '#E6A23C', '#F56C6C']
             return colorList[params.dataIndex]
-          }
+          },
         },
         data: [
-          { value: 26, name: '家用电器' },
-          { value: 27, name: '户外运动' },
-          { value: 24, name: '汽车用品' },
-          { value: 23, name: '手机数码' }
-        ]
-      }
-    ]
+          {value: 26, name: '家用电器'},
+          {value: 27, name: '户外运动'},
+          {value: 24, name: '汽车用品'},
+          {value: 23, name: '手机数码'},
+        ],
+      },
+    ],
   } as EChartsOption)
 
   chart.value = pieChart

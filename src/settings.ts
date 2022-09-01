@@ -14,7 +14,7 @@ const defaultSettings: DefaultSettings = {
   fixedHeader: false,
   // 是否显示Logo
   sidebarLogo: true,
-  errorLog: 'production'
+  errorLog: 'production',
 }
 
 export default defaultSettings

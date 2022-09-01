@@ -7,13 +7,11 @@ import { AxiosPromise } from 'axios'
  *
  * @param queryParams
  */
-export function listOrderPages(
-  queryParams: OrderQueryParam
-): AxiosPromise<OrderPageResult> {
+export function listOrderPages(queryParams: OrderQueryParam): AxiosPromise<OrderPageResult> {
   return request({
     url: '/mall-oms/api/v1/orders',
     method: 'get',
-    params: queryParams
+    params: queryParams,
   })
 }
 
@@ -25,6 +23,6 @@ export function listOrderPages(
 export function getOrderDetail(orderId: number) {
   return request({
     url: '/mall-oms/api/v1/orders/' + orderId,
-    method: 'get'
+    method: 'get',
   })
 }

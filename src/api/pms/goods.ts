@@ -1,8 +1,4 @@
-import {
-  GoodsDetail,
-  GoodsPageResult,
-  GoodsQueryParam
-} from '@/types/api/pms/goods'
+import { GoodsDetail, GoodsPageResult, GoodsQueryParam } from '@/types/api/pms/goods'
 import request from '@/utils/request'
 import { AxiosPromise } from 'axios'
 
@@ -11,13 +7,11 @@ import { AxiosPromise } from 'axios'
  *
  * @param queryParams
  */
-export function listSpuPages(
-  queryParams: GoodsQueryParam
-): AxiosPromise<GoodsPageResult> {
+export function listSpuPages(queryParams: GoodsQueryParam): AxiosPromise<GoodsPageResult> {
   return request({
     url: '/mall-pms/api/v1/spu/pages',
     method: 'get',
-    params: queryParams
+    params: queryParams,
   })
 }
 
@@ -29,7 +23,7 @@ export function listSpuPages(
 export function getSpuDetail(id: string): AxiosPromise<GoodsDetail> {
   return request({
     url: '/mall-pms/api/v1/spu/' + id,
-    method: 'get'
+    method: 'get',
   })
 }
 
@@ -42,7 +36,7 @@ export function addSpu(data: object) {
   return request({
     url: '/mall-pms/api/v1/spu',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
@@ -56,7 +50,7 @@ export function updateSpu(id: number, data: object) {
   return request({
     url: '/mall-pms/api/v1/spu/' + id,
     method: 'put',
-    data: data
+    data: data,
   })
 }
 
@@ -68,6 +62,6 @@ export function updateSpu(id: number, data: object) {
 export function deleteSpu(ids: string) {
   return request({
     url: '/mall-pms/api/v1/spu/' + ids,
-    method: 'delete'
+    method: 'delete',
   })
 }

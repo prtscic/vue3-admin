@@ -1,31 +1,21 @@
 <!--优惠券-->
 <script lang="ts">
 export default {
-  name: 'Coupon'
+  name: 'Coupon',
 }
 </script>
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, toRefs } from 'vue'
 import { ElForm, ElMessage, ElMessageBox, ElCascaderPanel } from 'element-plus'
-import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
-import {
-  lisCouponPages,
-  getCouponFormData,
-  updateCoupon,
-  addCoupon,
-  deleteCoupons
-} from '@/api/sms/coupon'
+import {Search, Plus, Edit, Refresh, Delete} from '@element-plus/icons-vue'
+import {lisCouponPages, getCouponFormData, updateCoupon, addCoupon, deleteCoupons} from '@/api/sms/coupon'
 
 import { listCategoryOptions } from '@/api/pms/category'
 import { listSpuPages } from '@/api/pms/goods'
-import { Dialog, Option } from '@/types/common'
-import {
-  CouponItem,
-  CouponQueryParam,
-  CouponFormData
-} from '@/types/api/sms/coupon'
-import { GoodsItem, GoodsQueryParam } from '@/types/api/pms/goods'
+import {Dialog, Option} from '@/types/common'
+import {CouponItem, CouponQueryParam, CouponFormData} from '@/types/api/sms/coupon'
+import {GoodsItem, GoodsQueryParam} from '@/types/api/pms/goods'
 
 const queryFormRef = ref(ElForm)
 const dataFormRef = ref(ElForm)
@@ -40,38 +30,38 @@ const state = reactive({
   couponList: [] as CouponItem[],
   total: 0,
   dialog: {
-    visible: false
+    visible: false,
   } as Dialog,
   //指定商品分类选择Dialog
   spuCategoryChooseDialog: {
-    visible: false
+    visible: false,
   } as Dialog,
   // 指定商品选择ialog
   spuChooseDialog: {
-    visible: false
+    visible: false,
   } as Dialog,
   formData: {
     type: 1,
     platform: 0,
     validityPeriodType: 1,
     perLimit: 1,
-    applicationScope: 0
+    applicationScope: 0,
   } as CouponFormData,
   rules: {
-    type: [{ required: true, message: '请输入优惠券名称', trigger: 'blur' }],
-    name: [{ required: true, message: '请选择优惠券类型', trigger: 'blur' }]
+    type: [{required: true, message: '请输入优惠券名称', trigger: 'blur'}],
+    name: [{required: true, message: '请选择优惠券类型', trigger: 'blur'}],
   },
   validityPeriod: '' as any,
   perLimitChecked: false,
   spuCategoryOptions: [] as Option[],
   spuCategoryProps: {
     multiple: true,
-    emitPath: false
+    emitPath: false,
   },
   spuList: [] as GoodsItem[],
   spuTotal: 0,
-  spuQueryParams: { pageNum: 1, pageSize: 10 } as GoodsQueryParam,
-  checkedSpuIds: []
+  spuQueryParams: {pageNum: 1, pageSize: 10} as GoodsQueryParam,
+  checkedSpuIds: [],
 })
 
 const {
@@ -90,7 +80,8 @@ const {
   spuList,
   spuTotal,
   checkedSpuIds
-} = toRefs(state)
+} =
+  toRefs(state)
 
 /**
  * 查询
@@ -136,7 +127,7 @@ async function loadSpuList() {
 function handleAdd() {
   dialog.value = {
     title: '新增优惠券',
-    visible: true
+    visible: true,
   }
 
   loadSpuCategoryOptions()
@@ -146,7 +137,7 @@ function handleAdd() {
 async function handleUpdate(row: any) {
   dialog.value = {
     title: '编辑优惠券',
-    visible: true
+    visible: true,
   }
   const id = row.id
 
@@ -178,8 +169,7 @@ function submitForm() {
       console.log('applicationScope', applicationScope)
       if (applicationScope == 1) {
         // 指定商品分类
-        formData.value.spuCategoryIds =
-          spuCategoryRef.value.getCheckedNodes()[0].data.value
+        formData.value.spuCategoryIds = spuCategoryRef.value.getCheckedNodes()[0].data.value
       }
 
       // 有效期转换
@@ -230,7 +220,7 @@ function handleDelete(row: any) {
   ElMessageBox.confirm('确认删除已选中的数据项?', '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning'
+    type: 'warning',
   })
     .then(() => {
       deleteCoupons(ids).then(() => {
@@ -258,95 +248,44 @@ onMounted(() => {
     <!-- 搜索表单 -->
     <el-form ref="queryFormRef" :model="queryParams" :inline="true">
       <el-form-item>
-        <el-button type="success" :icon="Plus" @click="handleAdd"
-          >新增</el-button
-        >
-        <el-button
-          type="danger"
-          :icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete"
-          >删除</el-button
-        >
+        <el-button type="success" :icon="Plus" @click="handleAdd">新增</el-button>
+        <el-button type="danger" :icon="Delete" :disabled="multiple" @click="handleDelete">删除</el-button>
       </el-form-item>
 
       <el-form-item prop="keywords">
-        <el-input
-          v-model="queryParams.keywords"
-          placeholder="优惠券名称"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.keywords" placeholder="优惠券名称" clearable @keyup.enter="handleQuery"/>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" :icon="Search" @click="handleQuery"
-          >搜索</el-button
-        >
+        <el-button type="primary" :icon="Search" @click="handleQuery">搜索</el-button>
         <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
-    <el-table
-      v-loading="loading"
-      :data="couponList"
-      border
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" min-width="5" align="center" />
-      <el-table-column type="index" label="序号" width="80" align="center" />
-      <el-table-column prop="name" min-width="100" label="优惠券名称" />
-      <el-table-column prop="code" min-width="100" label="优惠券码" />
-      <el-table-column prop="typeLabel" min-width="100" label="优惠券类型" />
-      <el-table-column prop="faceValueLabel" min-width="100" label="面值" />
-      <el-table-column prop="minPointLabel" min-width="100" label="使用门槛" />
-      <el-table-column
-        prop="validityPeriodLabel"
-        min-width="200"
-        label="有效期"
-      />
+    <el-table v-loading="loading" :data="couponList" border @selection-change="handleSelectionChange">
+      <el-table-column type="selection" min-width="5" align="center"/>
+      <el-table-column type="index" label="序号" width="80" align="center"/>
+      <el-table-column prop="name" min-width="100" label="优惠券名称"/>
+      <el-table-column prop="code" min-width="100" label="优惠券码"/>
+      <el-table-column prop="typeLabel" min-width="100" label="优惠券类型"/>
+      <el-table-column prop="faceValueLabel" min-width="100" label="面值"/>
+      <el-table-column prop="minPointLabel" min-width="100" label="使用门槛"/>
+      <el-table-column prop="validityPeriodLabel" min-width="200" label="有效期"/>
 
       <el-table-column label="操作" align="center" width="150">
         <template #default="scope">
-          <el-button
-            type="primary"
-            :icon="Edit"
-            circle
-            plain
-            @click.stop="handleUpdate(scope.row)"
-          />
-          <el-button
-            type="danger"
-            :icon="Delete"
-            circle
-            plain
-            @click.stop="handleDelete(scope.row)"
-          />
+          <el-button type="primary" :icon="Edit" circle plain @click.stop="handleUpdate(scope.row)"/>
+          <el-button type="danger" :icon="Delete" circle plain @click.stop="handleDelete(scope.row)"/>
         </template>
       </el-table-column>
     </el-table>
 
     <!-- 分页 -->
-    <pagination
-      v-if="total > 0"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      :total="total"
-      @pagination="handleQuery"
-    />
+    <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total"
+                @pagination="handleQuery"/>
 
     <!-- 表单Dialog -->
-    <el-dialog
-      v-model="dialog.visible"
-      :title="dialog.title"
-      width="1000px;"
-      top="5vh"
-    >
-      <el-form
-        ref="dataFormRef"
-        :model="formData"
-        :rules="rules"
-        label-width="150px"
-      >
+    <el-dialog v-model="dialog.visible" :title="dialog.title" width="1000px;" top="5vh">
+      <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="150px">
         <el-form-item label="优惠券类型" prop="type">
           <el-radio-group v-model="formData.type">
             <el-radio :label="1">满减券</el-radio>
@@ -356,37 +295,23 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item label="优惠券名称" prop="name">
-          <el-input v-model="formData.name" />
+          <el-input v-model="formData.name"/>
         </el-form-item>
 
         <el-form-item label="优惠券面值" prop="faceValueType">
-          <el-radio-group
-            v-model="formData.faceValueType"
-            style="
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-            "
-          >
+          <el-radio-group v-model="formData.faceValueType"
+                          style="display: flex; flex-direction: column; justify-content: space-between">
             <div>
               <el-radio :label="1">现金</el-radio>
-              <el-input
-                v-model="formData.faceValue"
-                :disabled="formData.faceValueType !== 1"
-                placeholder="0.5-1000的数字"
-                style="width: 180px"
-              >
+              <el-input v-model="formData.faceValue" :disabled="formData.faceValueType !== 1"
+                        placeholder="0.5-1000的数字" style="width: 180px">
                 <template #append>元</template>
               </el-input>
             </div>
             <div>
               <el-radio :label="2">折扣</el-radio>
-              <el-input
-                v-model="formData.discount"
-                :disabled="formData.faceValueType !== 2"
-                placeholder="1-9.9的数字"
-                style="width: 180px"
-              >
+              <el-input v-model="formData.discount" :disabled="formData.faceValueType !== 2" placeholder="1-9.9的数字"
+                        style="width: 180px">
                 <template #append>折</template>
               </el-input>
             </div>
@@ -394,21 +319,14 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item label="使用门槛" prop="minPoint">
-          <el-input
-            v-model="formData.minPoint"
-            placeholder="0为无限制"
-            style="width: 300px"
-          >
+          <el-input v-model="formData.minPoint" placeholder="0为无限制" style="width: 300px">
             <template #prepend>满</template>
             <template #append>元</template>
           </el-input>
         </el-form-item>
 
         <el-form-item label="有效时间" prop="validType">
-          <el-radio-group
-            v-model="formData.validityPeriodType"
-            style="display: flex; flex-direction: column"
-          >
+          <el-radio-group v-model="formData.validityPeriodType" style="display: flex; flex-direction: column">
             <div>
               <el-radio :label="1">日期范围</el-radio>
               <el-date-picker
@@ -424,11 +342,8 @@ onMounted(() => {
             </div>
             <div style="width: 100%">
               <el-radio :label="2">固定天数</el-radio>
-              <el-input
-                v-model="formData.validityDays"
-                style="width: 150px"
-                :disabled="formData.validityPeriodType !== 2"
-              >
+              <el-input v-model="formData.validityDays" style="width: 150px"
+                        :disabled="formData.validityPeriodType !== 2">
                 <template #append>天</template>
               </el-input>
             </div>
@@ -436,21 +351,13 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item label="发行量" prop="circulation">
-          <el-input
-            v-model="formData.circulation"
-            placeholder="-1为无限制"
-            style="width: 200px"
-          >
+          <el-input v-model="formData.circulation" placeholder="-1为无限制" style="width: 200px">
             <template #prepend>共</template>
             <template #append>张</template>
           </el-input>
         </el-form-item>
         <el-form-item label="每人限领张数" prop="perLimit">
-          <el-input
-            v-model="formData.perLimit"
-            style="width: 200px"
-            placeholder="-1为不限制"
-          >
+          <el-input v-model="formData.perLimit" style="width: 200px" placeholder="-1为不限制">
             <template #prepend>限</template>
             <template #append>张</template>
           </el-input>
@@ -461,10 +368,7 @@ onMounted(() => {
         </el-form-item>
 
         <el-form-item label="商品范围" prop="useType">
-          <el-radio-group
-            v-model="formData.applicationScope"
-            style="width: 100%"
-          >
+          <el-radio-group v-model="formData.applicationScope" style="width: 100%">
             <el-radio :label="0">全场通用</el-radio>
             <el-radio :label="1">指定商品分类</el-radio>
             <el-radio :label="2">指定商品</el-radio>
@@ -492,17 +396,12 @@ onMounted(() => {
               :titles="['商品列表', '已选择商品']"
               :props="{
                 key: 'id',
-                label: 'name'
+                label: 'name',
               }"
             >
               <template #left-footer>
-                <pagination
-                  v-model:page="queryParams.pageNum"
-                  v-model:limit="queryParams.pageSize"
-                  :total="spuTotal"
-                  layout="prev, pager, next,"
-                  @pagination="handleSpuQuery"
-                />
+                <pagination v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="spuTotal"
+                            layout="prev, pager, next," @pagination="handleSpuQuery"/>
               </template>
             </el-transfer>
           </div>

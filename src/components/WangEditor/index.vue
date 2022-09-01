@@ -1,21 +1,10 @@
 <template>
   <div style="border: 1px solid #ccc">
     <!-- 工具栏 -->
-    <Toolbar
-      :editor="editorRef"
-      :default-config="toolbarConfig"
-      style="border-bottom: 1px solid #ccc"
-      :mode="mode"
-    />
+    <Toolbar :editor="editorRef" :default-config="toolbarConfig" style="border-bottom: 1px solid #ccc" :mode="mode"/>
     <!-- 编辑器 -->
-    <Editor
-      v-model="defaultHtml"
-      :default-config="editorConfig"
-      style="height: 500px; overflow-y: hidden"
-      :mode="mode"
-      @onChange="handleChange"
-      @onCreated="handleCreated"
-    />
+    <Editor v-model="defaultHtml" :default-config="editorConfig" style="height: 500px; overflow-y: hidden" :mode="mode"
+            @onChange="handleChange" @onCreated="handleCreated"/>
   </div>
 </template>
 
@@ -29,8 +18,8 @@ import { uploadFile } from '@/api/system/file'
 const props = defineProps({
   modelValue: {
     type: [String],
-    default: ''
-  }
+    default: '',
+  },
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -46,16 +35,16 @@ const state = reactive({
       uploadImage: {
         // 自定义图片上传
         async customUpload(file: any, insertFn: any) {
-          uploadFile(file).then(response => {
+          uploadFile(file).then((response) => {
             const url = response.data
             insertFn(url)
           })
-        }
-      }
-    }
+        },
+      },
+    },
   },
   defaultHtml: props.modelValue,
-  mode: 'default'
+  mode: 'default',
 })
 
 const { toolbarConfig, editorConfig, defaultHtml, mode } = toRefs(state)
@@ -71,7 +60,9 @@ function handleChange(editor: any) {
 // 组件销毁时，也及时销毁编辑器
 onBeforeUnmount(() => {
   const editor = editorRef.value
-  if (editor == null) return
+  if (editor == null) {
+    return
+  }
   editor.destroy()
 })
 </script>

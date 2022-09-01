@@ -30,11 +30,7 @@ const move = (amount: number) => {
 }
 
 const position = () => {
-  return (
-    document.documentElement.scrollTop ||
-    (document.body.parentNode as HTMLElement).scrollTop ||
-    document.body.scrollTop
-  )
+  return document.documentElement.scrollTop || (document.body.parentNode as HTMLElement).scrollTop || document.body.scrollTop
 }
 
 /**
@@ -58,11 +54,9 @@ export const scrollTo = (to: number, duration: number, callback?: any) => {
     // do the animation unless its over
     if (currentTime < duration) {
       requestAnimFrame(animateScroll)
-    } else {
-      if (callback && typeof callback === 'function') {
-        // the animation is done so lets callback
-        callback()
-      }
+    } else if (callback && typeof callback === 'function') {
+      // the animation is done so lets callback
+      callback()
     }
   }
   animateScroll()

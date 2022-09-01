@@ -1,10 +1,6 @@
 <template>
   <div class="tags-view__container">
-    <scroll-pane
-      ref="scrollPaneRef"
-      class="tags-view__wrapper"
-      @scroll="handleScroll"
-    >
+    <scroll-pane ref="scrollPaneRef" class="tags-view__wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
         :key="tag.path"
@@ -16,30 +12,22 @@
         @contextmenu.prevent="openMenu(tag, $event)"
       >
         {{ generateTitle(tag.meta.title) }}
-        <span
-          v-if="!isAffix(tag)"
-          class="icon-close"
-          @click.prevent.stop="closeSelectedTag(tag)"
-        >
-          <svg-icon icon-class="close" />
+        <span v-if="!isAffix(tag)" class="icon-close" @click.prevent.stop="closeSelectedTag(tag)">
+          <svg-icon icon-class="close"/>
         </span>
       </router-link>
     </scroll-pane>
-    <ul
-      v-show="visible"
-      :style="{ left: left + 'px', top: top + 'px' }"
-      class="tags-view__menu"
-    >
+    <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="tags-view__menu">
       <li @click="refreshSelectedTag(selectedTag)">
-        <svg-icon icon-class="refresh" />
+        <svg-icon icon-class="refresh"/>
         刷新
       </li>
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
-        <svg-icon icon-class="close" />
+        <svg-icon icon-class="close"/>
         关闭
       </li>
       <li @click="closeOtherTags">
-        <svg-icon icon-class="close_other" />
+        <svg-icon icon-class="close_other"/>
         关闭其它
       </li>
       <li v-if="!isFirstView()" @click="closeLeftTags">
@@ -59,15 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  computed,
-  getCurrentInstance,
-  nextTick,
-  ref,
-  watch,
-  onMounted,
-  ComponentInternalInstance
-} from 'vue'
+import {computed, getCurrentInstance, nextTick, ref, watch, onMounted, ComponentInternalInstance} from 'vue'
 
 import path from 'path-browserify'
 
@@ -103,11 +83,11 @@ watch(
   },
   {
     //初始化立即执行
-    immediate: true
-  }
+    immediate: true,
+  },
 )
 
-watch(visible, value => {
+watch(visible, (value) => {
   if (value) {
     document.body.addEventListener('click', closeMenu)
   } else {
@@ -118,14 +98,14 @@ watch(visible, value => {
 function filterAffixTags(routes: any[], basePath = '/') {
   let tags: TagView[] = []
 
-  routes.forEach(route => {
+  routes.forEach((route) => {
     if (route.meta && route.meta.affix) {
       const tagPath = path.resolve(basePath, route.path)
       tags.push({
         fullPath: tagPath,
         path: tagPath,
         name: route.name,
-        meta: { ...route.meta }
+        meta: {...route.meta},
       })
     }
 
@@ -180,11 +160,7 @@ function isAffix(tag: TagView) {
 
 function isFirstView() {
   try {
-    return (
-      (selectedTag.value as TagView).fullPath ===
-        visitedViews.value[1].fullPath ||
-      (selectedTag.value as TagView).fullPath === '/index'
-    )
+    return (selectedTag.value as TagView).fullPath === visitedViews.value[1].fullPath || (selectedTag.value as TagView).fullPath === '/index'
   } catch (err) {
     return false
   }
@@ -192,10 +168,7 @@ function isFirstView() {
 
 function isLastView() {
   try {
-    return (
-      (selectedTag.value as TagView).fullPath ===
-      visitedViews.value[visitedViews.value.length - 1].fullPath
-    )
+    return (selectedTag.value as TagView).fullPath === visitedViews.value[visitedViews.value.length - 1].fullPath
   } catch (err) {
     return false
   }
@@ -205,7 +178,7 @@ function refreshSelectedTag(view: TagView) {
   tagsView.delCachedView(view)
   const { fullPath } = view
   nextTick(() => {
-    router.replace({ path: '/redirect' + fullPath }).catch(err => {
+    router.replace({path: '/redirect' + fullPath}).catch((err) => {
       console.warn(err)
     })
   })
@@ -237,18 +210,14 @@ function closeSelectedTag(view: TagView) {
 
 function closeLeftTags() {
   tagsView.delLeftViews(selectedTag.value).then((res: any) => {
-    if (
-      !res.visitedViews.find((item: any) => item.fullPath === route.fullPath)
-    ) {
+    if (!res.visitedViews.find((item: any) => item.fullPath === route.fullPath)) {
       toLastView(res.visitedViews)
     }
   })
 }
 function closeRightTags() {
   tagsView.delRightViews(selectedTag.value).then((res: any) => {
-    if (
-      !res.visitedViews.find((item: any) => item.fullPath === route.fullPath)
-    ) {
+    if (!res.visitedViews.find((item: any) => item.fullPath === route.fullPath)) {
       toLastView(res.visitedViews)
     }
   })

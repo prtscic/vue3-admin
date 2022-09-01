@@ -8,13 +8,11 @@ const useAppStore = defineStore({
   state: (): AppState => ({
     device: 'desktop',
     sidebar: {
-      opened: localStorage.get('sidebarStatus')
-        ? !!+localStorage.get('sidebarStatus')
-        : true,
-      withoutAnimation: false
+      opened: localStorage.get('sidebarStatus') ? !!+localStorage.get('sidebarStatus') : true,
+      withoutAnimation: false,
     },
     language: getLanguage(),
-    size: localStorage.get('size') || 'default'
+    size: localStorage.get('size') || 'default',
   }),
   actions: {
     toggleSidebar() {
@@ -41,8 +39,8 @@ const useAppStore = defineStore({
     setLanguage(language: string) {
       this.language = language
       localStorage.set('language', language)
-    }
-  }
+    },
+  },
 })
 
 export default useAppStore

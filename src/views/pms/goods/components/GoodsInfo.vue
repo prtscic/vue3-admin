@@ -1,25 +1,15 @@
 <template>
   <div class="component-container">
     <div class="component-container__main">
-      <el-form
-        ref="dataFormRef"
-        :rules="rules"
-        :model="goodsInfo"
-        label-width="120px"
-      >
+      <el-form ref="dataFormRef" :rules="rules" :model="goodsInfo" label-width="120px">
         <el-form-item label="商品品牌" prop="brandId">
           <el-select v-model="goodsInfo.brandId" style="width: 400px" clearable>
-            <el-option
-              v-for="item in brandOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
+            <el-option v-for="item in brandOptions" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
 
         <el-form-item label="商品名称" prop="name">
-          <el-input v-model="goodsInfo.name" style="width: 400px" />
+          <el-input v-model="goodsInfo.name" style="width: 400px"/>
         </el-form-item>
 
         <el-form-item label="原价" prop="originPrice">
@@ -31,43 +21,23 @@
         </el-form-item>
 
         <el-form-item label="商品简介">
-          <el-input
-            v-model="goodsInfo.description"
-            type="textarea"
-            :autosize="{ minRows: 3, maxRows: 6 }"
-          />
+          <el-input v-model="goodsInfo.description" type="textarea" :autosize="{ minRows: 3, maxRows: 6 }"/>
         </el-form-item>
 
         <el-form-item label="商品相册">
-          <el-card
-            v-for="(item, index) in pictures"
-            :key="index"
-            style="
-              width: 170px;
-              display: inline-block;
-              margin-left: 10px;
-              text-align: center;
-            "
-            :body-style="{ padding: '10px' }"
-          >
-            <single-upload v-model="item.url" :show-close="true" />
+          <el-card v-for="(item, index) in pictures" :key="index"
+                   style="width: 170px; display: inline-block; margin-left: 10px; text-align: center"
+                   :body-style="{ padding: '10px' }">
+            <single-upload v-model="item.url" :show-close="true"/>
 
             <div v-if="item.url">
-              <el-link v-if="item.main == true" type="danger" class="button"
-                >商品主图</el-link
-              >
-              <el-link
-                v-else
-                type="info"
-                class="button"
-                @click="changeMainPicture(index)"
-                >设为主图</el-link
-              >
+              <el-link v-if="item.main == true" type="danger" class="button">商品主图</el-link>
+              <el-link v-else type="info" class="button" @click="changeMainPicture(index)">设为主图</el-link>
             </div>
 
             <div v-else>
               <!-- 占位 -->
-              <el-link type="info" />
+              <el-link type="info"/>
             </div>
           </el-card>
         </el-form-item>
@@ -79,9 +49,7 @@
     </div>
     <div class="component-container__footer">
       <el-button @click="handlePrev">上一步，选择商品分类</el-button>
-      <el-button type="primary" @click="handleNext"
-        >下一步，设置商品属性</el-button
-      >
+      <el-button type="primary" @click="handleNext">下一步，设置商品属性</el-button>
     </div>
   </div>
 </template>
@@ -103,33 +71,34 @@ const dataFormRef = ref(ElForm)
 const props = defineProps({
   modelValue: {
     type: Object,
-    default: () => {}
-  }
+    default: () => {
+    },
+  },
 })
 
 const goodsInfo: any = computed({
   get: () => props.modelValue,
-  set: value => {
+  set: (value) => {
     emit('update:modelValue', value)
-  }
+  },
 })
 
 const state = reactive({
   brandOptions: [] as Array<any>,
   // 商品图册
   pictures: [
-    { url: undefined, main: true }, // main为true代表主图，可切换
-    { url: undefined, main: false },
-    { url: undefined, main: false },
-    { url: undefined, main: false },
-    { url: undefined, main: false }
+    {url: undefined, main: true}, // main为true代表主图，可切换
+    {url: undefined, main: false},
+    {url: undefined, main: false},
+    {url: undefined, main: false},
+    {url: undefined, main: false},
   ] as Array<any>,
   rules: {
-    name: [{ required: true, message: '请填写商品名称', trigger: 'blur' }],
-    originPrice: [{ required: true, message: '请填写原价', trigger: 'blur' }],
-    price: [{ required: true, message: '请填写现价', trigger: 'blur' }],
-    brandId: [{ required: true, message: '请选择商品品牌', trigger: 'blur' }]
-  }
+    name: [{required: true, message: '请填写商品名称', trigger: 'blur'}],
+    originPrice: [{required: true, message: '请填写原价', trigger: 'blur'}],
+    price: [{required: true, message: '请填写现价', trigger: 'blur'}],
+    brandId: [{required: true, message: '请选择商品品牌', trigger: 'blur'}],
+  },
 })
 
 const { brandOptions, pictures, rules } = toRefs(state)
@@ -143,7 +112,7 @@ function loadData() {
     // 主图
     const mainPicUrl = goodsInfo.value.picUrl
     if (mainPicUrl) {
-      state.pictures.filter(item => item.main)[0].url = mainPicUrl
+      state.pictures.filter((item) => item.main)[0].url = mainPicUrl
     }
     // 商品副图
     const subPicUrls = goodsInfo.value.subPicUrls
@@ -160,9 +129,7 @@ function loadData() {
  */
 function changeMainPicture(changeIndex: number) {
   const currMainPicture = JSON.parse(JSON.stringify(state.pictures[0]))
-  const nextMainPicture = JSON.parse(
-    JSON.stringify(state.pictures[changeIndex])
-  )
+  const nextMainPicture = JSON.parse(JSON.stringify(state.pictures[changeIndex]))
 
   state.pictures[0].url = nextMainPicture.url
   state.pictures[changeIndex].url = currMainPicture.url
@@ -176,16 +143,12 @@ function handleNext() {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
       // 商品主图
-      const mainPicUrl = state.pictures
-        .filter(item => item.main == true && item.url)
-        .map(item => item.url)
+      const mainPicUrl = state.pictures.filter((item) => item.main == true && item.url).map((item) => item.url)
       if (mainPicUrl && mainPicUrl.length > 0) {
         goodsInfo.value.picUrl = mainPicUrl[0]
       }
       // 商品副图
-      const subPicUrls = state.pictures
-        .filter(item => item.main == false && item.url)
-        .map(item => item.url)
+      const subPicUrls = state.pictures.filter((item) => item.main == false && item.url).map((item) => item.url)
       if (subPicUrls && subPicUrls.length > 0) {
         goodsInfo.value.subPicUrls = subPicUrls
       } else {

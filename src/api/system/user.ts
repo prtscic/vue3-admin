@@ -1,11 +1,6 @@
 import request from '@/utils/request'
 import { AxiosPromise } from 'axios'
-import {
-  UserFormData,
-  UserInfo,
-  UserPageResult,
-  UserQueryParam
-} from '@/types/api/system/user'
+import { UserFormData, UserInfo, UserPageResult, UserQueryParam } from '@/types/api/system/user'
 
 /**
  * 登录成功后获取用户信息（昵称、头像、权限集合和角色集合）
@@ -13,7 +8,7 @@ import {
 export function getUserInfo(): AxiosPromise<UserInfo> {
   return request({
     url: '/youlai-admin/api/v1/users/me',
-    method: 'get'
+    method: 'get',
   })
 }
 
@@ -22,13 +17,11 @@ export function getUserInfo(): AxiosPromise<UserInfo> {
  *
  * @param queryParams
  */
-export function listUserPages(
-  queryParams: UserQueryParam
-): AxiosPromise<UserPageResult> {
+export function listUserPages(queryParams: UserQueryParam): AxiosPromise<UserPageResult> {
   return request({
     url: '/youlai-admin/api/v1/users/pages',
     method: 'get',
-    params: queryParams
+    params: queryParams,
   })
 }
 
@@ -40,7 +33,7 @@ export function listUserPages(
 export function getUserDetail(userId: number): AxiosPromise<UserFormData> {
   return request({
     url: '/youlai-admin/api/v1/users/' + userId,
-    method: 'get'
+    method: 'get',
   })
 }
 
@@ -53,7 +46,7 @@ export function addUser(data: any) {
   return request({
     url: '/youlai-admin/api/v1/users',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
@@ -67,7 +60,7 @@ export function updateUser(id: number, data: UserFormData) {
   return request({
     url: '/youlai-admin/api/v1/users/' + id,
     method: 'put',
-    data: data
+    data: data,
   })
 }
 
@@ -81,7 +74,7 @@ export function updateUserStatus(id: number, status: number) {
   return request({
     url: '/youlai-admin/api/v1/users/' + id + '/status',
     method: 'patch',
-    params: { status: status }
+    params: { status: status },
   })
 }
 
@@ -95,7 +88,7 @@ export function updateUserPassword(id: number, password: string) {
   return request({
     url: '/youlai-admin/api/v1/users/' + id + '/password',
     method: 'patch',
-    params: { password: password }
+    params: { password: password },
   })
 }
 
@@ -107,7 +100,7 @@ export function updateUserPassword(id: number, password: string) {
 export function deleteUsers(ids: string) {
   return request({
     url: '/youlai-admin/api/v1/users/' + ids,
-    method: 'delete'
+    method: 'delete',
   })
 }
 
@@ -120,7 +113,7 @@ export function downloadTemplate() {
   return request({
     url: '/youlai-admin/api/v1/users/template',
     method: 'get',
-    responseType: 'arraybuffer'
+    responseType: 'arraybuffer',
   })
 }
 
@@ -135,7 +128,7 @@ export function exportUser(queryParams: UserQueryParam) {
     url: '/youlai-admin/api/v1/users/_export',
     method: 'get',
     params: queryParams,
-    responseType: 'arraybuffer'
+    responseType: 'arraybuffer',
   })
 }
 
@@ -154,7 +147,7 @@ export function importUser(deptId: number, roleIds: string, file: File) {
     method: 'post',
     data: formData,
     headers: {
-      'Content-Type': 'multipart/form-data'
-    }
+      'Content-Type': 'multipart/form-data',
+    },
   })
 }

@@ -13,19 +13,19 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/index.vue')
-      }
-    ]
+        component: () => import('@/views/redirect/index.vue'),
+      },
+    ],
   },
   {
     path: '/login',
     component: () => import('@/views/login/index.vue'),
-    meta: { hidden: true }
+    meta: { hidden: true },
   },
   {
     path: '/404',
     component: () => import('@/views/error-page/404.vue'),
-    meta: { hidden: true }
+    meta: { hidden: true },
   },
 
   {
@@ -37,15 +37,15 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index.vue'),
         name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'homepage', affix: true }
+        meta: { title: 'dashboard', icon: 'homepage', affix: true },
       },
       {
         path: '401',
         component: () => import('@/views/error-page/401.vue'),
-        meta: { hidden: true }
-      }
-    ]
-  }
+        meta: { hidden: true },
+      },
+    ],
+  },
 
   // 外部链接
   /*{
@@ -105,13 +105,13 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: constantRoutes as RouteRecordRaw[],
   // 刷新时，滚动条位置还原
-  scrollBehavior: () => ({ left: 0, top: 0 })
+  scrollBehavior: () => ({ left: 0, top: 0 }),
 })
 
 // 重置路由
 export function resetRouter() {
   const { permission } = useStore()
-  permission.routes.forEach(route => {
+  permission.routes.forEach((route) => {
     const name = route.name
     if (name && router.hasRoute(name)) {
       router.removeRoute(name)

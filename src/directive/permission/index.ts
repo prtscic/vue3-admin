@@ -17,7 +17,7 @@ export const hasPerm: Directive = {
     if (value) {
       const requiredPerms = value // DOM绑定需要的按钮权限标识
 
-      const hasPerm = user.perms?.some(perm => {
+      const hasPerm = user.perms?.some((perm) => {
         return requiredPerms.includes(perm)
       })
 
@@ -25,11 +25,9 @@ export const hasPerm: Directive = {
         el.parentNode && el.parentNode.removeChild(el)
       }
     } else {
-      throw new Error(
-        "need perms! Like v-has-perm=\"['sys:user:add','sys:user:edit']\""
-      )
+      throw new Error("need perms! Like v-has-perm=\"['sys:user:add','sys:user:edit']\"")
     }
-  }
+  },
 }
 
 /**
@@ -42,7 +40,7 @@ export const hasRole: Directive = {
     if (value) {
       const requiredRoles = value // DOM绑定需要的角色编码
       const { user } = useStore()
-      const hasRole = user.roles.some(perm => {
+      const hasRole = user.roles.some((perm) => {
         return requiredRoles.includes(perm)
       })
 
@@ -52,5 +50,5 @@ export const hasRole: Directive = {
     } else {
       throw new Error("need roles! Like v-has-role=\"['admin','test']\"")
     }
-  }
+  },
 }

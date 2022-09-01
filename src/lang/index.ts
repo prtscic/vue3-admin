@@ -8,11 +8,11 @@ import zhCnLocale from './zh-cn'
 
 const messages = {
   'zh-cn': {
-    ...zhCnLocale
+    ...zhCnLocale,
   },
   en: {
-    ...enLocale
-  }
+    ...enLocale,
+  },
 }
 
 /**
@@ -40,7 +40,7 @@ export const getLanguage = () => {
 const i18n = createI18n({
   legacy: false,
   locale: getLanguage(),
-  messages: messages
+  messages: messages,
 })
 
 export default i18n

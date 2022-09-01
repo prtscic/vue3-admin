@@ -7,7 +7,7 @@ import { reactive, toRefs } from 'vue'
 
 const state = reactive({
   typeCode: '',
-  typeName: ''
+  typeName: '',
 })
 
 const { typeCode, typeName } = toRefs(state)
@@ -41,9 +41,7 @@ const handleDictTypeClick = (row: any) => {
           <template #header>
             <svg-icon icon-class="dict_item" />
             <span style="margin: 0 5px">字典数据项</span>
-            <el-tag v-if="typeCode" type="success" size="small">{{
-              typeName
-            }}</el-tag>
+            <el-tag v-if="typeCode" type="success" size="small">{{ typeName }}</el-tag>
             <el-tag v-else type="warning" size="small">未选择字典</el-tag>
           </template>
           <!-- 字典项组件 -->

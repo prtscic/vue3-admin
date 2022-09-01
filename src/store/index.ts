@@ -9,7 +9,7 @@ const useStore = () => ({
   app: useAppStore(),
   permission: usePermissionStore(),
   setting: useSettingStore(),
-  tagsView: useTagsViewStore()
+  tagsView: useTagsViewStore(),
 })
 
 export default useStore

@@ -14,7 +14,9 @@ export function hasClass(ele: HTMLElement, cls: string) {
  * @param {string} cls
  */
 export function addClass(ele: HTMLElement, cls: string) {
-  if (!hasClass(ele, cls)) ele.className += ' ' + cls
+  if (!hasClass(ele, cls)) {
+    ele.className += ' ' + cls
+  }
 }
 
 /**

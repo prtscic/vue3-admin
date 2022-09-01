@@ -28,7 +28,7 @@ const app = createApp(App)
 // 自定义指令
 import * as directive from '@/directive'
 
-Object.keys(directive).forEach(key => {
+Object.keys(directive).forEach((key) => {
   app.directive(key, (directive as { [key: string]: Directive })[key])
 })
 
@@ -36,10 +36,4 @@ Object.keys(directive).forEach(key => {
 app.config.globalProperties.$getDictItemsByTypeCode = getDictItemsByTypeCode
 
 // 注册全局组件
-app
-  .component('Pagination', Pagination)
-  .use(createPinia())
-  .use(router)
-  .use(ElementPlus)
-  .use(i18n)
-  .mount('#app')
+app.component('Pagination', Pagination).use(createPinia()).use(router).use(ElementPlus).use(i18n).mount('#app')

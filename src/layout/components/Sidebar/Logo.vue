@@ -1,13 +1,8 @@
 <template>
   <div class="sidebar-logo-container" :class="{ collapse: collapse }">
     <transition name="sidebarLogoFade">
-      <router-link
-        v-if="collapse"
-        key="collapse"
-        class="sidebar-logo-link"
-        to="/"
-      >
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
+      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
+        <img v-if="logo" :src="logo" class="sidebar-logo"/>
         <h1 v-else class="sidebar-title">vue3-element-admin</h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
@@ -24,13 +19,13 @@ import { reactive, toRefs } from 'vue'
 const props = defineProps({
   collapse: {
     type: Boolean,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const state = reactive({
   isCollapse: props.collapse,
-  logo: new URL(`../../../assets/logo.png`, import.meta.url).href
+  logo: new URL(`../../../assets/logo.png`, import.meta.url).href,
 })
 
 const { logo } = toRefs(state)

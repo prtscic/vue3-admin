@@ -2,7 +2,7 @@ export default {
   // 路由国际化
   route: {
     dashboard: '首页',
-    document: '项目文档'
+    document: '项目文档',
   },
   // 登录页面国际化
   login: {
@@ -12,12 +12,12 @@ export default {
     login: '登 录',
     code: '请输入验证码',
     copyright: '',
-    icp: ''
+    icp: '',
   },
   navbar: {
     dashboard: '首页',
     logout: '注销',
     document: '项目文档',
-    gitee: '码云'
-  }
+    gitee: '码云',
+  },
 }

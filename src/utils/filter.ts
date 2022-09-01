@@ -20,9 +20,8 @@ export function timeAgo(time: number) {
     return pluralize(~~(between / 60), ' minute')
   } else if (between < 86400) {
     return pluralize(~~(between / 3600), ' hour')
-  } else {
-    return pluralize(~~(between / 86400), ' day')
   }
+  return pluralize(~~(between / 86400), ' day')
 }
 
 /**
@@ -38,15 +37,11 @@ export function numberFormatter(num: number, digits: number) {
     { value: 1e12, symbol: 'T' },
     { value: 1e9, symbol: 'G' },
     { value: 1e6, symbol: 'M' },
-    { value: 1e3, symbol: 'k' }
+    { value: 1e3, symbol: 'k' },
   ]
   for (let i = 0; i < si.length; i++) {
     if (num >= si[i].value) {
-      return (
-        (num / si[i].value)
-          .toFixed(digits)
-          .replace(/\.0+$|(\.[0-9]*[1-9])0+$/, '$1') + si[i].symbol
-      )
+      return (num / si[i].value).toFixed(digits).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, '$1') + si[i].symbol
     }
   }
   return num.toString()
@@ -57,9 +52,7 @@ export function numberFormatter(num: number, digits: number) {
  * @param {number} num
  */
 export function toThousandFilter(num: number) {
-  return (+num || 0)
-    .toString()
-    .replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
+  return (+num || 0).toString().replace(/^-?\d+/g, (m) => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
 }
 
 /**

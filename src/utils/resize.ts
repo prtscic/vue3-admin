@@ -26,20 +26,13 @@ export default function () {
   const initSidebarResizeEvent = () => {
     sidebarElm.value = document.getElementsByClassName('sidebar-container')[0]
     if (sidebarElm.value) {
-      sidebarElm.value.addEventListener(
-        'transitionend',
-        sidebarResizeHandler as EventListener,
-        { passive: true }
-      )
+      sidebarElm.value.addEventListener('transitionend', sidebarResizeHandler as EventListener, { passive: true })
     }
   }
 
   const destroySidebarResizeEvent = () => {
     if (sidebarElm.value) {
-      sidebarElm.value.removeEventListener(
-        'transitionend',
-        sidebarResizeHandler as EventListener
-      )
+      sidebarElm.value.removeEventListener('transitionend', sidebarResizeHandler as EventListener)
     }
   }
 
@@ -68,6 +61,6 @@ export default function () {
     mounted,
     beforeDestroy,
     activated,
-    deactivated
+    deactivated,
   }
 }

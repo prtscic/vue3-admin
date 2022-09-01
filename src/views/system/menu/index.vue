@@ -15,9 +15,7 @@
           <template #header>
             <svg-icon icon-class="perm" />
             <span style="margin: 0 5px">权限列表</span>
-            <el-tag v-if="menu.id" type="success" size="small">{{
-              menu.name
-            }}</el-tag>
+            <el-tag v-if="menu.id" type="success" size="small">{{ menu.name }}</el-tag>
             <el-link v-else :underline="false" type="warning" size="small"
               ><el-icon><WarningFilled /></el-icon>请选中左侧菜单</el-link
             >
@@ -38,7 +36,7 @@ import { reactive, toRefs } from 'vue'
 import { WarningFilled } from '@element-plus/icons-vue'
 import { MenuItem } from '@/types/api/system/menu'
 const state = reactive({
-  menu: {} as MenuItem
+  menu: {} as MenuItem,
 })
 
 const { menu } = toRefs(state)

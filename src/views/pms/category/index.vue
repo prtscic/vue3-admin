@@ -1,7 +1,7 @@
 <!-- setup 无法设置组件名称，组件名称keepAlive必须 -->
 <script lang="ts">
 export default {
-  name: 'Category'
+  name: 'Category',
 }
 </script>
 
@@ -16,8 +16,8 @@ const state = reactive({
   category: {
     id: undefined,
     name: '',
-    childrenLen: 0
-  }
+    childrenLen: 0,
+  },
 })
 
 const { category } = toRefs(state)
@@ -27,13 +27,13 @@ function handleCategoryClick(categoryRow: any) {
     state.category = {
       id: categoryRow.id,
       name: categoryRow.name,
-      childrenLen: categoryRow.children.length
+      childrenLen: categoryRow.children.length,
     }
   } else {
     state.category = {
       id: undefined,
       name: '',
-      childrenLen: 0
+      childrenLen: 0,
     }
   }
 }
@@ -59,17 +59,9 @@ function handleCategoryClick(categoryRow: any) {
             {{ category.name }} 规格属性
           </template>
           <!-- 商品规格 -->
-          <Attribute
-            ref="specificationRef"
-            :attributeType="1"
-            :category="category"
-          />
+          <Attribute ref="specificationRef" :attributeType="1" :category="category"/>
           <!-- 商品属性 -->
-          <Attribute
-            ref="attributeRef"
-            :attributeType="2"
-            :category="category"
-          />
+          <Attribute ref="attributeRef" :attributeType="2" :category="category"/>
         </el-card>
       </el-col>
     </el-row>

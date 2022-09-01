@@ -1,21 +1,8 @@
 <script setup lang="ts">
-import {
-  onMounted,
-  watch,
-  reactive,
-  ref,
-  getCurrentInstance,
-  toRefs
-} from 'vue'
+import {onMounted, watch, reactive, ref, getCurrentInstance, toRefs} from 'vue'
 
-import {
-  listPermPages,
-  getPermFormDetail,
-  addPerm,
-  updatePerm,
-  deletePerms
-} from '@/api/system/perm'
-import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
+import {listPermPages, getPermFormDetail, addPerm, updatePerm, deletePerms} from '@/api/system/perm'
+import {Search, Plus, Edit, Refresh, Delete} from '@element-plus/icons-vue'
 
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import { Dialog, Option } from '@/types/common'
@@ -33,20 +20,20 @@ const props = defineProps({
     type: Object,
     default: () => {
       return {} as MenuItem
-    }
-  }
+    },
+  },
 })
 
 watch(
   () => props.menu,
-  value => {
+  (value) => {
     queryParams.value.menuId = value.id
     console.log('menu', value)
     handleQuery()
   },
   {
-    deep: true
-  }
+    deep: true,
+  },
 )
 
 const state = reactive({
@@ -59,26 +46,26 @@ const state = reactive({
   multiple: true,
   queryParams: {
     pageNum: 1,
-    pageSize: 10
+    pageSize: 10,
   } as PermQueryParam,
   permList: [] as PermItem[],
   total: 0,
   dialog: {
-    visible: false
+    visible: false,
   } as Dialog,
   formData: {} as PermFormData,
   rules: {
-    name: [{ required: true, message: '请输入权限名称', trigger: 'blur' }],
-    perm: [{ required: true, message: '请输入权限标识', trigger: 'blur' }],
-    method: [{ required: true, message: '请选择请求方式', trigger: 'blur' }]
+    name: [{required: true, message: '请输入权限名称', trigger: 'blur'}],
+    perm: [{required: true, message: '请输入权限标识', trigger: 'blur'}],
+    method: [{required: true, message: '请选择请求方式', trigger: 'blur'}],
   },
   microServiceOptions: [] as Option[],
   requestMethodOptions: [] as Option[],
   urlPerm: {
     requestMethod: '',
     serviceName: '',
-    requestPath: ''
-  }
+    requestPath: '',
+  },
 })
 
 const {
@@ -139,7 +126,7 @@ function handleAdd() {
   loadDictOptions()
   state.dialog = {
     title: '添加权限',
-    visible: true
+    visible: true,
   }
 }
 
@@ -147,23 +134,18 @@ function handleUpdate(row: any) {
   loadDictOptions()
   state.dialog = {
     title: '修改权限',
-    visible: true
+    visible: true,
   }
   const id = row.id || state.ids
-  getPermFormDetail(id).then(response => {
-    const { data } = response
+  getPermFormDetail(id).then((response) => {
+    const {data} = response
     state.formData = data
     if (data && data.urlPerm) {
       // GET:/youlai-admin/api/v1/users
       const urlPermArr = data.urlPerm.split(':')
       state.urlPerm.requestMethod = urlPermArr[0]
-      state.urlPerm.serviceName = urlPermArr[1].substring(
-        1,
-        urlPermArr[1].substring(1).indexOf('/') + 1
-      )
-      state.urlPerm.requestPath = urlPermArr[1].substring(
-        urlPermArr[1].substring(1).indexOf('/') + 1
-      )
+      state.urlPerm.serviceName = urlPermArr[1].substring(1, urlPermArr[1].substring(1).indexOf('/') + 1)
+      state.urlPerm.requestPath = urlPermArr[1].substring(urlPermArr[1].substring(1).indexOf('/') + 1)
     }
   })
 }
@@ -187,11 +169,7 @@ function submitForm() {
           ElMessage.warning('URL权限的所属服务不能为空')
           return false
         }
-        state.formData.urlPerm =
-          state.urlPerm.requestMethod +
-          ':/' +
-          state.urlPerm.serviceName +
-          state.urlPerm.requestPath
+        state.formData.urlPerm = state.urlPerm.requestMethod + ':/' + state.urlPerm.serviceName + state.urlPerm.requestPath
       }
 
       formData.value.menuId = props.menu.id
@@ -221,7 +199,7 @@ function resetForm() {
   state.urlPerm = {
     requestMethod: '',
     serviceName: '',
-    requestPath: ''
+    requestPath: '',
   }
 }
 
@@ -235,7 +213,7 @@ function handleDelete(row: any) {
   ElMessageBox.confirm('确认删除已选中的数据项?', '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning'
+    type: 'warning',
   })
     .then(() => {
       deletePerms(ids).then(() => {
@@ -256,128 +234,66 @@ onMounted(() => {
     <!-- 搜索表单 -->
     <el-form ref="queryFormRef" :model="queryParams" :inline="true">
       <el-form-item>
-        <el-button
-          v-if="menu.id && menu.type == 'MENU'"
-          type="success"
-          :icon="Plus"
-          @click="handleAdd"
-          >新增</el-button
-        >
-        <el-button
-          v-if="menu.id && menu.type == 'MENU'"
-          type="danger"
-          :icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete"
-          >删除</el-button
-        >
+        <el-button v-if="menu.id && menu.type == 'MENU'" type="success" :icon="Plus" @click="handleAdd">新增</el-button>
+        <el-button v-if="menu.id && menu.type == 'MENU'" type="danger" :icon="Delete" :disabled="multiple"
+                   @click="handleDelete">删除
+        </el-button>
       </el-form-item>
       <el-form-item prop="name">
-        <el-input
-          v-model="queryParams.name"
-          placeholder="权限名称"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.name" placeholder="权限名称" clearable @keyup.enter="handleQuery"/>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" :icon="Search" @click="handleQuery"
-          >搜索</el-button
-        >
+        <el-button type="primary" :icon="Search" @click="handleQuery">搜索</el-button>
         <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
     <!-- 数据表格 -->
-    <el-table
-      v-loading="loading"
-      :data="permList"
-      border
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" width="40" align="center" />
-      <el-table-column label="权限名称" prop="name" width="150" />
+    <el-table v-loading="loading" :data="permList" border @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="40" align="center"/>
+      <el-table-column label="权限名称" prop="name" width="150"/>
       <el-table-column label="URL权限" align="center">
-        <el-table-column prop="serviceName" label="所属服务" />
-        <el-table-column prop="requestMethod" label="请求方式" />
-        <el-table-column prop="requestPath" label="请求路径" />
+        <el-table-column prop="serviceName" label="所属服务"/>
+        <el-table-column prop="requestMethod" label="请求方式"/>
+        <el-table-column prop="requestPath" label="请求路径"/>
       </el-table-column>
-      <el-table-column label="按钮权限" prop="btnPerm" width="200" />
+      <el-table-column label="按钮权限" prop="btnPerm" width="200"/>
       <el-table-column label="操作" align="center" width="150">
         <template #default="scope">
-          <el-button
-            type="primary"
-            :icon="Edit"
-            circle
-            plain
-            @click="handleUpdate(scope.row)"
-          />
-          <el-button
-            type="danger"
-            :icon="Delete"
-            circle
-            plain
-            @click="handleDelete(scope.row)"
-          />
+          <el-button type="primary" :icon="Edit" circle plain @click="handleUpdate(scope.row)"/>
+          <el-button type="danger" :icon="Delete" circle plain @click="handleDelete(scope.row)"/>
         </template>
       </el-table-column>
     </el-table>
 
     <!-- 分页工具条 -->
-    <pagination
-      v-if="total > 0"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      :total="total"
-      @pagination="handleQuery"
-    />
+    <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total"
+                @pagination="handleQuery"/>
 
     <!-- 表单弹窗 -->
     <el-dialog v-model="dialog.visible" :title="dialog.title" width="700px">
-      <el-form
-        ref="dataFormRef"
-        :model="formData"
-        :rules="rules"
-        label-width="120px"
-      >
+      <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="120px">
         <el-form-item label="权限名称" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入权限名称" />
+          <el-input v-model="formData.name" placeholder="请输入权限名称"/>
         </el-form-item>
 
         <el-form-item label="URL权限标识" prop="urlPerm">
           <el-input v-model="urlPerm.requestPath" placeholder="/api/v1/users">
             <template #prepend>
-              <el-select
-                v-model="urlPerm.serviceName"
-                style="width: 130px"
-                placeholder="所属服务"
-                clearable
-              >
-                <el-option
-                  v-for="item in microServiceOptions"
-                  :key="item.value"
-                  :value="item.value"
-                  :label="item.label"
-                />
+              <el-select v-model="urlPerm.serviceName" style="width: 130px" placeholder="所属服务" clearable>
+                <el-option v-for="item in microServiceOptions" :key="item.value" :value="item.value"
+                           :label="item.label"/>
               </el-select>
 
-              <el-select
-                v-model="urlPerm.requestMethod"
-                style="width: 120px; margin-left: 20px"
-                placeholder="请求方式"
-                clearable
-              >
-                <el-option
-                  v-for="item in requestMethodOptions"
-                  :key="item.value"
-                  :value="item.value"
-                  :label="item.label"
-                />
+              <el-select v-model="urlPerm.requestMethod" style="width: 120px; margin-left: 20px" placeholder="请求方式"
+                         clearable>
+                <el-option v-for="item in requestMethodOptions" :key="item.value" :value="item.value"
+                           :label="item.label"/>
               </el-select>
             </template>
           </el-input>
-          <el-link v-show="urlPerm.requestMethod">
-            {{ urlPerm.requestMethod }}:/{{ urlPerm.serviceName
+          <el-link v-show="urlPerm.requestMethod"> {{ urlPerm.requestMethod }}:/{{
+              urlPerm.serviceName
             }}{{ urlPerm.requestPath }}
           </el-link>
         </el-form-item>

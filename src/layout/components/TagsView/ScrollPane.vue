@@ -1,23 +1,12 @@
 <template>
-  <el-scrollbar
-    ref="scrollContainer"
-    :vertical="false"
-    class="scroll-container"
-    @wheel.prevent="handleScroll"
-  >
-    <slot />
+  <el-scrollbar ref="scrollContainer" :vertical="false" class="scroll-container" @wheel.prevent="handleScroll">
+    <slot/>
   </el-scrollbar>
 </template>
 
 <script setup lang="ts">
-import {
-  ref,
-  computed,
-  onMounted,
-  onBeforeUnmount,
-  getCurrentInstance
-} from 'vue'
-import { TagView } from '@/types/store/tagsview'
+import {ref, computed, onMounted, onBeforeUnmount, getCurrentInstance} from 'vue'
+import {TagView} from '@/types/store/tagsview'
 import useStore from '@/store'
 
 const tagAndTagSpacing = ref(4)
@@ -43,8 +32,7 @@ onBeforeUnmount(() => {
 
 function handleScroll(e: WheelEvent) {
   const eventDelta = (e as any).wheelDelta || -e.deltaY * 40
-  scrollWrapper.value.scrollLeft =
-    scrollWrapper.value.scrollLeft + eventDelta / 4
+  scrollWrapper.value.scrollLeft = scrollWrapper.value.scrollLeft + eventDelta / 4
 }
 
 function moveToTarget(currentTag: TagView) {
@@ -67,37 +55,25 @@ function moveToTarget(currentTag: TagView) {
     $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
   } else {
     const tagListDom = document.getElementsByClassName('tags-view__item')
-    const currentIndex = visitedViews.value.findIndex(
-      item => item === currentTag
-    )
+    const currentIndex = visitedViews.value.findIndex((item) => item === currentTag)
     let prevTag = null
     let nextTag = null
     for (const k in tagListDom) {
       if (k !== 'length' && Object.hasOwnProperty.call(tagListDom, k)) {
-        if (
-          (tagListDom[k] as any).dataset.path ===
-          visitedViews.value[currentIndex - 1].path
-        ) {
+        if ((tagListDom[k] as any).dataset.path === visitedViews.value[currentIndex - 1].path) {
           prevTag = tagListDom[k]
         }
-        if (
-          (tagListDom[k] as any).dataset.path ===
-          visitedViews.value[currentIndex + 1].path
-        ) {
+        if ((tagListDom[k] as any).dataset.path === visitedViews.value[currentIndex + 1].path) {
           nextTag = tagListDom[k]
         }
       }
     }
 
     // the tag's offsetLeft after of nextTag
-    const afterNextTagOffsetLeft =
-      (nextTag as any).offsetLeft +
-      (nextTag as any).offsetWidth +
-      tagAndTagSpacing.value
+    const afterNextTagOffsetLeft = (nextTag as any).offsetLeft + (nextTag as any).offsetWidth + tagAndTagSpacing.value
 
     // the tag's offsetLeft before of prevTag
-    const beforePrevTagOffsetLeft =
-      (prevTag as any).offsetLeft - tagAndTagSpacing.value
+    const beforePrevTagOffsetLeft = (prevTag as any).offsetLeft - tagAndTagSpacing.value
     if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $containerWidth) {
       $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth
     } else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
@@ -107,7 +83,7 @@ function moveToTarget(currentTag: TagView) {
 }
 
 defineExpose({
-  moveToTarget
+  moveToTarget,
 })
 </script>
 

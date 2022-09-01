@@ -23,8 +23,8 @@ export default defineComponent({
   props: {
     to: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
     const router = useRouter()
@@ -32,14 +32,14 @@ export default defineComponent({
       if (device.value === 'mobile' && sidebar.value.opened == true) {
         app.closeSideBar(false)
       }
-      router.push(props.to).catch(err => {
+      router.push(props.to).catch((err) => {
         console.log(err)
       })
     }
     return {
       push,
-      isExternal
+      isExternal,
     }
-  }
+  },
 })
 </script>

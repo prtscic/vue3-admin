@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: 'Advert'
+  name: 'Advert',
 }
 </script>
 
@@ -9,19 +9,9 @@ import { onMounted, reactive, ref, toRefs } from 'vue'
 import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Plus, Edit, Refresh, Delete } from '@element-plus/icons-vue'
 import SingleUpload from '@/components/Upload/SingleUpload.vue'
-import {
-  listAdvertPages,
-  getAdvertFormDetail,
-  updateAdvert,
-  addAdvert,
-  deleteAdverts
-} from '@/api/sms/advert'
-import { Dialog } from '@/types/common'
-import {
-  AdvertFormData,
-  AdvertItem,
-  AdvertQueryParam
-} from '@/types/api/sms/advert'
+import {listAdvertPages, getAdvertFormDetail, updateAdvert, addAdvert, deleteAdverts} from '@/api/sms/advert'
+import {Dialog} from '@/types/common'
+import {AdvertFormData, AdvertItem, AdvertQueryParam} from '@/types/api/sms/advert'
 
 const queryFormRef = ref(ElForm) // 属性名必须和元素的ref属性值一致
 const dataFormRef = ref(ElForm) // 属性名必须和元素的ref属性值一致
@@ -37,29 +27,19 @@ const state = reactive({
   queryParams: { pageNum: 1, pageSize: 10 } as AdvertQueryParam,
   advertList: [] as AdvertItem[],
   total: 0,
-  dialog: { title: '', visible: false } as Dialog,
+  dialog: {title: '', visible: false} as Dialog,
   formData: {
     status: 1,
-    sort: 100
+    sort: 100,
   } as AdvertFormData,
   rules: {
-    title: [{ required: true, message: '请输入广告名称', trigger: 'blur' }],
-    picUrl: [{ required: true, message: '请上传广告图片', trigger: 'blur' }]
+    title: [{required: true, message: '请输入广告名称', trigger: 'blur'}],
+    picUrl: [{required: true, message: '请上传广告图片', trigger: 'blur'}],
   },
-  validityPeriod: '' as any
+  validityPeriod: '' as any,
 })
 
-const {
-  loading,
-  multiple,
-  queryParams,
-  advertList,
-  total,
-  dialog,
-  formData,
-  rules,
-  validityPeriod
-} = toRefs(state)
+const {loading, multiple, queryParams, advertList, total, dialog, formData, rules, validityPeriod} = toRefs(state)
 
 function handleQuery() {
   state.loading = true
@@ -84,14 +64,14 @@ function handleSelectionChange(selection: any) {
 function handleAdd() {
   state.dialog = {
     title: '添加广告',
-    visible: true
+    visible: true,
   }
 }
 
 function handleUpdate(row: any) {
   state.dialog = {
     title: '修改广告',
-    visible: true
+    visible: true,
   }
   const advertId = row.id || state.ids
   getAdvertFormDetail(advertId).then(({ data }) => {
@@ -138,7 +118,7 @@ function handleDelete(row: any) {
   ElMessageBox.confirm('确认删除已选中的数据项?', '警告', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning'
+    type: 'warning',
   })
     .then(() => {
       deleteAdverts(ids).then(() => {
@@ -159,52 +139,29 @@ onMounted(() => {
     <!-- 搜索表单 -->
     <el-form ref="queryFormRef" :model="queryParams" :inline="true">
       <el-form-item>
-        <el-button type="success" :icon="Plus" @click="handleAdd"
-          >新增</el-button
-        >
-        <el-button
-          type="danger"
-          :icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete"
-          >删除</el-button
-        >
+        <el-button type="success" :icon="Plus" @click="handleAdd">新增</el-button>
+        <el-button type="danger" :icon="Delete" :disabled="multiple" @click="handleDelete">删除</el-button>
       </el-form-item>
 
       <el-form-item prop="title">
-        <el-input
-          v-model="queryParams.keywords"
-          placeholder="标题"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.keywords" placeholder="标题" clearable @keyup.enter="handleQuery"/>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" :icon="Search" @click="handleQuery"
-          >搜索</el-button
-        >
+        <el-button type="primary" :icon="Search" @click="handleQuery">搜索</el-button>
         <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
-    <el-table
-      v-loading="loading"
-      :data="advertList"
-      border
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" min-width="5" align="center" />
-      <el-table-column type="index" label="序号" width="80" align="center" />
-      <el-table-column prop="title" min-width="100" label="广告标题" />
+    <el-table v-loading="loading" :data="advertList" border @selection-change="handleSelectionChange">
+      <el-table-column type="selection" min-width="5" align="center"/>
+      <el-table-column type="index" label="序号" width="80" align="center"/>
+      <el-table-column prop="title" min-width="100" label="广告标题"/>
       <el-table-column label="广告图片" width="100">
         <template #default="scope">
           <el-popover placement="right" :width="400" trigger="hover">
-            <img :src="scope.row.picUrl" width="400" height="400" />
+            <img :src="scope.row.picUrl" width="400" height="400"/>
             <template #reference>
-              <img
-                :src="scope.row.picUrl"
-                style="max-height: 60px; max-width: 60px"
-              />
+              <img :src="scope.row.picUrl" style="max-height: 60px; max-width: 60px"/>
             </template>
           </el-popover>
         </template>
@@ -220,59 +177,30 @@ onMounted(() => {
       <el-table-column prop="sort" label="排序" width="80" />
       <el-table-column label="操作" align="center" width="150">
         <template #default="scope">
-          <el-button
-            type="primary"
-            :icon="Edit"
-            circle
-            plain
-            @click.stop="handleUpdate(scope.row)"
-          />
-          <el-button
-            type="danger"
-            :icon="Delete"
-            circle
-            plain
-            @click.stop="handleDelete(scope.row)"
-          />
+          <el-button type="primary" :icon="Edit" circle plain @click.stop="handleUpdate(scope.row)"/>
+          <el-button type="danger" :icon="Delete" circle plain @click.stop="handleDelete(scope.row)"/>
         </template>
       </el-table-column>
     </el-table>
 
     <!-- 分页工具条 -->
-    <pagination
-      v-if="total > 0"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      :total="total"
-      @pagination="handleQuery"
-    />
+    <pagination v-if="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total"
+                @pagination="handleQuery"/>
 
     <!-- 表单弹窗 -->
     <el-dialog v-model="dialog.visible" :title="dialog.title" width="700px">
-      <el-form
-        ref="dataFormRef"
-        :model="formData"
-        :rules="rules"
-        label-width="100px"
-      >
+      <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
         <el-form-item label="广告标题" prop="title">
-          <el-input v-model="formData.title" />
+          <el-input v-model="formData.title"/>
         </el-form-item>
 
         <el-form-item label="有效期">
-          <el-date-picker
-            v-model="validityPeriod"
-            type="daterange"
-            range-separator="~"
-            start-placeholder="起始时间"
-            end-placeholder="截止时间"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-          />
+          <el-date-picker v-model="validityPeriod" type="daterange" range-separator="~" start-placeholder="起始时间"
+                          end-placeholder="截止时间" format="YYYY-MM-DD" value-format="YYYY-MM-DD"/>
         </el-form-item>
 
         <el-form-item label="广告图片" prop="picUrl">
-          <single-upload v-model="formData.picUrl" />
+          <single-upload v-model="formData.picUrl"/>
         </el-form-item>
 
         <el-form-item label="排序" prop="sort">

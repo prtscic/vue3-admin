@@ -1,25 +1,11 @@
 <template>
   <div class="icon-select">
-    <el-input
-      v-model="iconName"
-      clearable
-      placeholder="请输入图标名称"
-      @clear="filterIcons"
-      @input="filterIcons"
-    >
-      <template #suffix><i class="el-icon-search el-input__icon" /></template>
+    <el-input v-model="iconName" clearable placeholder="请输入图标名称" @clear="filterIcons" @input="filterIcons">
+      <template #suffix><i class="el-icon-search el-input__icon"/></template>
     </el-input>
     <div class="icon-select__list">
-      <div
-        v-for="(item, index) in iconList"
-        :key="index"
-        @click="selectedIcon(item)"
-      >
-        <svg-icon
-          color="#999"
-          :icon-class="item"
-          style="height: 30px; width: 16px; margin-right: 5px"
-        />
+      <div v-for="(item, index) in iconList" :key="index" @click="selectedIcon(item)">
+        <svg-icon color="#999" :icon-class="item" style="height: 30px; width: 16px; margin-right: 5px"/>
         <span>{{ item }}</span>
       </div>
     </div>
@@ -45,7 +31,7 @@ const emit = defineEmits(['selected'])
 function filterIcons() {
   iconList.value = icons
   if (iconName.value) {
-    iconList.value = icons.filter(item => item.indexOf(iconName.value) !== -1)
+    iconList.value = icons.filter((item) => item.indexOf(iconName.value) !== -1)
   }
 }
 
@@ -60,7 +46,7 @@ function reset() {
 }
 
 defineExpose({
-  reset
+  reset,
 })
 </script>
 

@@ -60,7 +60,7 @@ const { setting } = useStore()
 const state = reactive({
   fixedHeader: setting.fixedHeader,
   tagsView: setting.tagsView,
-  sidebarLogo: setting.sidebarLogo
+  sidebarLogo: setting.sidebarLogo,
 })
 
 const { fixedHeader, tagsView, sidebarLogo } = toRefs(state)
@@ -71,23 +71,23 @@ function themeChange(val: any) {
 
 watch(
   () => state.fixedHeader,
-  value => {
-    setting.changeSetting({ key: 'fixedHeader', value: value })
-  }
+  (value) => {
+    setting.changeSetting({key: 'fixedHeader', value: value})
+  },
 )
 
 watch(
   () => state.tagsView,
-  value => {
-    setting.changeSetting({ key: 'tagsView', value: value })
-  }
+  (value) => {
+    setting.changeSetting({key: 'tagsView', value: value})
+  },
 )
 
 watch(
   () => state.sidebarLogo,
-  value => {
-    setting.changeSetting({ key: 'sidebarLogo', value: value })
-  }
+  (value) => {
+    setting.changeSetting({key: 'sidebarLogo', value: value})
+  },
 )
 </script>
 
